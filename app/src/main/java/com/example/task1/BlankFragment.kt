@@ -2,9 +2,7 @@ package com.example.task1
 
 import android.os.Bundle
 import android.util.Log.d
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -29,6 +27,8 @@ class BlankFragment : Fragment() {
     private var param2: String? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: RecyclerAdapter
+    lateinit var responseBody: MutableList<CountryItem>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,29 @@ class BlankFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
 
         }
+        setHasOptionsMenu(true);
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.Up -> {
+                responseBody.sortBy { it.area }
+                recyclerAdapter.notifyDataSetChanged()
+            }
+            R.id.Down -> {
+                responseBody.sortByDescending { it.area }
+                recyclerAdapter.notifyDataSetChanged()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     private fun getCountry() {
         val retrofitBuilder = Retrofit.Builder()
@@ -52,7 +74,7 @@ class BlankFragment : Fragment() {
                 call: Call<List<CountryItem>?>,
                 response: Response<List<CountryItem>?>
             ) {
-                val responseBody = response.body()!!
+                responseBody = (response.body() as MutableList<CountryItem>?)!!
                 recyclerAdapter = RecyclerAdapter(responseBody)
                 recyclerAdapter.notifyDataSetChanged()
                 recyclerView.adapter = recyclerAdapter

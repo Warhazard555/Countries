@@ -16,11 +16,13 @@ class RecyclerAdapter(private val list: List<CountryItem>) :
         var name: AppCompatTextView? = null
         var capital: AppCompatTextView? = null
         var languages: AppCompatTextView? = null
+        var area: AppCompatTextView? = null
 
         init {
             name = itemView.findViewById(R.id.name)
             capital = itemView.findViewById(R.id.capital)
             languages = itemView.findViewById(R.id.languages)
+            area = itemView.findViewById(R.id.area)
 
         }
 
@@ -37,6 +39,7 @@ class RecyclerAdapter(private val list: List<CountryItem>) :
         holder.name?.text = list[position].name
         holder.capital?.text = list[position].capital
         holder.languages?.text = list[position].languages.convertToList()
+        holder.area?.text = list[position].area.toString()
 
     }
 
