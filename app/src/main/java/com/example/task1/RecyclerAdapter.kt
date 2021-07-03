@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.task1.data.CountryItem
 
 
 class RecyclerAdapter(private val list: List<CountryItem>) :

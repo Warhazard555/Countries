@@ -1,4 +1,4 @@
-package com.example.task1
+package com.example.task1.data
 
 data class CountryItem(
     val alpha2Code: String,
@@ -27,35 +27,9 @@ data class CountryItem(
     val translations: Translations
 )
 
-data class Currency(
-    val code: String,
-    val name: String,
-    val symbol: String
-)
 
-data class Language(
-    val iso639_1: String,
-    val iso639_2: String,
-    val name: String,
-    val nativeName: String
-)
 
-data class RegionalBloc(
-    val acronym: String,
-    val name: String,
-    val otherAcronyms: List<Any>,
-    val otherNames: List<String>
-)
 
-data class Translations(
-    val br: String,
-    val de: String,
-    val es: String,
-    val fa: String,
-    val fr: String,
-    val hr: String,
-    val it: String,
-    val ja: String,
-    val nl: String,
-    val pt: String
-)
+
+
+

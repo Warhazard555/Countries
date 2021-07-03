@@ -5,11 +5,10 @@ import android.util.Log.d
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.task1.data.CountryItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +27,7 @@ class BlankFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: RecyclerAdapter
     lateinit var responseBody: MutableList<CountryItem>
+    var retrofitBuilder = RetrofitService.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,23 +50,20 @@ class BlankFragment : Fragment() {
         when (item.itemId) {
             R.id.Up -> {
                 responseBody.sortBy { it.area }
-                recyclerAdapter.notifyDataSetChanged()
+
             }
             R.id.Down -> {
                 responseBody.sortByDescending { it.area }
-                recyclerAdapter.notifyDataSetChanged()
+
             }
         }
+        recyclerAdapter.notifyDataSetChanged()
         return super.onOptionsItemSelected(item)
     }
 
 
     private fun getCountry() {
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
-            .build()
-            .create(RetrofitInterface::class.java)
+
         val retrofitData = retrofitBuilder.getData()
 
         retrofitData.enqueue(object : Callback<List<CountryItem>?> {
