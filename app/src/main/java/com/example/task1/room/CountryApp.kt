@@ -6,12 +6,12 @@ class CountryApp: Application() {
 
     companion object{
 
-        lateinit var dCountryDatabase: CountryDatabase
+        lateinit var mCountryDatabase: CountryDatabase
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        dCountryDatabase = CountryDatabase.getDatabaseInst(this)
+        mCountryDatabase = CountryDatabase.getDatabaseInst(this)
     }
 }

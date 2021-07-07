@@ -11,11 +11,9 @@ abstract class CountryDatabase : RoomDatabase() {
 
     abstract fun CountryDao(): CountryDao
 
-
     companion object {
         @Volatile
         private var instance: CountryDatabase? = null
-
 
         fun getDatabaseInst(context: Context): CountryDatabase {
 

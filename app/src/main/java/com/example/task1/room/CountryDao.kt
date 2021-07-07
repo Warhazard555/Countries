@@ -11,10 +11,9 @@ import androidx.room.Query
 interface CountryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertDatabase(tableModel: TableModel)
+    fun insertDatabase(List: List<TableModel>)
 
     @Query("SELECT * FROM country")
     fun getCountryDetals(): MutableList<TableModel>
-
 
 }
