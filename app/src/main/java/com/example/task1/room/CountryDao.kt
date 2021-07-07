@@ -15,4 +15,6 @@ interface CountryDao {
 
     @Query("SELECT * FROM country")
     fun getCountryDetals(): MutableList<TableModel>
+
+
 }

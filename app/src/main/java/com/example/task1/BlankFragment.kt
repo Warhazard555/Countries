@@ -49,8 +49,7 @@ class BlankFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recycler)
         CountryApp.dCountryDatabase
         val daoCountry = CountryApp.dCountryDatabase.CountryDao()
-        val daoLanguage = CountryApp.dCountryDatabase.LanguageDao()
-        getCountry(daoCountry,daoLanguage)
+        getCountry(daoCountry)
         readSharedPref()
     }
 
@@ -75,7 +74,7 @@ class BlankFragment : Fragment() {
     }
 
 
-    private fun getCountry(daoCountry: CountryDao?, daoLanguage: LanguageDao) {
+    private fun getCountry(daoCountry: CountryDao?) {
 
         val retrofitData = retrofitBuilder.getData()
 
@@ -87,9 +86,8 @@ class BlankFragment : Fragment() {
                 responseBody = (response.body() as MutableList<CountryItem>?)!!
 
                 responseBody.forEach {
-                    daoCountry?.insertDatabase(TableModel(it.name, it.capital, it.area))
-                   it.languages.forEach{ language ->
-                       daoLanguage?.insertDatabase(LanguageTableModel(it.name,language.name))}
+                    daoCountry?.insertDatabase(TableModel(it.name, it.capital, it.area, it.languages.convertToList()))
+
                 }
 
 

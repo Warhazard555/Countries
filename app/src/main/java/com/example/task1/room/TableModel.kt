@@ -15,7 +15,12 @@ data class TableModel(
     val capital: String,
 
     @ColumnInfo
-    val area: Double
+    val area: Double,
+
+    @ColumnInfo
+    val language: String
+
+
 )
 
 
