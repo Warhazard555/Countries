@@ -22,7 +22,7 @@ class RecyclerAdapter(private val list: List<CountryItem>) :
         init {
             name = itemView.findViewById(R.id.name)
             capital = itemView.findViewById(R.id.capital)
-            languages = itemView.findViewById(R.id.languages)
+           languages = itemView.findViewById(R.id.languages)
             area = itemView.findViewById(R.id.area)
 
         }

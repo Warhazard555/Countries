@@ -1,11 +1,13 @@
 package com.example.task1
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log.d
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task1.data.CountryItem
+import com.example.task1.room.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +32,7 @@ class BlankFragment : Fragment() {
     var retrofitBuilder = RetrofitService.getInstance()
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -40,6 +43,17 @@ class BlankFragment : Fragment() {
         setHasOptionsMenu(true);
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        saveSharedPref()
+        recyclerView = view.findViewById(R.id.recycler)
+        CountryApp.dCountryDatabase
+        val daoCountry = CountryApp.dCountryDatabase.CountryDao()
+        val daoLanguage = CountryApp.dCountryDatabase.LanguageDao()
+        getCountry(daoCountry,daoLanguage)
+        readSharedPref()
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
@@ -47,22 +61,21 @@ class BlankFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.Up -> {
-                responseBody.sortBy { it.area }
-
-            }
-            R.id.Down -> {
-                responseBody.sortByDescending { it.area }
-
-            }
+        if (item.isChecked) {
+            responseBody.sortByDescending { it.area }
+            item.setIcon(R.drawable.ic_action_up)
+            item.isChecked = false
+        } else {
+            responseBody.sortBy { it.area }
+            item.setIcon(R.drawable.ic_action_down)
+            item.isChecked = true
         }
         recyclerAdapter.notifyDataSetChanged()
         return super.onOptionsItemSelected(item)
     }
 
 
-    private fun getCountry() {
+    private fun getCountry(daoCountry: CountryDao?, daoLanguage: LanguageDao) {
 
         val retrofitData = retrofitBuilder.getData()
 
@@ -72,6 +85,14 @@ class BlankFragment : Fragment() {
                 response: Response<List<CountryItem>?>
             ) {
                 responseBody = (response.body() as MutableList<CountryItem>?)!!
+
+                responseBody.forEach {
+                    daoCountry?.insertDatabase(TableModel(it.name, it.capital, it.area))
+                   it.languages.forEach{ language ->
+                       daoLanguage?.insertDatabase(LanguageTableModel(it.name,language.name))}
+                }
+
+
                 recyclerAdapter = RecyclerAdapter(responseBody)
                 recyclerAdapter.notifyDataSetChanged()
                 recyclerView.adapter = recyclerAdapter
@@ -93,11 +114,12 @@ class BlankFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.recycler)
-        getCountry()
+    fun saveSharedPref() {
+        activity?.getSharedPreferences("data", Context.MODE_PRIVATE)?.edit()?.apply()
+    }
 
+    fun readSharedPref() {
+        activity?.getSharedPreferences("data", Context.MODE_PRIVATE)
     }
 
     companion object {
