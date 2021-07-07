@@ -31,8 +31,8 @@ class BlankFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: RecyclerAdapter
     lateinit var responseBody: MutableList<CountryItem>
-    var retrofitBuilder = RetrofitService.getInstance()
-
+    private var retrofitBuilder = RetrofitService.getInstance()
+    private var statusSort = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +42,7 @@ class BlankFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
 
         }
+
         setHasOptionsMenu(true)
     }
 
@@ -52,25 +53,34 @@ class BlankFragment : Fragment() {
         CountryApp.mCountryDatabase
         val daoCountry = CountryApp.mCountryDatabase.CountryDao()
         getCountry(daoCountry)
-        saveSharedPref()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        if (!statusSort) {
+            menu.findItem(R.id.sort).setIcon(R.drawable.ic_action_up).isChecked = false
+        } else {
+            menu.findItem((R.id.sort)).setIcon(R.drawable.ic_action_down).isChecked = true
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.isChecked) {
-            responseBody.sortByDescending { it.area }
-            item.setIcon(R.drawable.ic_action_up)
-            item.isChecked = false
-        } else {
-            responseBody.sortBy { it.area }
-            item.setIcon(R.drawable.ic_action_down)
-            item.isChecked = true
+        if (item.itemId == R.id.sort) {
+
+            if (statusSort) {
+                responseBody.sortByDescending { it.area }
+                item.setIcon(R.drawable.ic_action_up)
+            } else {
+                responseBody.sortBy { it.area }
+                item.setIcon(R.drawable.ic_action_down)
+            }
+            statusSort = !statusSort
+            recyclerAdapter.notifyDataSetChanged()
+            saveSharedPref()
         }
-        recyclerAdapter.notifyDataSetChanged()
         return super.onOptionsItemSelected(item)
     }
 
@@ -84,6 +94,7 @@ class BlankFragment : Fragment() {
                 response: Response<List<CountryItem>?>
             ) {
                 responseBody = (response.body() as MutableList<CountryItem>?)!!
+                responseBody.sorting(statusSort)
                 val list: MutableList<TableModel> = mutableListOf()
                 responseBody.let {
                     responseBody.forEach { item ->
@@ -120,12 +131,27 @@ class BlankFragment : Fragment() {
     }
 
     private fun saveSharedPref() {
-        activity?.getSharedPreferences("data", Context.MODE_PRIVATE)?.edit()?.apply()
+
+        activity?.getSharedPreferences("data", Context.MODE_PRIVATE)?.edit()
+            ?.apply { putBoolean("SortStatus", statusSort) }?.apply()
     }
 
     private fun sortStatusSharedPref() {
 
-        activity?.getSharedPreferences("data", Context.MODE_PRIVATE)
+        val sharedPrefs = activity?.getSharedPreferences("data", Context.MODE_PRIVATE)
+        val status = sharedPrefs?.getBoolean("SortStatus", statusSort)
+        if (status != null) {
+            statusSort = status
+        }
+
+    }
+
+    fun MutableList<CountryItem>.sorting(statusSort: Boolean) {
+        if (!statusSort) {
+            this.sortByDescending { it.area }
+        } else {
+            this.sortBy { it.area }
+        }
     }
 
     companion object {
