@@ -51,7 +51,7 @@ class BlankFragment : Fragment() {
         sortStatusSharedPref()
         recyclerView = view.findViewById(R.id.recycler)
         CountryApp.mCountryDatabase
-        val daoCountry = CountryApp.mCountryDatabase.CountryDao()
+        val daoCountry = CountryApp.mCountryDatabase.сountryDao()
         getCountry(daoCountry)
 
     }
@@ -79,7 +79,7 @@ class BlankFragment : Fragment() {
             }
             statusSort = !statusSort
             recyclerAdapter.notifyDataSetChanged()
-            saveSharedPref()
+            saveSharedPref(statusSort)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -130,7 +130,7 @@ class BlankFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 
-    private fun saveSharedPref() {
+    private fun saveSharedPref(statusSort: Boolean) {
 
         activity?.getSharedPreferences("data", Context.MODE_PRIVATE)?.edit()
             ?.apply { putBoolean("SortStatus", statusSort) }?.apply()

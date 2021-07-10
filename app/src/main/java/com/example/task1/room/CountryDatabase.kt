@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [TableModel::class], version = 1, exportSchema = false)
 abstract class CountryDatabase : RoomDatabase() {
 
-    abstract fun CountryDao(): CountryDao
+    abstract fun сountryDao(): CountryDao
 
     companion object {
         @Volatile
