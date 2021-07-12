@@ -13,7 +13,7 @@ class RetrofitService {
         fun getInstance(): RetrofitInterface {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-            var log: OkHttpClient = OkHttpClient.Builder()
+            val log: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build()
 

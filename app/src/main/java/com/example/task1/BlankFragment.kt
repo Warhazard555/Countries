@@ -1,11 +1,15 @@
 package com.example.task1
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log.d
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task1.data.CountryItem
+import com.example.task1.room.CountryApp
+import com.example.task1.room.CountryDao
+import com.example.task1.room.TableModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,7 +31,8 @@ class BlankFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: RecyclerAdapter
     lateinit var responseBody: MutableList<CountryItem>
-    var retrofitBuilder = RetrofitService.getInstance()
+    private var retrofitBuilder = RetrofitService.getInstance()
+    private var statusSort = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,32 +42,49 @@ class BlankFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
 
         }
-        setHasOptionsMenu(true);
+
+        setHasOptionsMenu(true)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sortStatusSharedPref()
+        recyclerView = view.findViewById(R.id.recycler)
+        CountryApp.mCountryDatabase
+        val daoCountry = CountryApp.mCountryDatabase.сountryDao()
+        getCountry(daoCountry)
+
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        if (!statusSort) {
+            menu.findItem(R.id.sort).setIcon(R.drawable.ic_action_up).isChecked = false
+        } else {
+            menu.findItem((R.id.sort)).setIcon(R.drawable.ic_action_down).isChecked = true
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.Up -> {
-                responseBody.sortBy { it.area }
+        if (item.itemId == R.id.sort) {
 
-            }
-            R.id.Down -> {
+            if (statusSort) {
                 responseBody.sortByDescending { it.area }
-
+                item.setIcon(R.drawable.ic_action_up)
+            } else {
+                responseBody.sortBy { it.area }
+                item.setIcon(R.drawable.ic_action_down)
             }
+            statusSort = !statusSort
+            recyclerAdapter.notifyDataSetChanged()
+            saveSharedPref(statusSort)
         }
-        recyclerAdapter.notifyDataSetChanged()
         return super.onOptionsItemSelected(item)
     }
 
-
-    private fun getCountry() {
+    private fun getCountry(daoCountry: CountryDao?) {
 
         val retrofitData = retrofitBuilder.getData()
 
@@ -72,6 +94,21 @@ class BlankFragment : Fragment() {
                 response: Response<List<CountryItem>?>
             ) {
                 responseBody = (response.body() as MutableList<CountryItem>?)!!
+                responseBody.sorting(statusSort)
+                val list: MutableList<TableModel> = mutableListOf()
+                responseBody.let {
+                    responseBody.forEach { item ->
+                        list.add(
+                            TableModel(
+                                item.name,
+                                item.capital,
+                                item.area,
+                                item.languages.convertToList()
+                            )
+                        )
+                    }
+                }
+                daoCountry?.insertDatabase(list)
                 recyclerAdapter = RecyclerAdapter(responseBody)
                 recyclerAdapter.notifyDataSetChanged()
                 recyclerView.adapter = recyclerAdapter
@@ -93,11 +130,28 @@ class BlankFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.recycler)
-        getCountry()
+    private fun saveSharedPref(statusSort: Boolean) {
 
+        activity?.getSharedPreferences("data", Context.MODE_PRIVATE)?.edit()
+            ?.apply { putBoolean("SortStatus", statusSort) }?.apply()
+    }
+
+    private fun sortStatusSharedPref() {
+
+        val sharedPrefs = activity?.getSharedPreferences("data", Context.MODE_PRIVATE)
+        val status = sharedPrefs?.getBoolean("SortStatus", statusSort)
+        if (status != null) {
+            statusSort = status
+        }
+
+    }
+
+    fun MutableList<CountryItem>.sorting(statusSort: Boolean) {
+        if (!statusSort) {
+            this.sortByDescending { it.area }
+        } else {
+            this.sortBy { it.area }
+        }
     }
 
     companion object {
