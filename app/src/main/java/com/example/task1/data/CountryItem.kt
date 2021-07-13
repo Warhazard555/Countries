@@ -1,21 +1,27 @@
 package com.example.task1.data
 
+import com.google.gson.annotations.SerializedName
+
 data class CountryItem(
     val alpha2Code: String,
     val alpha3Code: String,
     val altSpellings: List<String>,
-    val area: Double,
+    @SerializedName("area")
+    var area: Double,
     val borders: List<String>,
     val callingCodes: List<String>,
-    val capital: String,
+    @SerializedName("capital")
+    var capital: String,
     val cioc: String,
     val currencies: List<Currency>,
     val demonym: String,
     val flag: String,
     val gini: Double,
-    val languages: List<Language>,
+    @SerializedName("languages")
+    var languages: List<Language>,
     val latlng: List<Double>,
-    val name: String,
+    @SerializedName("name")
+    var name: String,
     val nativeName: String,
     val numericCode: String,
     val population: Int,

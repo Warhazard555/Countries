@@ -9,5 +9,16 @@
         android:id="@+id/blankFragment"
         android:name="com.example.task1.BlankFragment"
         android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" />
+        tools:layout="@layout/fragment_blank">
+        <action
+            android:id="@+id/action_blankFragment_to_countryDetailsFragment"
+            app:destination="@id/countryDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/countryDetailsFragment"
+        android:name="com.example.task1.CountryDetailsFragment"
+        android:label="CountryDetailsFragment" >
+
+
+    </fragment>
 </navigation>

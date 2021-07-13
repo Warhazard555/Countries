@@ -1,5 +1,6 @@
-package com.example.task1
+package com.example.task1.retrofit
 
+import com.example.task1.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
