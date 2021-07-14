@@ -13,6 +13,10 @@ abstract class BaseAdapter<ItemType> :
 
     protected var mOnItemClickListener: ((ItemType) -> Unit?)? = null
 
+    interface OnItemClickListener<ItemType>{
+        fun onClick(item: ItemType)
+    }
+
     fun setItemClick(clickListener: (ItemType) -> Unit) {
         mOnItemClickListener = clickListener
     }

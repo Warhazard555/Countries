@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/countryDetailsFragment"
-        android:name="com.example.task1.CountryDetailsFragment"
+        android:name="com.example.task1.fragments.countryDetails.CountryDetailsFragment"
         android:label="CountryDetailsFragment" >
 
 

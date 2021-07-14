@@ -34,19 +34,19 @@ class BlankFragment : Fragment() {
         inflater.inflate(R.menu.menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
         if (!statusSort) {
-            menu.findItem(R.id.sort).setIcon(R.drawable.ic_action_up).isChecked = false
+            menu.findItem(R.id.sorted).setIcon(R.drawable.ic_action_up).isChecked = false
         } else {
-            menu.findItem((R.id.sort)).setIcon(R.drawable.ic_action_down).isChecked = true
+            menu.findItem((R.id.sorted)).setIcon(R.drawable.ic_action_down).isChecked = true
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.sort) {
+        if (item.itemId == R.id.sorted) {
             if (statusSort) {
-                responseBody.sortByDescending { it.area }
+                recyclerAdapter.sortDescendingItem()
                 item.setIcon(R.drawable.ic_action_up)
             } else {
-                responseBody.sortBy { it.area }
+                recyclerAdapter.sortItem()
                 item.setIcon(R.drawable.ic_action_down)
             }
             statusSort = !statusSort
@@ -66,7 +66,7 @@ class BlankFragment : Fragment() {
                 call: Call<MutableList<CountryItem>?>,
                 response: Response<MutableList<CountryItem>?>
             ) {
-                responseBody = response.body()!!
+                responseBody = response.body() as MutableList<CountryItem>
                 responseBody.sorting(statusSort)
                 val list: MutableList<TableModel> = mutableListOf()
                 responseBody.let {
@@ -141,9 +141,9 @@ class BlankFragment : Fragment() {
 
     fun MutableList<CountryItem>.sorting(statusSort: Boolean) {
         if (!statusSort) {
-            this.sortByDescending { it.area }
+            recyclerAdapter.sortDescendingItem()
         } else {
-            this.sortBy { it.area }
+            recyclerAdapter.sortItem()
         }
     }
 }

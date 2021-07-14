@@ -38,12 +38,21 @@ class RecyclerAdapter :
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
-            var listItem = dataList[position]
+            val listItem = dataList[position]
             holder.name?.text = listItem.name
             holder.capital?.text = "capital: " + listItem.capital
             holder.languages?.text = "languages:" + listItem.languages.convertToList()
             holder.area?.text = "area: " + listItem.area.toString()
             holder.itemView.setOnClickListener { mOnItemClickListener?.invoke(listItem) }
         }
+    }
+    fun sortItem() {
+        dataList.sortBy { it.area }
+        notifyDataSetChanged()
+    }
+
+    fun sortDescendingItem() {
+        dataList.sortByDescending { it.area }
+        notifyDataSetChanged()
     }
 }
