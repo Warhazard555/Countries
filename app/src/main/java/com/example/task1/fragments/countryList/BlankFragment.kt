@@ -1,4 +1,4 @@
-package com.example.task1
+package com.example.task1.fragments.countryList
 
 import android.content.Context
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.task1.*
 import com.example.task1.data.CountryItem
 import com.example.task1.retrofit.RetrofitService
 import com.example.task1.room.CountryApp
@@ -67,7 +68,7 @@ class BlankFragment : Fragment() {
                 response: Response<MutableList<CountryItem>?>
             ) {
                 responseBody = response.body() as MutableList<CountryItem>
-                responseBody.sorting(statusSort)
+
                 val list: MutableList<TableModel> = mutableListOf()
                 responseBody.let {
                     responseBody.forEach { item ->
@@ -86,6 +87,7 @@ class BlankFragment : Fragment() {
                 recyclerAdapter.notifyDataSetChanged()
                 recyclerView.adapter = recyclerAdapter
                 recyclerAdapter.repopulate(responseBody)
+                responseBody.sorting(statusSort)
             }
 
             override fun onFailure(call: Call<MutableList<CountryItem>?>, t: Throwable) {
@@ -105,6 +107,7 @@ class BlankFragment : Fragment() {
         recyclerAdapter.setItemClick { item ->
             val bundle = Bundle()
             bundle.putString(COUNTRY_NAME_KEY, item.name)
+            bundle.putString(COUNTRY_FLAG_KEY, item.flag)
             findNavController().navigate(
                 R.id.action_blankFragment_to_countryDetailsFragment,
                 bundle
@@ -112,6 +115,7 @@ class BlankFragment : Fragment() {
         }
         recyclerView.adapter = recyclerAdapter
         getCountry(daoCountry)
+        saveSharedPref(statusSort)
     }
 
 

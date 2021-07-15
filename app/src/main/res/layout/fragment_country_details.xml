@@ -31,31 +31,31 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_country_flag"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/iv_size"
+        android:layout_height="@dimen/iv_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/country_name" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appCompatTextView"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/layout_width"
         android:layout_height="wrap_content"
-        android:text="asduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoiasduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoiasduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoiasduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoiasduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoiasduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoiasduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoiasduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoiasduiusdidfiasufnainsfoasnfoasnfoansfoansfoansfonasfonasfnlaskfnlasnfoansflnasfnalskfnlasnflkasfansflkalslasnflkasfosflnasfnasfnolanonsfoasfonasofnaosfnolasnasfolnsfafoi"
+        android:text="@string/history"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_country_flag" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mv_country_details"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_width="@dimen/layout_width"
+        android:layout_height="@dimen/mv_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_country_details_languages"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/layout_width"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"

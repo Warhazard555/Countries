@@ -1,4 +1,4 @@
-package com.example.task1
+package com.example.task1.fragments.countryList
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.task1.R
 import com.example.task1.base.BaseAdapter
+import com.example.task1.convertToList
 import com.example.task1.data.CountryItem
 
 

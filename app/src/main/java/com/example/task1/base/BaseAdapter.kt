@@ -2,7 +2,6 @@ package com.example.task1.base
 
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.task1.data.CountryItem
 
 
 abstract class BaseAdapter<ItemType> :
@@ -27,6 +26,11 @@ abstract class BaseAdapter<ItemType> :
 
     open fun repopulate(list: MutableList<ItemType>) {
         dataList.clear()
+        dataList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    open fun addList(list: MutableList<ItemType>) {
         dataList.addAll(list)
         notifyDataSetChanged()
     }
