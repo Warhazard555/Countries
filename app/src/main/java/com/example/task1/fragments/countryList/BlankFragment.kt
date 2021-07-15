@@ -101,7 +101,7 @@ class BlankFragment : Fragment() {
         sortStatusSharedPref()
         recyclerView = view.findViewById(R.id.recycler)
         recyclerAdapter = RecyclerAdapter()
-        CountryApp.mCountryDatabase
+        //CountryApp.mCountryDatabase
         val daoCountry = CountryApp.mCountryDatabase.сountryDao()
 
         recyclerAdapter.setItemClick { item ->

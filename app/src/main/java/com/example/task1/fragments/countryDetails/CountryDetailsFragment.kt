@@ -19,6 +19,7 @@ import com.example.task1.ERROR
 import com.example.task1.R
 import com.example.task1.data.CountryItem
 import com.example.task1.data.Language
+import com.example.task1.ext.loadImageSvg
 import com.example.task1.retrofit.RetrofitService
 import com.google.android.gms.maps.CameraUpdateFactory.newLatLng
 import com.google.android.gms.maps.GoogleMap
@@ -110,16 +111,7 @@ class CountryDetailsFragment : Fragment() {
         })
     }
 
-    private fun AppCompatImageView.loadImageSvg(url: String) {
-        val image = ImageLoader.Builder(this.context)
-            .componentRegistry { add(SvgDecoder(this@loadImageSvg.context)) }
-            .build()
-        val request = ImageRequest.Builder(this.context)
-            .data(url)
-            .target(this)
-            .build()
-        image.enqueue(request)
-    }
+
 
     fun getMapLocation(latLng: LatLng) {
         mapView.getMapAsync {
