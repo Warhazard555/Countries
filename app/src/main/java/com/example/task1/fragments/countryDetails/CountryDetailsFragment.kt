@@ -96,10 +96,11 @@ class CountryDetailsFragment : Fragment() {
                     countryItem.languages as MutableList<Language>
                 )
                 srCountryDetails.isRefreshing = false
+                if (countryItem.area != 0.0) {
+                        mapLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
 
-                mapLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
-
-                getMapLocation(mapLng)
+                             getMapLocation(mapLng)
+}
             }
 
             override fun onFailure(call: Call<MutableList<CountryItem>>, t: Throwable) {
