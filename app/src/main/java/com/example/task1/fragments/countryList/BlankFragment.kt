@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log.d
 import android.view.*
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +26,8 @@ class BlankFragment : Fragment() {
     lateinit var responseBody: MutableList<CountryItem>
     private var retrofitBuilder = RetrofitService.getInstance()
     private var statusSort = true
+    private lateinit var progressBar: FrameLayout
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,9 +63,8 @@ class BlankFragment : Fragment() {
     }
 
     private fun getCountry(daoCountry: CountryDao?) {
-
         val retrofitData = retrofitBuilder.getData()
-
+        progressBar.visibility = ProgressBar.VISIBLE
         retrofitData.enqueue(object : Callback<MutableList<CountryItem>> {
             override fun onResponse(
                 call: Call<MutableList<CountryItem>?>,
@@ -88,10 +91,13 @@ class BlankFragment : Fragment() {
                 recyclerView.adapter = recyclerAdapter
                 recyclerAdapter.repopulate(responseBody)
                 responseBody.sorting(statusSort)
+                progressBar.visibility = ProgressBar.GONE
             }
 
             override fun onFailure(call: Call<MutableList<CountryItem>?>, t: Throwable) {
                 d("BlankFragment", "onFailure: " + t.message)
+                progressBar.visibility = ProgressBar.GONE
+
             }
         })
     }
@@ -101,9 +107,8 @@ class BlankFragment : Fragment() {
         sortStatusSharedPref()
         recyclerView = view.findViewById(R.id.recycler)
         recyclerAdapter = RecyclerAdapter()
-
         val daoCountry = CountryApp.mCountryDatabase.сountryDao()
-
+        progressBar = view.findViewById(R.id.progressBar)
         recyclerAdapter.setItemClick { item ->
             val bundle = Bundle()
             bundle.putString(COUNTRY_NAME_KEY, item.name)

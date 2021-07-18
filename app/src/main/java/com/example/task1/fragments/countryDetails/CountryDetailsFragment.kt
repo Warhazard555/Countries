@@ -5,14 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import coil.ImageLoader
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 import com.example.task1.COUNTRY_FLAG_KEY
 import com.example.task1.COUNTRY_NAME_KEY
 import com.example.task1.ERROR
@@ -28,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 
 class CountryDetailsFragment : Fragment() {
@@ -45,6 +42,7 @@ class CountryDetailsFragment : Fragment() {
     private lateinit var mapLng: LatLng
     private lateinit var countryItem: CountryItem
     private var countryList: MutableList<CountryItem>? = null
+    private lateinit var progress: FrameLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,41 +70,47 @@ class CountryDetailsFragment : Fragment() {
         mapView.onCreate(savedInstanceState)
         rvLanguages = view.findViewById(R.id.rv_country_details_languages)
         srCountryDetails = view.findViewById(R.id.sr_country_details)
-
+        progress = view.findViewById(R.id.progress)
         languageAdapter = LanguagesAdapter()
         rvLanguages.adapter = languageAdapter
 
         srCountryDetails.setOnRefreshListener {
-            getCountryDetails()
+            getCountryDetails(true)
         }
-        getCountryDetails()
+        getCountryDetails(false)
     }
 
-    private fun getCountryDetails(){
-        RetrofitService.getInstance().getCountryByName(mCountryName).enqueue(object : Callback<MutableList<CountryItem>> {
-            override fun onResponse(
-                call: Call<MutableList<CountryItem>>,
-                response: Response<MutableList<CountryItem>>
-            ) {
-                countryList = response.body()
+    private fun getCountryDetails(isRefresh: Boolean) {
+        progress.visibility = if (isRefresh) View.GONE else View.VISIBLE
+        RetrofitService.getInstance().getCountryByName(mCountryName)
+            .enqueue(object : Callback<MutableList<CountryItem>> {
+                override fun onResponse(
+                    call: Call<MutableList<CountryItem>>,
+                    response: Response<MutableList<CountryItem>>
+                ) {
+                    countryList = response.body()
 
-                Log.e("CountryDetailsFragment", countryList.toString())
-                countryList?.get(0)?.also { countryItem = it }
+                    Log.e("CountryDetailsFragment", countryList.toString())
+                    countryList?.get(0)?.also { countryItem = it }
+                    //  countryItem = (countryList?.get(0).also { it } ?: "") as CountryItem
 
-                languageAdapter.repopulate(
-                    countryItem.languages as MutableList<Language>
-                )
-                srCountryDetails.isRefreshing = false
-                if (countryItem.area != 0.0) {
+                    languageAdapter.repopulate(
+                        countryItem.languages as MutableList<Language>
+                    )
+
+                    srCountryDetails.isRefreshing = false
+                    if (countryItem.area != 0.0) {
                         mapLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
 
-                             getMapLocation(mapLng)
-}
-            }
+                        getMapLocation(mapLng)
+                    }
+                    progress.visibility = View.GONE
+                }
 
             override fun onFailure(call: Call<MutableList<CountryItem>>, t: Throwable) {
                 t.printStackTrace()
                 srCountryDetails.isRefreshing = false
+                progress.visibility = View.GONE
             }
         })
     }

@@ -9,4 +9,5 @@
     <dimen name="text_size">18sp</dimen>>
     <dimen name="iv_size">140dp</dimen>>
     <dimen name="mv_height">200dp</dimen>>
+    <dimen name="progress_size">50dp</dimen>>
 </resources>
