@@ -90,7 +90,7 @@ class BlankFragment : Fragment() {
                 recyclerAdapter.notifyDataSetChanged()
                 recyclerView.adapter = recyclerAdapter
                 recyclerAdapter.repopulate(responseBody)
-                responseBody.sorting(statusSort)
+                sorting(statusSort)
                 progressBar.visibility = ProgressBar.GONE
             }
 
@@ -118,7 +118,7 @@ class BlankFragment : Fragment() {
                 bundle
             )
         }
-        recyclerView.adapter = recyclerAdapter
+        // recyclerView.adapter = recyclerAdapter
         getCountry(daoCountry)
         saveSharedPref(statusSort)
     }
@@ -148,7 +148,7 @@ class BlankFragment : Fragment() {
 
     }
 
-    fun MutableList<CountryItem>.sorting(statusSort: Boolean) {
+    fun sorting(statusSort: Boolean) {
         if (!statusSort) {
             recyclerAdapter.sortDescendingItem()
         } else {
