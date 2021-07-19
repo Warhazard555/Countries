@@ -18,6 +18,7 @@ import com.example.task1.R
 import com.example.task1.data.CountryItem
 import com.example.task1.data.Language
 import com.example.task1.ext.loadImageSvg
+import com.example.task1.ext.showAlertDialog
 import com.example.task1.retrofit.RetrofitService
 import com.google.android.gms.maps.CameraUpdateFactory.newLatLng
 import com.google.android.gms.maps.GoogleMap
@@ -110,6 +111,7 @@ class CountryDetailsFragment : Fragment() {
             override fun onFailure(call: Call<MutableList<CountryItem>>, t: Throwable) {
                 t.printStackTrace()
                 srCountryDetails.isRefreshing = false
+                activity?.showAlertDialog()
                 progress.visibility = View.GONE
             }
         })

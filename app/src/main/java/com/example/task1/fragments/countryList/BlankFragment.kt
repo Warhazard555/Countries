@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task1.*
 import com.example.task1.data.CountryItem
+import com.example.task1.ext.showAlertDialog
 import com.example.task1.retrofit.RetrofitService
 import com.example.task1.room.CountryApp
 import com.example.task1.room.CountryDao
@@ -96,6 +97,7 @@ class BlankFragment : Fragment() {
 
             override fun onFailure(call: Call<MutableList<CountryItem>?>, t: Throwable) {
                 d("BlankFragment", "onFailure: " + t.message)
+                activity?.showAlertDialog()
                 progressBar.visibility = ProgressBar.GONE
 
             }
