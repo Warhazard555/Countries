@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginEnd="24dp"
+    android:layout_marginStart="@dimen/default_margin"
+    android:layout_marginEnd="@dimen/default_margin"
     android:layout_gravity="center"
     android:background="@color/orange">
 
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_size"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:visibility="gone"
@@ -29,12 +29,12 @@
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         tools:layout_editor_absoluteX="15dp"
         android:background="@color/white"
-        android:maxLength="100"/>
+        android:maxLength="100" />
 
 
     <androidx.appcompat.widget.AppCompatButton

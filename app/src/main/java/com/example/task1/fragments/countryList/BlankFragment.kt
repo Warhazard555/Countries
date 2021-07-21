@@ -77,9 +77,7 @@ class BlankFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe( {response ->
-
                     responseBody = response
-
                     val list: MutableList<TableModel> = mutableListOf()
                     responseBody.let {
                         responseBody.forEach { item ->
@@ -94,7 +92,6 @@ class BlankFragment : Fragment() {
                         }
                     }
                     daoCountry?.insertDatabase(list)
-
                     recyclerAdapter.notifyDataSetChanged()
                     recyclerView.adapter = recyclerAdapter
                     recyclerAdapter.repopulate(responseBody)
