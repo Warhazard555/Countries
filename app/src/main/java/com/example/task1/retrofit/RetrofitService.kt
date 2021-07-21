@@ -1,6 +1,7 @@
 package com.example.task1.retrofit
 
 import com.example.task1.BASE_URL
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,6 +22,7 @@ class RetrofitService {
             if (instance == null)
             instance = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .client(log)
                 .build()

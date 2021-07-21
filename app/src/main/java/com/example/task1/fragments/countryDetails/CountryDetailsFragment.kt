@@ -24,9 +24,9 @@ import com.google.android.gms.maps.CameraUpdateFactory.newLatLng
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+
 
 
 class CountryDetailsFragment : Fragment() {
@@ -52,7 +52,6 @@ class CountryDetailsFragment : Fragment() {
         flag = arguments?.getString(COUNTRY_FLAG_KEY) ?: ERROR
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,40 +83,59 @@ class CountryDetailsFragment : Fragment() {
     private fun getCountryDetails(isRefresh: Boolean) {
         progress.visibility = if (isRefresh) View.GONE else View.VISIBLE
         RetrofitService.getInstance().getCountryByName(mCountryName)
-            .enqueue(object : Callback<MutableList<CountryItem>> {
-                override fun onResponse(
-                    call: Call<MutableList<CountryItem>>,
-                    response: Response<MutableList<CountryItem>>
-                ) {
-                    countryList = response.body()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe( {response ->
+                countryList = response
 
-                    Log.e("CountryDetailsFragment", countryList.toString())
-                    countryList?.get(0)?.also { countryItem = it }
-                    //  countryItem = (countryList?.get(0).also { it } ?: "") as CountryItem
+                Log.e("CountryDetailsFragment", countryList.toString())
+                countryList?.get(0)?.also { countryItem = it }
+                //  countryItem = (countryList?.get(0).also { it } ?: "") as CountryItem
 
-                    languageAdapter.repopulate(
-                        countryItem.languages as MutableList<Language>
-                    )
+                languageAdapter.repopulate(
+                    countryItem.languages as MutableList<Language>
+                )
 
-                    srCountryDetails.isRefreshing = false
-                    if (countryItem.area != 0.0) {
-                        mapLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
+                srCountryDetails.isRefreshing = false
+                if (countryItem.area != 0.0) {
+                    mapLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
 
-                        getMapLocation(mapLng)
-                    }
-                    progress.visibility = View.GONE
+                    getMapLocation(mapLng)
                 }
+                progress.visibility = View.GONE
 
-            override fun onFailure(call: Call<MutableList<CountryItem>>, t: Throwable) {
-                t.printStackTrace()
+            },{throwable -> throwable.printStackTrace()
                 srCountryDetails.isRefreshing = false
                 activity?.showAlertDialog()
-                progress.visibility = View.GONE
-            }
-        })
+                progress.visibility = View.GONE})
+//                 {
+//                    countryList = response.body()
+//
+//                    Log.e("CountryDetailsFragment", countryList.toString())
+//                    countryList?.get(0)?.also { countryItem = it }
+//                    //  countryItem = (countryList?.get(0).also { it } ?: "") as CountryItem
+//
+//                    languageAdapter.repopulate(
+//                        countryItem.languages as MutableList<Language>
+//                    )
+//
+//                    srCountryDetails.isRefreshing = false
+//                    if (countryItem.area != 0.0) {
+//                        mapLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
+//
+//                        getMapLocation(mapLng)
+//                    }
+//                    progress.visibility = View.GONE
+//                }
+//
+//            override fun onFailure(call: Call<MutableList<CountryItem>>, t: Throwable) {
+//                t.printStackTrace()
+//                srCountryDetails.isRefreshing = false
+//                activity?.showAlertDialog()
+//                progress.visibility = View.GONE
+//            }
+//        })
     }
-
-
 
     fun getMapLocation(latLng: LatLng) {
         mapView.getMapAsync {
@@ -126,7 +144,6 @@ class CountryDetailsFragment : Fragment() {
 
         }
     }
-
     override fun onStart() {
         super.onStart()
         mapView.onStart()
@@ -156,5 +173,4 @@ class CountryDetailsFragment : Fragment() {
         super.onStop()
         mapView.onStop()
     }
-
 }

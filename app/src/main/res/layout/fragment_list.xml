@@ -36,19 +36,20 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/capital"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size"
+            app:layout_constraintEnd_toStartOf="@+id/iv_flag"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/languages"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size"

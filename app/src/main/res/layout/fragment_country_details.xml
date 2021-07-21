@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/sr_country_details"
         android:layout_width="match_parent"
@@ -44,7 +43,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/country_name" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/appCompatTextView"
+                    android:id="@+id/tv_country_details"
                     android:layout_width="@dimen/layout_width"
                     android:layout_height="wrap_content"
                     android:text="@string/history"
@@ -58,7 +57,7 @@
                     android:layout_height="@dimen/mv_height"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_country_details" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_country_details_languages"

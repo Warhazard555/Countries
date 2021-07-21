@@ -10,4 +10,6 @@
     <dimen name="iv_size">140dp</dimen>>
     <dimen name="mv_height">200dp</dimen>>
     <dimen name="progress_size">50dp</dimen>>
+    <dimen name="zero_size">0dp</dimen>
+    <dimen name="default_margin">24dp</dimen>
 </resources>

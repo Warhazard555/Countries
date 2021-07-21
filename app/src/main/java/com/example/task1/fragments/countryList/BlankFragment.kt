@@ -2,23 +2,24 @@ package com.example.task1.fragments.countryList
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log.d
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.task1.*
 import com.example.task1.data.CountryItem
 import com.example.task1.ext.showAlertDialog
+import com.example.task1.ext.showDialogWithOneButton
 import com.example.task1.retrofit.RetrofitService
 import com.example.task1.room.CountryApp
 import com.example.task1.room.CountryDao
 import com.example.task1.room.TableModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+
 
 class BlankFragment : Fragment() {
 
@@ -28,12 +29,13 @@ class BlankFragment : Fragment() {
     private var retrofitBuilder = RetrofitService.getInstance()
     private var statusSort = true
     private lateinit var progressBar: FrameLayout
-
+    private lateinit var srCountry: SwipeRefreshLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -47,6 +49,12 @@ class BlankFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.app_bar_search) {
+            activity?.showDialogWithOneButton(
+                "Find Country",
+                R.string.find
+            ) { findCountry() }
+        }
         if (item.itemId == R.id.sorted) {
             if (statusSort) {
                 recyclerAdapter.sortDescendingItem()
@@ -63,50 +71,87 @@ class BlankFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun getCountry(daoCountry: CountryDao?) {
-        val retrofitData = retrofitBuilder.getData()
-        progressBar.visibility = ProgressBar.VISIBLE
-        retrofitData.enqueue(object : Callback<MutableList<CountryItem>> {
-            override fun onResponse(
-                call: Call<MutableList<CountryItem>?>,
-                response: Response<MutableList<CountryItem>?>
-            ) {
-                responseBody = response.body() as MutableList<CountryItem>
+    private fun getCountry(daoCountry: CountryDao?, isRefresh: Boolean) {
+        progressBar.visibility = if (isRefresh) View.GONE else View.VISIBLE
+         retrofitBuilder.getData()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe( {response ->
 
-                val list: MutableList<TableModel> = mutableListOf()
-                responseBody.let {
-                    responseBody.forEach { item ->
-                        list.add(
-                            TableModel(
-                                item.name,
-                                item.capital,
-                                item.area,
-                                item.languages.convertToList()
+                    responseBody = response
+
+                    val list: MutableList<TableModel> = mutableListOf()
+                    responseBody.let {
+                        responseBody.forEach { item ->
+                            list.add(
+                                TableModel(
+                                    item.name,
+                                    item.capital,
+                                    item.area,
+                                    item.languages.convertToList()
+                                )
                             )
-                        )
+                        }
                     }
-                }
-                daoCountry?.insertDatabase(list)
+                    daoCountry?.insertDatabase(list)
 
-                recyclerAdapter.notifyDataSetChanged()
-                recyclerView.adapter = recyclerAdapter
-                recyclerAdapter.repopulate(responseBody)
-                sorting(statusSort)
-                progressBar.visibility = ProgressBar.GONE
-            }
+                    recyclerAdapter.notifyDataSetChanged()
+                    recyclerView.adapter = recyclerAdapter
+                    recyclerAdapter.repopulate(responseBody)
+                    sorting(statusSort)
+                    srCountry.isRefreshing = false
+                    progressBar.visibility = ProgressBar.GONE
 
-            override fun onFailure(call: Call<MutableList<CountryItem>?>, t: Throwable) {
-                d("BlankFragment", "onFailure: " + t.message)
+                }, {throwable ->
+                throwable.printStackTrace()
                 activity?.showAlertDialog()
+                srCountry.isRefreshing = false
                 progressBar.visibility = ProgressBar.GONE
+            })
 
-            }
-        })
+//        retrofitData.enqueue(object : Callback<MutableList<CountryItem>> {
+//            override fun onResponse(
+//                call: Call<MutableList<CountryItem>?>,
+//                response: Response<MutableList<CountryItem>?>
+//            ) {
+//                responseBody = response.body() as MutableList<CountryItem>
+//
+//                val list: MutableList<TableModel> = mutableListOf()
+//                responseBody.let {
+//                    responseBody.forEach { item ->
+//                        list.add(
+//                            TableModel(
+//                                item.name,
+//                                item.capital,
+//                                item.area,
+//                                item.languages.convertToList()
+//                            )
+//                        )
+//                    }
+//                }
+//                daoCountry?.insertDatabase(list)
+//
+//                recyclerAdapter.notifyDataSetChanged()
+//                recyclerView.adapter = recyclerAdapter
+//                recyclerAdapter.repopulate(responseBody)
+//                sorting(statusSort)
+//                srCountry.isRefreshing = false
+//                progressBar.visibility = ProgressBar.GONE
+//            }
+//
+//            override fun onFailure(call: Call<MutableList<CountryItem>?>, t: Throwable) {
+//                d("BlankFragment", "onFailure: " + t.message)
+//                activity?.showAlertDialog()
+//                srCountry.isRefreshing = false
+//                progressBar.visibility = ProgressBar.GONE
+//            }
+//        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sortStatusSharedPref()
+        srCountry = view.findViewById(R.id.sr_country)
         recyclerView = view.findViewById(R.id.recycler)
         recyclerAdapter = RecyclerAdapter()
         val daoCountry = CountryApp.mCountryDatabase.сountryDao()
@@ -121,7 +166,10 @@ class BlankFragment : Fragment() {
             )
         }
         // recyclerView.adapter = recyclerAdapter
-        getCountry(daoCountry)
+        srCountry.setOnRefreshListener {
+            getCountry(daoCountry, true)
+        }
+        getCountry(daoCountry, false)
         saveSharedPref(statusSort)
     }
 
@@ -147,7 +195,6 @@ class BlankFragment : Fragment() {
         if (status != null) {
             statusSort = status
         }
-
     }
 
     fun sorting(statusSort: Boolean) {
@@ -157,4 +204,12 @@ class BlankFragment : Fragment() {
             recyclerAdapter.sortItem()
         }
     }
+
+    private fun findCountry() {
+        val countryName = COUNTRY_FIND_NAME
+        val listCountry =
+            responseBody.filter { it.name.contains(countryName, true) } as MutableList<CountryItem>
+        recyclerAdapter.repopulate(listCountry)
+    }
+
 }

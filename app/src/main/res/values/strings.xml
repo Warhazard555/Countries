@@ -5,4 +5,8 @@
     <string name="sort">Sort</string>
     <string name="history">The first signs of settlements in ancient Belarus date back approximately 100,000-35,000 years. The most significant Stone Age settlements have been discovered in the Gomel region. Sites discovered from the Palaeolithic period in the village of Yurovichi (Kalinkovichi area) existed approximately 26 000 years ago. Sites discovered in the village of Berdysh (Chechersk area) date back 23,000-24,000 years. Ancient cultural relics have also been discovered in the Mogilev, Grodno and Minsk regions.</string>
     <string name="google_map_key">AIzaSyD-g2wdlD5OXiIt93M0yryD4HdEJSqpGec</string>
+    <string name="search">Search</string>
+    <string name="chancel">Chancel</string>
+    <string name="find">Find</string>
+    <string name="country_find">Find Country</string>
 </resources>
