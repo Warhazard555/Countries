@@ -49,12 +49,6 @@ class BlankFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.app_bar_search) {
-            activity?.showDialogWithOneButton(
-                "Find Country",
-                R.string.find
-            ) { findCountry() }
-        }
         if (item.itemId == R.id.sorted) {
             if (statusSort) {
                 recyclerAdapter.sortDescendingItem()
@@ -66,6 +60,12 @@ class BlankFragment : Fragment() {
             statusSort = !statusSort
             recyclerAdapter.notifyDataSetChanged()
             saveSharedPref(statusSort)
+        }
+        if (item.itemId == R.id.app_bar_search) {
+            activity?.showDialogWithOneButton(
+                "Find Country",
+                R.string.find
+            ) { findCountry() }
         }
 
         return super.onOptionsItemSelected(item)
