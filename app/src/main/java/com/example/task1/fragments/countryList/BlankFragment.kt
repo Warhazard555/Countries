@@ -18,6 +18,7 @@ import com.example.task1.room.CountryApp
 import com.example.task1.room.CountryDao
 import com.example.task1.room.TableModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 
@@ -74,24 +75,16 @@ class BlankFragment : Fragment() {
     private fun getCountry(daoCountry: CountryDao?, isRefresh: Boolean) {
         progressBar.visibility = if (isRefresh) View.GONE else View.VISIBLE
          retrofitBuilder.getData()
+             .flatMap { response ->
+                 Flowable.fromSupplier {
+                     addCountryDataBase(response, daoCountry)
+                     return@fromSupplier response
+                 }
+             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe( {response ->
-                    responseBody = response
-                    val list: MutableList<TableModel> = mutableListOf()
-                    responseBody.let {
-                        responseBody.forEach { item ->
-                            list.add(
-                                TableModel(
-                                    item.name,
-                                    item.capital,
-                                    item.area,
-                                    item.languages.convertToList()
-                                )
-                            )
-                        }
-                    }
-                    daoCountry?.insertDatabase(list)
+
                     recyclerAdapter.notifyDataSetChanged()
                     recyclerView.adapter = recyclerAdapter
                     recyclerAdapter.repopulate(responseBody)
@@ -105,44 +98,27 @@ class BlankFragment : Fragment() {
                 srCountry.isRefreshing = false
                 progressBar.visibility = ProgressBar.GONE
             })
+    }
 
-//        retrofitData.enqueue(object : Callback<MutableList<CountryItem>> {
-//            override fun onResponse(
-//                call: Call<MutableList<CountryItem>?>,
-//                response: Response<MutableList<CountryItem>?>
-//            ) {
-//                responseBody = response.body() as MutableList<CountryItem>
-//
-//                val list: MutableList<TableModel> = mutableListOf()
-//                responseBody.let {
-//                    responseBody.forEach { item ->
-//                        list.add(
-//                            TableModel(
-//                                item.name,
-//                                item.capital,
-//                                item.area,
-//                                item.languages.convertToList()
-//                            )
-//                        )
-//                    }
-//                }
-//                daoCountry?.insertDatabase(list)
-//
-//                recyclerAdapter.notifyDataSetChanged()
-//                recyclerView.adapter = recyclerAdapter
-//                recyclerAdapter.repopulate(responseBody)
-//                sorting(statusSort)
-//                srCountry.isRefreshing = false
-//                progressBar.visibility = ProgressBar.GONE
-//            }
-//
-//            override fun onFailure(call: Call<MutableList<CountryItem>?>, t: Throwable) {
-//                d("BlankFragment", "onFailure: " + t.message)
-//                activity?.showAlertDialog()
-//                srCountry.isRefreshing = false
-//                progressBar.visibility = ProgressBar.GONE
-//            }
-//        })
+    private fun addCountryDataBase(
+        response: MutableList<CountryItem>,
+        countryDao: CountryDao?,
+    ){
+        responseBody = response
+        val list: MutableList<TableModel> = mutableListOf()
+        responseBody.let {
+            responseBody.forEach { item ->
+                list.add(
+                    TableModel(
+                        item.name,
+                        item.capital,
+                        item.area,
+                        item.languages.convertToList()
+                    )
+                )
+            }
+        }
+       countryDao?.insertDatabase(list)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.task1.COUNTRY_FLAG_KEY
 import com.example.task1.COUNTRY_NAME_KEY
 import com.example.task1.ERROR
 import com.example.task1.R
+import com.example.task1.base.mvp.BaseMvpFragment
 import com.example.task1.data.CountryItem
 import com.example.task1.data.Language
 import com.example.task1.ext.loadImageSvg
@@ -29,7 +29,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 
 
-class CountryDetailsFragment : Fragment() {
+class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetailsPresenter>(), CountryDetailsView {
 
     private lateinit var mCountryName: String
     private lateinit var itemName: AppCompatTextView
@@ -62,6 +62,7 @@ class CountryDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getPresenter().attachView(this)
         itemName = view.findViewById(R.id.country_name)
         itemName.text = mCountryName
         flagView = view.findViewById(R.id.iv_country_flag)
@@ -108,33 +109,6 @@ class CountryDetailsFragment : Fragment() {
                 srCountryDetails.isRefreshing = false
                 activity?.showAlertDialog()
                 progress.visibility = View.GONE})
-//                 {
-//                    countryList = response.body()
-//
-//                    Log.e("CountryDetailsFragment", countryList.toString())
-//                    countryList?.get(0)?.also { countryItem = it }
-//                    //  countryItem = (countryList?.get(0).also { it } ?: "") as CountryItem
-//
-//                    languageAdapter.repopulate(
-//                        countryItem.languages as MutableList<Language>
-//                    )
-//
-//                    srCountryDetails.isRefreshing = false
-//                    if (countryItem.area != 0.0) {
-//                        mapLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
-//
-//                        getMapLocation(mapLng)
-//                    }
-//                    progress.visibility = View.GONE
-//                }
-//
-//            override fun onFailure(call: Call<MutableList<CountryItem>>, t: Throwable) {
-//                t.printStackTrace()
-//                srCountryDetails.isRefreshing = false
-//                activity?.showAlertDialog()
-//                progress.visibility = View.GONE
-//            }
-//        })
     }
 
     fun getMapLocation(latLng: LatLng) {
@@ -172,5 +146,29 @@ class CountryDetailsFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         mapView.onStop()
+    }
+
+    override fun createPresenter() {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPresenter(): CountryDetailsPresenter {
+        TODO("Not yet implemented")
+    }
+
+    override fun showCountryInfo(country: CountryItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(error: String, throwable: Throwable) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showProgress() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideProgress() {
+        TODO("Not yet implemented")
     }
 }

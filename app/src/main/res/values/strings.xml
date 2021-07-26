@@ -9,4 +9,7 @@
     <string name="chancel">Chancel</string>
     <string name="find">Find</string>
     <string name="country_find">Find Country</string>
+    <string name="capital_tittle">capital: </string>
+    <string name="language_tittle">languages: </string>
+    <string name="area_tittle">area: </string>
 </resources>
