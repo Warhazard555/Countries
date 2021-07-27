@@ -41,10 +41,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
     private lateinit var googleMap: GoogleMap
     private lateinit var flagView: AppCompatImageView
     private lateinit var mapLng: LatLng
-    private lateinit var countryItem: CountryItem
-    private var countryList: MutableList<CountryItem>? = null
     private lateinit var progress: FrameLayout
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +63,6 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         itemName = view.findViewById(R.id.country_name)
         itemName.text = mCountryName
         flagView = view.findViewById(R.id.iv_country_flag)
-        flagView.loadImageSvg(flag)
         mapView = view.findViewById(R.id.mv_country_details)
         mapView.onCreate(savedInstanceState)
         rvLanguages = view.findViewById(R.id.rv_country_details_languages)
@@ -76,39 +72,41 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         rvLanguages.adapter = languageAdapter
 
         srCountryDetails.setOnRefreshListener {
-            getCountryDetails(true)
+            getPresenter().getCountrybyName(mCountryName, true)
         }
-        getCountryDetails(false)
+        getPresenter().getCountrybyName(mCountryName, false)
     }
 
-    private fun getCountryDetails(isRefresh: Boolean) {
-        progress.visibility = if (isRefresh) View.GONE else View.VISIBLE
-        RetrofitService.getInstance().getCountryByName(mCountryName)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe( {response ->
-                countryList = response
+    override fun showCountryInfo(country: CountryItem) {
+        Log.e("CountryDetailsFragment", country.toString())
+        languageAdapter.repopulate(
+            country.languages as MutableList<Language>
+        )
+        flagView.loadImageSvg(country.flag)
+        if (country.area != 0.0) {
+            mapLng = LatLng(country.latlng[0], country.latlng[1])
+            getMapLocation(mapLng)
+        }
+        srCountryDetails.isRefreshing = false
+        hideProgress()
+    }
 
-                Log.e("CountryDetailsFragment", countryList.toString())
-                countryList?.get(0)?.also { countryItem = it }
-                //  countryItem = (countryList?.get(0).also { it } ?: "") as CountryItem
+    override fun createPresenter() {
+        mPresenter = CountryDetailsPresenter()
+    }
 
-                languageAdapter.repopulate(
-                    countryItem.languages as MutableList<Language>
-                )
+    override fun getPresenter(): CountryDetailsPresenter = mPresenter
 
-                srCountryDetails.isRefreshing = false
-                if (countryItem.area != 0.0) {
-                    mapLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
+    override fun showError(error: String, throwable: Throwable) {
+//        activity?.showAlertDialog()
+    }
 
-                    getMapLocation(mapLng)
-                }
-                progress.visibility = View.GONE
+    override fun showProgress() {
+        progress.visibility = View.INVISIBLE
+    }
 
-            },{throwable -> throwable.printStackTrace()
-                srCountryDetails.isRefreshing = false
-                activity?.showAlertDialog()
-                progress.visibility = View.GONE})
+    override fun hideProgress() {
+        progress.visibility = View.GONE
     }
 
     fun getMapLocation(latLng: LatLng) {
@@ -118,6 +116,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
 
         }
     }
+
     override fun onStart() {
         super.onStart()
         mapView.onStart()
@@ -146,29 +145,5 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
     override fun onStop() {
         super.onStop()
         mapView.onStop()
-    }
-
-    override fun createPresenter() {
-        TODO("Not yet implemented")
-    }
-
-    override fun getPresenter(): CountryDetailsPresenter {
-        TODO("Not yet implemented")
-    }
-
-    override fun showCountryInfo(country: CountryItem) {
-        TODO("Not yet implemented")
-    }
-
-    override fun showError(error: String, throwable: Throwable) {
-        TODO("Not yet implemented")
-    }
-
-    override fun showProgress() {
-        TODO("Not yet implemented")
-    }
-
-    override fun hideProgress() {
-        TODO("Not yet implemented")
     }
 }
