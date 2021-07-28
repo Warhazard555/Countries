@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.task1.*
 import com.example.task1.data.CountryItem
 import com.example.task1.ext.showAlertDialog
-import com.example.task1.ext.showDialogWithOneButton
 import com.example.task1.retrofit.RetrofitService
 import com.example.task1.room.CountryApp
 import com.example.task1.room.CountryDao
@@ -47,6 +47,20 @@ class BlankFragment : Fragment() {
         } else {
             menu.findItem((R.id.sorted)).setIcon(R.drawable.ic_action_down).isChecked = true
         }
+        val search: MenuItem = menu.findItem(R.id.app_bar_search)
+        val searchView: SearchView = search.actionView as SearchView
+        searchView.queryHint = "Search"
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -62,12 +76,16 @@ class BlankFragment : Fragment() {
             recyclerAdapter.notifyDataSetChanged()
             saveSharedPref(statusSort)
         }
-        if (item.itemId == R.id.app_bar_search) {
-            activity?.showDialogWithOneButton(
-                "Find Country",
-                R.string.find
-            ) { findCountry() }
+        if (item.itemId == R.id.all_map_fragment) {
+            findNavController().navigate(R.id.action_blankFragment_to_mapsFragment)
         }
+        //Search Dialog
+//        if (item.itemId == R.id.app_bar_search) {
+//            activity?.showDialogWithOneButton(
+//                "Find Country",
+//                R.string.find
+//            ) { findCountry() }
+//        }
 
         return super.onOptionsItemSelected(item)
     }
@@ -177,12 +195,12 @@ class BlankFragment : Fragment() {
             recyclerAdapter.sortItem()
         }
     }
-
-    private fun findCountry() {
-        val countryName = COUNTRY_FIND_NAME
-        val listCountry =
-            responseBody.filter { it.name.contains(countryName, true) } as MutableList<CountryItem>
-        recyclerAdapter.repopulate(listCountry)
-    }
+    //Search Dialog
+//    private fun findCountry() {
+//        val countryName = COUNTRY_FIND_NAME
+//        val listCountry =
+//            responseBody.filter { it.name.contains(countryName, true) } as MutableList<CountryItem>
+//        recyclerAdapter.repopulate(listCountry)
+//    }
 
 }

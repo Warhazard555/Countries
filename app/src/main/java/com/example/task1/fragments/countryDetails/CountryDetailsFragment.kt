@@ -18,15 +18,10 @@ import com.example.task1.base.mvp.BaseMvpFragment
 import com.example.task1.data.CountryItem
 import com.example.task1.data.Language
 import com.example.task1.ext.loadImageSvg
-import com.example.task1.ext.showAlertDialog
-import com.example.task1.retrofit.RetrofitService
 import com.google.android.gms.maps.CameraUpdateFactory.newLatLng
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
-
 
 
 class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetailsPresenter>(), CountryDetailsView {
@@ -72,9 +67,9 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         rvLanguages.adapter = languageAdapter
 
         srCountryDetails.setOnRefreshListener {
-            getPresenter().getCountrybyName(mCountryName, true)
+            getPresenter().getCountryByName(mCountryName, true)
         }
-        getPresenter().getCountrybyName(mCountryName, false)
+        getPresenter().getCountryByName(mCountryName, false)
     }
 
     override fun showCountryInfo(country: CountryItem) {
@@ -88,7 +83,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
             getMapLocation(mapLng)
         }
         srCountryDetails.isRefreshing = false
-        hideProgress()
+
     }
 
     override fun createPresenter() {
