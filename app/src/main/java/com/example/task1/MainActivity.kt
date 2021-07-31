@@ -1,6 +1,7 @@
 package com.example.task1
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -12,7 +13,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.mHomeTabHostFragment)
-
     }
 }
 

@@ -18,8 +18,13 @@ import com.example.task1.room.CountryApp
 import com.example.task1.room.CountryDao
 import com.example.task1.room.TableModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import java.util.concurrent.TimeUnit
 
 
 class BlankFragment : Fragment() {
@@ -31,6 +36,8 @@ class BlankFragment : Fragment() {
     private var statusSort = true
     private lateinit var progressBar: FrameLayout
     private lateinit var srCountry: SwipeRefreshLayout
+    private val mSearchSubject = BehaviorSubject.create<String>()
+    private val mCompositeDisposable = CompositeDisposable()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,16 +58,25 @@ class BlankFragment : Fragment() {
         val searchView: SearchView = search.actionView as SearchView
         searchView.queryHint = "Search"
 
+        val disposable = getSearchSubject()
+            ?.subscribe({
+                recyclerAdapter.repopulate(it)
+            },{throwable ->
+                throwable.printStackTrace()
+            })
+        mCompositeDisposable.add(disposable)
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                query.let { mSearchSubject.onNext(query) }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                mSearchSubject.onNext(newText)
+                return true
             }
         })
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -195,6 +211,18 @@ class BlankFragment : Fragment() {
             recyclerAdapter.sortItem()
         }
     }
+
+    private fun getSearchSubject(): @NonNull Observable<MutableList<CountryItem>>? = mSearchSubject
+        .filter { it.length >= MIN_SEARCH_STRING_LENGTH }
+        .debounce(DEBOUNCE_TIME_MILLIS, TimeUnit.MILLISECONDS)
+        .distinctUntilChanged()
+        .map { it.lowercase() }
+        .flatMap {
+            RetrofitService.getInstance().getCountryByName(it).toObservable()
+                .onErrorResumeNext { Observable.just(mutableListOf()) }
+        }
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
     //Search Dialog
 //    private fun findCountry() {
 //        val countryName = COUNTRY_FIND_NAME

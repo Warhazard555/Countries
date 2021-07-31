@@ -8,7 +8,7 @@ class CountryDetailsPresenter : BaseMvpPresenter<CountryDetailsView>(){
     fun getCountryByName(name: String, isRefresh: Boolean) {
         addDisposable(
             inBackground(
-                handleProgress(RetrofitService.getInstance().getCountryByName(name), isRefresh)
+                RetrofitService.getInstance().getCountryByName(name)
             ).subscribe({
                 getView()?.showCountryInfo(it[0])
             }, { it.message?.let { it1 -> getView()?.showError(it1, it) } })
