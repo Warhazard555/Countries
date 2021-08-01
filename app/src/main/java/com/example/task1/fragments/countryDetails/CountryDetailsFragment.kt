@@ -55,6 +55,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getPresenter().attachView(this)
+        getPresenter().setCountryName(mCountryName)
         itemName = view.findViewById(R.id.country_name)
         itemName.text = mCountryName
         flagView = view.findViewById(R.id.iv_country_flag)
@@ -67,9 +68,9 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         rvLanguages.adapter = languageAdapter
 
         srCountryDetails.setOnRefreshListener {
-            getPresenter().getCountryByName(mCountryName, true)
+            getPresenter().getCountryByName(true)
         }
-        getPresenter().getCountryByName(mCountryName, false)
+        getPresenter().getCountryByName(false)
     }
 
     override fun showCountryInfo(country: CountryItem) {
