@@ -7,10 +7,12 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.task1.*
+import com.example.task1.base.mvvm.Outcome
 import com.example.task1.data.CountryItem
 import com.example.task1.ext.showAlertDialog
 import com.example.task1.retrofit.RetrofitService
@@ -38,6 +40,7 @@ class BlankFragment : Fragment() {
     private lateinit var srCountry: SwipeRefreshLayout
     private val mSearchSubject = BehaviorSubject.create<String>()
     private val mCompositeDisposable = CompositeDisposable()
+    private val mViewModel = BlankFragmentViewModel(SavedStateHandle())
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +98,7 @@ class BlankFragment : Fragment() {
         if (item.itemId == R.id.all_map_fragment) {
             findNavController().navigate(R.id.action_blankFragment_to_mapsFragment)
         }
-        //Search Dialog
+//         Search Dialog
 //        if (item.itemId == R.id.app_bar_search) {
 //            activity?.showDialogWithOneButton(
 //                "Find Country",
@@ -158,6 +161,17 @@ class BlankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sortStatusSharedPref()
+        mViewModel.getCountryByName()
+        mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                is Outcome.Progress -> {
+                }
+                is Outcome.Next -> {
+                }
+                is Outcome.Failure -> {
+                }
+            }
+        })
         srCountry = view.findViewById(R.id.sr_country)
         recyclerView = view.findViewById(R.id.recycler)
         recyclerAdapter = RecyclerAdapter()
@@ -171,6 +185,10 @@ class BlankFragment : Fragment() {
                 R.id.action_blankFragment_to_countryDetailsFragment,
                 bundle
             )
+        }
+        val filterBar: View = view.findViewById(R.id.filter_bar)
+        filterBar.setOnClickListener {
+            findNavController().navigate(R.id.action_blankFragment_to_countryFilterFragment)
         }
         // recyclerView.adapter = recyclerAdapter
         srCountry.setOnRefreshListener {

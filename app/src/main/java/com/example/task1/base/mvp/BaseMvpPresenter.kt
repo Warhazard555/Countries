@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 abstract class BaseMvpPresenter<ViewType : BaseMvpView> {
 
-    private lateinit var mView : ViewType
+    private var mView : ViewType? = null
     private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
     fun attachView (view: ViewType){
@@ -19,6 +19,10 @@ abstract class BaseMvpPresenter<ViewType : BaseMvpView> {
 
     fun onDestroyView(){
         mCompositeDisposable.clear()
+    }
+
+    fun detachView(){
+        mView = null
     }
 
     fun addDisposable(disposable: Disposable){
