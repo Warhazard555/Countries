@@ -15,4 +15,10 @@ abstract class BaseMvpFragment<ViewType : BaseMvpView, PresenterType : BaseMvpPr
         super.onCreate(savedInstanceState)
         createPresenter()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        getPresenter().onDestroyView()
+        getPresenter().detachView()
+    }
 }
