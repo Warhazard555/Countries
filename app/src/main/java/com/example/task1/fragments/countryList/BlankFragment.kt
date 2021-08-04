@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
-import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.SavedStateHandle
@@ -15,18 +14,8 @@ import com.example.task1.*
 import com.example.task1.base.mvvm.Outcome
 import com.example.task1.data.CountryItem
 import com.example.task1.ext.showAlertDialog
-import com.example.task1.retrofit.RetrofitService
-import com.example.task1.room.CountryApp
-import com.example.task1.room.CountryDao
-import com.example.task1.room.TableModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.annotations.NonNull
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import java.util.concurrent.TimeUnit
+import kotlinx.android.synthetic.main.fragment_blank.*
 
 
 class BlankFragment : Fragment() {
@@ -34,11 +23,10 @@ class BlankFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     lateinit var recyclerAdapter: RecyclerAdapter
     lateinit var responseBody: MutableList<CountryItem>
-    private var retrofitBuilder = RetrofitService.getInstance()
     private var statusSort = true
     private lateinit var progressBar: FrameLayout
     private lateinit var srCountry: SwipeRefreshLayout
-    private val mSearchSubject = BehaviorSubject.create<String>()
+
     private val mCompositeDisposable = CompositeDisposable()
     private val mViewModel = BlankFragmentViewModel(SavedStateHandle())
 
@@ -46,7 +34,57 @@ class BlankFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sortStatusSharedPref()
+        srCountry = view.findViewById(R.id.sr_country)
+        recyclerView = view.findViewById(R.id.recycler)
+        recyclerAdapter = RecyclerAdapter()
+        //   val daoCountry = CountryApp.mCountryDatabase.сountryDao()
+//        progressBar = view.findViewById(R.id.progressBar)
+        recyclerAdapter.setItemClick { item ->
+            val bundle = Bundle()
+            bundle.putString(COUNTRY_NAME_KEY, item.name)
+            bundle.putString(COUNTRY_FLAG_KEY, item.flag)
+            findNavController().navigate(
+                R.id.action_blankFragment_to_countryDetailsFragment,
+                bundle
+            )
+        }
+        val filterBar: View = view.findViewById(R.id.filter_bar)
+        filterBar.setOnClickListener {
+            findNavController().navigate(R.id.action_blankFragment_to_countryFilterFragment)
+        }
+        mViewModel.getCountryByName()
+        mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                is Outcome.Progress -> {
+
+                }
+                is Outcome.Next -> {
+                    responseBody = it.data
+                    mViewModel.getCountryDB(responseBody)
+                    recyclerAdapter.notifyDataSetChanged()
+                    recyclerView.adapter = recyclerAdapter
+                    recyclerAdapter.repopulate(responseBody)
+                    sorting(statusSort)
+                    srCountry.isRefreshing = false
+                    progressBar.visibility = View.GONE
+                }
+                is Outcome.Failure -> {
+                    activity?.showAlertDialog()
+                    srCountry.isRefreshing = false
+                    progressBar.visibility = View.GONE
+                }
+            }
+        })
+        srCountry.setOnRefreshListener {
+            mViewModel.getCountryByName()
+        }
+        mViewModel.getCountryByName()
+        saveSharedPref(statusSort)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -61,22 +99,22 @@ class BlankFragment : Fragment() {
         val searchView: SearchView = search.actionView as SearchView
         searchView.queryHint = "Search"
 
-        val disposable = getSearchSubject()
+        val disposable = mViewModel.getSearchSubject()
             ?.subscribe({
                 recyclerAdapter.repopulate(it)
-            },{throwable ->
+            }, { throwable ->
                 throwable.printStackTrace()
             })
         mCompositeDisposable.add(disposable)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query.let { mSearchSubject.onNext(query) }
+                query.let { mViewModel.mSearchSubject.onNext(query) }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                mSearchSubject.onNext(newText)
+                mViewModel.mSearchSubject.onNext(newText)
                 return true
             }
         })
@@ -109,96 +147,6 @@ class BlankFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun getCountry(daoCountry: CountryDao?, isRefresh: Boolean) {
-        progressBar.visibility = if (isRefresh) View.GONE else View.VISIBLE
-         retrofitBuilder.getData()
-             .flatMap { response ->
-                 Flowable.fromSupplier {
-                     addCountryDataBase(response, daoCountry)
-                     return@fromSupplier response
-                 }
-             }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe( {response ->
-
-                    recyclerAdapter.notifyDataSetChanged()
-                    recyclerView.adapter = recyclerAdapter
-                    recyclerAdapter.repopulate(responseBody)
-                    sorting(statusSort)
-                    srCountry.isRefreshing = false
-                    progressBar.visibility = ProgressBar.GONE
-
-                }, {throwable ->
-                throwable.printStackTrace()
-                activity?.showAlertDialog()
-                srCountry.isRefreshing = false
-                progressBar.visibility = ProgressBar.GONE
-            })
-    }
-
-    private fun addCountryDataBase(
-        response: MutableList<CountryItem>,
-        countryDao: CountryDao?,
-    ){
-        responseBody = response
-        val list: MutableList<TableModel> = mutableListOf()
-        responseBody.let {
-            responseBody.forEach { item ->
-                list.add(
-                    TableModel(
-                        item.name,
-                        item.capital,
-                        item.area,
-                        item.languages.convertToList()
-                    )
-                )
-            }
-        }
-       countryDao?.insertDatabase(list)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        sortStatusSharedPref()
-        mViewModel.getCountryByName()
-        mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
-            when (it) {
-                is Outcome.Progress -> {
-                }
-                is Outcome.Next -> {
-                }
-                is Outcome.Failure -> {
-                }
-            }
-        })
-        srCountry = view.findViewById(R.id.sr_country)
-        recyclerView = view.findViewById(R.id.recycler)
-        recyclerAdapter = RecyclerAdapter()
-        val daoCountry = CountryApp.mCountryDatabase.сountryDao()
-        progressBar = view.findViewById(R.id.progressBar)
-        recyclerAdapter.setItemClick { item ->
-            val bundle = Bundle()
-            bundle.putString(COUNTRY_NAME_KEY, item.name)
-            bundle.putString(COUNTRY_FLAG_KEY, item.flag)
-            findNavController().navigate(
-                R.id.action_blankFragment_to_countryDetailsFragment,
-                bundle
-            )
-        }
-        val filterBar: View = view.findViewById(R.id.filter_bar)
-        filterBar.setOnClickListener {
-            findNavController().navigate(R.id.action_blankFragment_to_countryFilterFragment)
-        }
-        // recyclerView.adapter = recyclerAdapter
-        srCountry.setOnRefreshListener {
-            getCountry(daoCountry, true)
-        }
-        getCountry(daoCountry, false)
-        saveSharedPref(statusSort)
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -230,17 +178,55 @@ class BlankFragment : Fragment() {
         }
     }
 
-    private fun getSearchSubject(): @NonNull Observable<MutableList<CountryItem>>? = mSearchSubject
-        .filter { it.length >= MIN_SEARCH_STRING_LENGTH }
-        .debounce(DEBOUNCE_TIME_MILLIS, TimeUnit.MILLISECONDS)
-        .distinctUntilChanged()
-        .map { it.lowercase() }
-        .flatMap {
-            RetrofitService.getInstance().getCountryByName(it).toObservable()
-                .onErrorResumeNext { Observable.just(mutableListOf()) }
-        }
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+
+//    private fun getCountry(daoCountry: CountryDao?, isRefresh: Boolean) {
+//        progressBar.visibility = if (isRefresh) View.GONE else View.VISIBLE
+//         retrofitBuilder.getData()
+//             .flatMap { response ->
+//                 Flowable.fromSupplier {
+//                     addCountryDataBase(response, daoCountry)
+//                     return@fromSupplier response
+//                 }
+//             }
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribeOn(Schedulers.io())
+//            .subscribe( {response ->
+//
+//                    recyclerAdapter.notifyDataSetChanged()
+//                    recyclerView.adapter = recyclerAdapter
+//                    recyclerAdapter.repopulate(responseBody)
+//                    sorting(statusSort)
+//                    srCountry.isRefreshing = false
+//                    progressBar.visibility = ProgressBar.GONE
+//
+//                }, {throwable ->
+//                throwable.printStackTrace()
+//                activity?.showAlertDialog()
+//                srCountry.isRefreshing = false
+//                progressBar.visibility = ProgressBar.GONE
+//            })
+//    }
+
+//    private fun addCountryDataBase(
+//        response: MutableList<CountryItem>,
+//        countryDao: CountryDao?,
+//    ){
+//        responseBody = response
+//        val list: MutableList<TableModel> = mutableListOf()
+//        responseBody.let {
+//            responseBody.forEach { item ->
+//                list.add(
+//                    TableModel(
+//                        item.name,
+//                        item.capital,
+//                        item.area,
+//                        item.languages.convertToList()
+//                    )
+//                )
+//            }
+//        }
+//       countryDao?.insertDatabase(list)
+//    }
     //Search Dialog
 //    private fun findCountry() {
 //        val countryName = COUNTRY_FIND_NAME
