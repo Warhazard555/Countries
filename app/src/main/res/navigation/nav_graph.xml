@@ -13,12 +13,20 @@
         <action
             android:id="@+id/action_blankFragment_to_countryDetailsFragment"
             app:destination="@id/countryDetailsFragment" />
+        <action
+            android:id="@+id/action_blankFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/countryDetailsFragment"
         android:name="com.example.task1.fragments.countryDetails.CountryDetailsFragment"
-        android:label="CountryDetailsFragment" >
+        android:label="CountryDetailsFragment">
 
 
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.task1.fragments.map.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
 </navigation>
