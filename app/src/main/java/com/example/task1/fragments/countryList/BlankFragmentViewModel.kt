@@ -43,7 +43,8 @@ class BlankFragmentViewModel(savedStateHandle: SavedStateHandle) : BaseViewModel
                         item.name,
                         item.capital,
                         item.area,
-                        item.languages.convertToList()
+                        item.languages.convertToList(),
+                        item.population
                     )
                 )
             }

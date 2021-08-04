@@ -18,7 +18,10 @@ data class TableModel(
     val area: Double,
 
     @ColumnInfo
-    val language: String
+    val language: String,
+
+    @ColumnInfo
+    val population: Int
 
 
 )

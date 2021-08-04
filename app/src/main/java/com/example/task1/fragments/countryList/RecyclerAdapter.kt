@@ -22,14 +22,14 @@ class RecyclerAdapter :
 
         var name: AppCompatTextView? = null
         var capital: AppCompatTextView? = null
-        var languages: AppCompatTextView? = null
+        var population: AppCompatTextView? = null
         var area: AppCompatTextView? = null
         var flag: AppCompatImageView? = null
 
         init {
             name = itemView.findViewById(R.id.name)
             capital = itemView.findViewById(R.id.capital)
-            languages = itemView.findViewById(R.id.languages)
+            population = itemView.findViewById(R.id.population)
             area = itemView.findViewById(R.id.area)
             flag = itemView.findViewById(R.id.iv_flag)
         }
@@ -47,7 +47,7 @@ class RecyclerAdapter :
             val listItem = dataList[position]
             holder.name?.text = listItem.name
             holder.capital?.text = holder.itemView.context.getString(R.string.capital_tittle) + listItem.capital
-            holder.languages?.text = holder.itemView.context.getString(R.string.language_tittle)+ listItem.languages.convertToList()
+            holder.population?.text  =holder.itemView.context.getString(R.string.population_tittle) + listItem.population.toString()
             holder.area?.text = holder.itemView.context.getString(R.string.area_tittle) + listItem.area.toString()
             holder.flag?.loadImageSvg(listItem.flag)
             holder.itemView.setOnClickListener { mOnItemClickListener?.invoke(listItem) }

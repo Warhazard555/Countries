@@ -68,9 +68,9 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         rvLanguages.adapter = languageAdapter
 
         srCountryDetails.setOnRefreshListener {
-            getPresenter().getCountryByName(true)
+            getPresenter().getCountryByName()
         }
-        getPresenter().getCountryByName(false)
+        getPresenter().getCountryByName()
     }
 
     override fun showCountryInfo(country: CountryItem) {

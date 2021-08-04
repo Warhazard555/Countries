@@ -14,7 +14,7 @@ data class CountryItem(
     @SerializedName("languages")
     var languages: List<Language>,
     @SerializedName("latlng")
-    var latlng: List<Double>
+    var latlng: List<Double>,
 //    val alpha2Code: String,
 //    val alpha3Code: String,
 //    val altSpellings: List<String>,
@@ -26,7 +26,8 @@ data class CountryItem(
 //    val gini: Double,
 //    val nativeName: String,
 //    val numericCode: String,
-//    val population: Int,
+    @SerializedName("population")
+      val population: Int
 //    val region: String,
 //    val regionalBlocs: List<RegionalBloc>,
 //    val subregion: String,

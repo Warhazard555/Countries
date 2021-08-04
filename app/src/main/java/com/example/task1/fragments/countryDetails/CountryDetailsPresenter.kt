@@ -10,7 +10,7 @@ class CountryDetailsPresenter : BaseMvpPresenter<CountryDetailsView>(){
         mCountryName = country
     }
 
-    fun getCountryByName(isRefresh: Boolean) {
+    fun getCountryByName() {
         addDisposable(
             inBackground(
                 RetrofitService.getInstance().getCountryByName(mCountryName)
