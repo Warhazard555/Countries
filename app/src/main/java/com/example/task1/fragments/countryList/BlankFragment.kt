@@ -43,7 +43,7 @@ class BlankFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recycler)
         recyclerAdapter = RecyclerAdapter()
         //   val daoCountry = CountryApp.mCountryDatabase.сountryDao()
-//        progressBar = view.findViewById(R.id.progressBar)
+        progressBar = view.findViewById(R.id.progressBar)
         recyclerAdapter.setItemClick { item ->
             val bundle = Bundle()
             bundle.putString(COUNTRY_NAME_KEY, item.name)
@@ -83,7 +83,7 @@ class BlankFragment : Fragment() {
         srCountry.setOnRefreshListener {
             mViewModel.getCountryByName()
         }
-        mViewModel.getCountryByName()
+
         saveSharedPref(statusSort)
     }
 
