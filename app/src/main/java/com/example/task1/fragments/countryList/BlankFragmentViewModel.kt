@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 class BlankFragmentViewModel(savedStateHandle: SavedStateHandle) : BaseViewModel(savedStateHandle) {
     val mCountryLiveData =
         savedStateHandle.getLiveData<Outcome<MutableList<CountryItem>>>("CountryItem")
-    val mSearchSubject = BehaviorSubject.create<String>()
+    val mSearchSubject: BehaviorSubject<String> = BehaviorSubject.create<String>()
 
     fun getCountryByName() {
         mCompositeDisposable.add(
