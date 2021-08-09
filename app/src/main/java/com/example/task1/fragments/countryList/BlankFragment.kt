@@ -30,6 +30,7 @@ class BlankFragment : Fragment() {
     private val mCompositeDisposable = CompositeDisposable()
     private val mViewModel = BlankFragmentViewModel(SavedStateHandle())
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -69,6 +70,13 @@ class BlankFragment : Fragment() {
                     recyclerAdapter.repopulate(responseBody)
                     sorting(statusSort)
                     srCountry.isRefreshing = false
+                    setFragmentResultListener(COUNTRY_FILTER_LISTNER_KEY) { _, result ->
+                        result.getParcelableArrayList<Parcelable>(FILTER_COUNTRY_KEY).let { note ->
+                           responseBody = note as MutableList<CountryItem>
+                            recyclerAdapter.repopulate(responseBody)
+
+                        }
+                    }
                 }
                 is Outcome.Failure -> {
                     activity?.showAlertDialog()
@@ -83,7 +91,6 @@ class BlankFragment : Fragment() {
         srCountry.setOnRefreshListener {
             mViewModel.getCountryByName()
         }
-
         saveSharedPref(statusSort)
     }
 

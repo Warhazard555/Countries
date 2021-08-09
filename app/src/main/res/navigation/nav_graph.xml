@@ -36,5 +36,9 @@
         android:id="@+id/countryFilterFragment"
         android:name="com.example.task1.fragments.countryFilterFragment.CountryFilterFragment"
         android:label="fragment_filter"
-        tools:layout="@layout/fragment_filter" />
+        tools:layout="@layout/fragment_filter">
+        <action
+            android:id="@+id/action_countryFilterFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
+    </fragment>
 </navigation>

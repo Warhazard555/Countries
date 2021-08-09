@@ -29,7 +29,7 @@ fun Activity.showAlertDialog() {
 
 fun Activity.showGpsDialog(message: String){
     val gpsDialog = MaterialAlertDialogBuilder(this)
-        .setTitle("Растояние от вашей позиции")
+        .setTitle("Растояние от вашего местоположения")
         .setMessage(message)
         .setPositiveButton("OK"){dialog, it-> dialog.dismiss()}
     gpsDialog.show()

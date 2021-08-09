@@ -9,7 +9,9 @@ const val ERROR = "ERROR"
 var COUNTRY_FIND_NAME = "COUNTRY_FIND_NAME"
 const val MIN_SEARCH_STRING_LENGTH = 3
 const val DEBOUNCE_TIME_MILLIS = 300L
-
+const val ZERO = 0
+const val THOUSAND = 1000
+const val FLOAT_ZERO = 0.0F
 
 const val PATH_VARIABLE = "path"
 const val PATH_URL = "/{$PATH_VARIABLE}"

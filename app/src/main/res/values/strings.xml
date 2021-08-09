@@ -13,4 +13,9 @@
     <string name="area_tittle">area: </string>
     <string name="population_tittle">population: </string>
     <string name="map">map</string>
+    <string name="area_min">от %.0f</string>
+    <string name="area_max">до %.0f</string>
+    <string name="population_min">от %.0f</string>
+    <string name="population_max">до %.0f</string>
+
 </resources>

@@ -8,68 +8,108 @@
     tools:context=".fragments.countryFilterFragment.CountryFilterFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView2"
+        android:id="@+id/tittle_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Area"
+        android:text="Area (km2)"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/rangeSlider"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_min_area"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:valueFrom="0.0"
-        android:valueTo="100.0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2"
-        app:values="@array/initial_slider_values"
-        tools:ignore="MissingConstraints" />
+        android:layout_height="match_parent"
+        android:text="@string/area_min"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintEnd_toStartOf="@+id/tittle_area"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="0dp" />
+
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView"
+        android:id="@+id/tv_max_area"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/area_max"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tittle_area"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rs_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tittle_area" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tittle_population"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Population"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rangeSlider"
-        tools:ignore="MissingConstraints" />
-
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/rangeSlider2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:valueFrom="0.0"
-        android:valueTo="100.0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView"
-        app:values="@array/initial_slider_values"
+        app:layout_constraintTop_toBottomOf="@+id/rs_area"
         tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView3"
+        android:id="@+id/tv_min_population"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/population_min"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/tittle_population"
+        app:layout_constraintEnd_toStartOf="@+id/tittle_population"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_max_population"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/population_max"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/tittle_population"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tittle_population"
+        tools:ignore="MissingConstraints" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rs_population"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tittle_population"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Maximum distance from your current location"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rangeSlider2"
+        app:layout_constraintTop_toBottomOf="@+id/rs_population"
         tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/appCompatEditText"
+        android:id="@+id/etv_distance"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_distance"
         tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -81,7 +121,7 @@
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatEditText"
+        app:layout_constraintTop_toBottomOf="@+id/etv_distance"
         tools:ignore="MissingConstraints" />
 
 
