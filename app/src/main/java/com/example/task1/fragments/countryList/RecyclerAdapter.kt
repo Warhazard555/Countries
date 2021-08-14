@@ -9,13 +9,12 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task1.R
 import com.example.task1.base.BaseAdapter
-import com.example.task1.convertToList
-import com.example.task1.data.CountryItem
+import com.example.task1.data.CountryItemDto
 import com.example.task1.ext.loadImageSvg
 
 
 class RecyclerAdapter :
-    BaseAdapter<CountryItem>() {
+    BaseAdapter<CountryItemDto>() {
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

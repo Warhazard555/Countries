@@ -6,17 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.task1.R
 import com.example.task1.base.mvp.BaseMvpFragment
-import com.example.task1.data.CountryItem
+import com.example.task1.data.CountryItemDto
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import org.koin.android.ext.android.inject
 
 class MapsFragment : BaseMvpFragment<MapsFragmentView, MapsFragmentPresenter>(), MapsFragmentView,
     OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
+    private val mapsModulePresenter: MapsFragmentPresenter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +42,7 @@ class MapsFragment : BaseMvpFragment<MapsFragmentView, MapsFragmentPresenter>(),
         googleMap = google
     }
 
-    override fun showAllCountryMarkers(country: MutableList<CountryItem>) {
+    override fun showAllCountryMarkers(country: MutableList<CountryItemDto>) {
         for (item in country) {
             if (item.latlng.size == 2) {
                 val mapLng = LatLng(item.latlng[0], item.latlng[1])
@@ -54,7 +56,7 @@ class MapsFragment : BaseMvpFragment<MapsFragmentView, MapsFragmentPresenter>(),
     }
 
     override fun createPresenter() {
-        mPresenter = MapsFragmentPresenter()
+        mPresenter = mapsModulePresenter
     }
 
     override fun getPresenter(): MapsFragmentPresenter = mPresenter

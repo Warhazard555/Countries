@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.task1.*
 import com.example.task1.base.mvp.BaseMvpFragment
-import com.example.task1.data.CountryItem
+import com.example.task1.data.CountryItemDto
 import com.example.task1.data.Language
 import com.example.task1.ext.loadImageSvg
 import com.google.android.gms.maps.CameraUpdateFactory.newLatLng
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
+import org.koin.android.ext.android.inject
 
 
 class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetailsPresenter>(), CountryDetailsView {
@@ -34,6 +35,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
     private lateinit var flagView: AppCompatImageView
     private lateinit var mapLng: LatLng
     private lateinit var progress: FrameLayout
+    private val detailsModulePresenter: CountryDetailsPresenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +72,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         getPresenter().getCountryByName()
     }
 
-    override fun showCountryInfo(country: CountryItem) {
+    override fun showCountryInfo(country: CountryItemDto) {
         Log.e("CountryDetailsFragment", country.toString())
         languageAdapter.repopulate(
             country.languages as MutableList<Language>
@@ -85,7 +87,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
     }
 
     override fun createPresenter() {
-        mPresenter = CountryDetailsPresenter()
+        mPresenter = detailsModulePresenter
     }
 
     override fun getPresenter(): CountryDetailsPresenter = mPresenter

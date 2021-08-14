@@ -1,11 +1,12 @@
 package com.example.task1.base.mvp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import org.koin.androidx.scope.ScopeFragment
 
-abstract class BaseMvpFragment<ViewType : BaseMvpView, PresenterType : BaseMvpPresenter<ViewType>> : Fragment() {
+abstract class BaseMvpFragment<ViewType : BaseMvpView, PresenterType : BaseMvpPresenter<ViewType>> :
+    ScopeFragment() {
 
-    protected lateinit var mPresenter : PresenterType
+    protected lateinit var mPresenter: PresenterType
 
     abstract fun createPresenter()
 

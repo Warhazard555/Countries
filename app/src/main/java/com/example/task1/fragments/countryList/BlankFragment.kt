@@ -6,29 +6,29 @@ import android.os.Parcelable
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.task1.*
 import com.example.task1.base.mvvm.Outcome
-import com.example.task1.data.CountryItem
+import com.example.task1.data.CountryItemDto
 import com.example.task1.ext.showAlertDialog
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import org.koin.androidx.scope.ScopeFragment
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 
-class BlankFragment : Fragment() {
+class BlankFragment : ScopeFragment() {
 
     private lateinit var recyclerView: RecyclerView
     lateinit var recyclerAdapter: RecyclerAdapter
-    lateinit var responseBody: MutableList<CountryItem>
+    lateinit var responseBody: MutableList<CountryItemDto>
     private var statusSort = true
     private lateinit var progressBar: FrameLayout
     private lateinit var srCountry: SwipeRefreshLayout
     private val mCompositeDisposable = CompositeDisposable()
-    private val mViewModel = BlankFragmentViewModel(SavedStateHandle())
+    private val mViewModel: BlankFragmentViewModel by stateViewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,7 @@ class BlankFragment : Fragment() {
                 }
                 is Outcome.Next -> {
                     responseBody = it.data
-                    mViewModel.getCountryDB(responseBody)
+                    mViewModel.addCountryDB(responseBody)
                     recyclerAdapter.notifyDataSetChanged()
                     recyclerView.adapter = recyclerAdapter
                     recyclerAdapter.repopulate(responseBody)
@@ -72,7 +72,7 @@ class BlankFragment : Fragment() {
                     srCountry.isRefreshing = false
                     setFragmentResultListener(COUNTRY_FILTER_LISTNER_KEY) { _, result ->
                         result.getParcelableArrayList<Parcelable>(FILTER_COUNTRY_KEY).let { note ->
-                           responseBody = note as MutableList<CountryItem>
+                            responseBody = note as MutableList<CountryItemDto>
                             recyclerAdapter.repopulate(responseBody)
 
                         }
@@ -82,9 +82,29 @@ class BlankFragment : Fragment() {
                     activity?.showAlertDialog()
                     srCountry.isRefreshing = false
                     progressBar.visibility = View.GONE
+                    mViewModel.getCountryDB()
                 }
                 is Outcome.Success -> {
                     progressBar.visibility = View.GONE
+                }
+            }
+        })
+
+        mViewModel.mCountryDBLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                is Outcome.Progress -> {
+
+                }
+                is Outcome.Next -> {
+                    responseBody = it.data
+                    recyclerAdapter.repopulate(responseBody)
+                    sorting(statusSort)
+                }
+                is Outcome.Failure -> {
+
+                }
+                is Outcome.Success -> {
+
                 }
             }
         })

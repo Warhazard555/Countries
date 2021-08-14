@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName
 
 data class CountryItem(
     @SerializedName("name")
-    var name: String,
+    var name: String?,
     @SerializedName("capital")
-    var capital: String,
+    var capital: String?,
     @SerializedName("area")
-    var area: Float,
+    var area: Float?,
     @SerializedName("flag")
-    val flag: String,
+    var flag: String?,
     @SerializedName("languages")
-    var languages: List<Language>,
+    var languages: List<Language>?,
     @SerializedName("latlng")
-    var latlng: List<Double>,
+    var latlng: List<Double>?,
     @SerializedName("population")
-    val population: Int
+    var population: Int?
 //    val alpha2Code: String,
 //    val alpha3Code: String,
 //    val altSpellings: List<String>,

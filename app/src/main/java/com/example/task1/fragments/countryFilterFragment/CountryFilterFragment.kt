@@ -10,20 +10,20 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import com.example.task1.COUNTRY_FILTER_LISTNER_KEY
 import com.example.task1.FILTER_COUNTRY_KEY
 import com.example.task1.R
 import com.example.task1.base.mvvm.Outcome
-import com.example.task1.data.CountryItem
+import com.example.task1.data.CountryItemDto
 import com.example.task1.ext.distanceFromMyLocation
 import com.example.task1.ext.lastLocation
 import com.google.android.material.slider.RangeSlider
+import org.koin.androidx.scope.ScopeFragment
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
-class CountryFilterFragment : Fragment() {
+class CountryFilterFragment : ScopeFragment() {
 
     private var areaMin: Float = 0F
     private var areaMax: Float = 0F
@@ -31,8 +31,8 @@ class CountryFilterFragment : Fragment() {
     private var populationMax: Int = 0
     private lateinit var mAreaSlider: RangeSlider
     private lateinit var mPopulationSlider: RangeSlider
-    private lateinit var mCountry: List<CountryItem>
-    private lateinit var mCountryFilter: List<CountryItem>
+    private lateinit var mCountry: List<CountryItemDto>
+    private lateinit var mCountryFilter: List<CountryItemDto>
     private lateinit var minArea: AppCompatTextView
     private lateinit var maxArea: AppCompatTextView
     private lateinit var minPopulation: AppCompatTextView
@@ -41,7 +41,7 @@ class CountryFilterFragment : Fragment() {
     private lateinit var distance: AppCompatEditText
     private lateinit var strDistance: String
     private var distanceMax: Int = 0
-    private val mViewModel = CountryFilterViewModel(SavedStateHandle())
+    private val mViewModel: CountryFilterViewModel by stateViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -132,7 +132,7 @@ class CountryFilterFragment : Fragment() {
         }
     }
 
-    private fun setAreaValues(list: List<CountryItem>) {
+    private fun setAreaValues(list: List<CountryItemDto>) {
         val areaMin = list.minByOrNull { it.area }?.area
         val areaMax = list.maxByOrNull { it.area }?.area
         if (areaMin != null && areaMax != null) {
@@ -142,7 +142,7 @@ class CountryFilterFragment : Fragment() {
         mAreaSlider.setValues(areaMin, areaMax)
     }
 
-    private fun setPopulationValues(list: List<CountryItem>) {
+    private fun setPopulationValues(list: List<CountryItemDto>) {
         val populationMin = list.minByOrNull { it.population }?.population?.toFloat()
         val populationMax = list.maxByOrNull { it.population }?.population?.toFloat()
         if (populationMin != null && populationMax != null) {

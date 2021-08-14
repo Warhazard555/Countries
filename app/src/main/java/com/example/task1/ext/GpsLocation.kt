@@ -6,10 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.task1.THOUSAND
 import com.example.task1.ZERO
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -27,9 +24,14 @@ fun lastLocation(context: Context) {
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     ) {
-       fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-           location.let { myLocation = location }
-       }
+
+        val task: Task<Location>? = fusedLocationClient.lastLocation
+        task?.addOnSuccessListener { location ->
+            location?.let {
+                myLocation = location
+            }
+
+        }
 
     } else {
         val listPermissionsNeeded = ArrayList<String>()
