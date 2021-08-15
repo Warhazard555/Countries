@@ -1,6 +1,7 @@
 package com.example.task1.data
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class CountryItem(
     @SerializedName("name")
@@ -34,7 +35,7 @@ data class CountryItem(
 //    val timezones: List<String>,
 //    val topLevelDomain: List<String>,
 //    val translations: Translations
-)
+) : Serializable
 
 
 
