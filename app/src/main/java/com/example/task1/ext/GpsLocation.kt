@@ -27,10 +27,12 @@ fun lastLocation(context: Context) {
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     ) {
-       fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-           location.let { myLocation = location }
-       }
-
+        val task: Task<Location>? = fusedLocationClient.lastLocation
+        task?.addOnSuccessListener { location ->
+            location?.let {
+                myLocation = location
+            }
+        }
     } else {
         val listPermissionsNeeded = ArrayList<String>()
         listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)

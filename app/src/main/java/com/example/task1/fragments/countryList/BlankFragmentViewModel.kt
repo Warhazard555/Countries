@@ -22,8 +22,7 @@ class BlankFragmentViewModel(savedStateHandle: SavedStateHandle) : BaseViewModel
     val mCountryLiveData =
         savedStateHandle.getLiveData<Outcome<MutableList<CountryItem>>>("CountryItem")
     val mSearchSubject: BehaviorSubject<String> = BehaviorSubject.create<String>()
-
-    fun getCountryByName() {
+    fun getCountryList() {
         mCompositeDisposable.add(
             executeJob(
                 RetrofitService.getInstance().getData(),
@@ -31,7 +30,6 @@ class BlankFragmentViewModel(savedStateHandle: SavedStateHandle) : BaseViewModel
             )
         )
     }
-
     fun getCountryDB(
         response: MutableList<CountryItem>
     ) {
@@ -50,9 +48,7 @@ class BlankFragmentViewModel(savedStateHandle: SavedStateHandle) : BaseViewModel
             }
         }
         CountryApp.countryDao?.insertDatabase(list)
-
     }
-
     fun getSearchSubject(): @NonNull Observable<MutableList<CountryItem>>? = mSearchSubject
         .filter { it.length >= MIN_SEARCH_STRING_LENGTH }
         .debounce(DEBOUNCE_TIME_MILLIS, TimeUnit.MILLISECONDS)
