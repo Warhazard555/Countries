@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 class BlankFragment : ScopeFragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private var recyclerAdapter =  RecyclerAdapter()
+    private var recyclerAdapter = RecyclerAdapter()
     lateinit var responseBody: MutableList<CountryItemDto>
     private var statusSort = true
     private lateinit var progressBar: FrameLayout

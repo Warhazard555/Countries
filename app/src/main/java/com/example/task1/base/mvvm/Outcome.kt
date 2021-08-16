@@ -2,7 +2,7 @@ package com.example.task1.base.mvvm
 
 import java.io.Serializable
 
-sealed class Outcome<T> : Serializable{
+sealed class Outcome<T> : Serializable {
 
     data class Progress<T>(var loading: Boolean) : Outcome<T>(), Serializable
     data class Success<T>(var data: T) : Outcome<T>(), Serializable

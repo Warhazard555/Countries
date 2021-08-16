@@ -36,17 +36,18 @@ fun lastLocation(context: Context) {
     } else {
         val listPermissionsNeeded = ArrayList<String>()
         listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
-        ActivityCompat.requestPermissions(context as Activity,listPermissionsNeeded.toTypedArray(),
+        ActivityCompat.requestPermissions(
+            context as Activity, listPermissionsNeeded.toTypedArray(),
             ZERO
-            )
+        )
     }
-        // TODO: Consider calling
-        //    ActivityCompat#requestPermissions
-        // here to request the missing permissions, and then overriding
-        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-        //                                          int[] grantResults)
-        // to handle the case where the user grants the permission. See the documentation
-        // for ActivityCompat#requestPermissions for more details.
+    // TODO: Consider calling
+    //    ActivityCompat#requestPermissions
+    // here to request the missing permissions, and then overriding
+    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+    //                                          int[] grantResults)
+    // to handle the case where the user grants the permission. See the documentation
+    // for ActivityCompat#requestPermissions for more details.
 }
 
 fun distanceFromMyLocation(latLng: List<Double>, distanceMax: Int): Boolean {
@@ -60,5 +61,7 @@ fun distanceFromMyLocation(latLng: List<Double>, distanceMax: Int): Boolean {
             distance = myLocation.distanceTo(lastCurrentLocation).toInt().div(THOUSAND)
         }
         distance <= distanceMax
-    } else {false}
+    } else {
+        false
+    }
 }

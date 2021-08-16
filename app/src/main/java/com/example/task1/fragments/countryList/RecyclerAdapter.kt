@@ -45,13 +45,17 @@ class RecyclerAdapter :
         if (holder is ViewHolder) {
             val listItem = dataList[position]
             holder.name?.text = listItem.name
-            holder.capital?.text = holder.itemView.context.getString(R.string.capital_tittle) + listItem.capital
-            holder.population?.text  =holder.itemView.context.getString(R.string.population_tittle) + listItem.population.toString()
-            holder.area?.text = holder.itemView.context.getString(R.string.area_tittle) + listItem.area.toString()
+            holder.capital?.text =
+                holder.itemView.context.getString(R.string.capital_tittle) + listItem.capital
+            holder.population?.text =
+                holder.itemView.context.getString(R.string.population_tittle) + listItem.population.toString()
+            holder.area?.text =
+                holder.itemView.context.getString(R.string.area_tittle) + listItem.area.toString()
             holder.flag?.loadImageSvg(listItem.flag)
             holder.itemView.setOnClickListener { mOnItemClickListener?.invoke(listItem) }
         }
     }
+
     fun sortItem() {
         dataList.sortBy { it.area }
         notifyDataSetChanged()

@@ -6,4 +6,13 @@ import com.example.task1.fragments.countryFilterFragment.CountryFilterViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val countryFilterModule = module { scope<CountryFilterFragment> { viewModel {(handle: SavedStateHandle) -> CountryFilterViewModel(handle,get()) } } }
+val countryFilterModule = module {
+    scope<CountryFilterFragment> {
+        viewModel { (handle: SavedStateHandle) ->
+            CountryFilterViewModel(
+                handle,
+                get()
+            )
+        }
+    }
+}

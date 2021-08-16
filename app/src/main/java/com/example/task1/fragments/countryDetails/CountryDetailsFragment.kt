@@ -22,7 +22,8 @@ import com.google.android.gms.maps.model.LatLng
 import org.koin.android.ext.android.inject
 
 
-class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetailsPresenter>(), CountryDetailsView {
+class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetailsPresenter>(),
+    CountryDetailsView {
 
     private lateinit var mCountryName: String
     private lateinit var itemName: AppCompatTextView
@@ -43,6 +44,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         flag = arguments?.getString(COUNTRY_FLAG_KEY) ?: ERROR
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
