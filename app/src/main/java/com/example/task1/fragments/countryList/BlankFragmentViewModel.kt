@@ -43,7 +43,7 @@ class BlankFragmentViewModel(
     fun getCountryDB() {
         mCompositeDisposable.add(
             executeJob(
-                mDataBaseRepository.getCountryDetals(), mCountryDBLiveData
+                mDataBaseRepository.getAllCountryDB(), mCountryDBLiveData
             )
         )
     }

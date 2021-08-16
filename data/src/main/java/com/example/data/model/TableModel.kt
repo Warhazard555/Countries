@@ -73,9 +73,7 @@ fun CountryItemDto.convertDtoToTableModel(): TableModel {
     var name: String = ""
     var capital: String = ""
     var area: Float = 0F
-    var flag: String = ""
-    var languages: List<Language> = arrayListOf()
-    var latlng: List<Double> = arrayListOf(1.0, 1.0)
+    var language: String = ""
     var population: Int = 0
 
     this.name.let { name = it }
@@ -88,9 +86,9 @@ fun CountryItemDto.convertDtoToTableModel(): TableModel {
     this.population.let {
         population = it
     }
-    this.languages.let { languages.convertToList() }
+    this.languages.let {language = it.convertToList()}
 
-    return TableModel(name, capital, area,languages.toString(), population)
+    return TableModel(name, capital, area,language, population)
 }
 
 

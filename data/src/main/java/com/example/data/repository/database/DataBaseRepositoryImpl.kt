@@ -12,7 +12,7 @@ class DataBaseRepositoryImpl(private val dataBase: CountryDatabase) : DataBaseRe
     override fun insertDatabase(list: List<CountryItemDto>) =
         dataBase.сountryDao().insertDatabase(list.convertToTableModel())
 
-    override fun getCountryDetals(): Flowable<MutableList<CountryItemDto>> =
-        dataBase.сountryDao().getCountryDetals().map { it.convertToDTO() }
+    override fun getAllCountryDB(): Flowable<MutableList<CountryItemDto>> =
+        dataBase.сountryDao().getAllCountryDB().map { it.convertToDTO() }
 
 }
