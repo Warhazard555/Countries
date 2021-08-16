@@ -1,22 +1,20 @@
 package com.example.task1.fragments.countryFilterFragment
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import com.example.domain.dto.CountryItemDto
 import com.example.task1.COUNTRY_FILTER_LISTNER_KEY
 import com.example.task1.FILTER_COUNTRY_KEY
 import com.example.task1.R
 import com.example.task1.base.mvvm.Outcome
-import com.example.task1.data.CountryItemDto
 import com.example.task1.ext.distanceFromMyLocation
 import com.example.task1.ext.lastLocation
 import com.google.android.material.slider.RangeSlider

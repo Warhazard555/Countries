@@ -1,7 +1,7 @@
 package com.example.task1.fragments.countryDetails
 
+import com.example.domain.repository.NetworkRepository
 import com.example.task1.base.mvp.BaseMvpPresenter
-import com.example.task1.repository.network.NetworkRepository
 
 class CountryDetailsPresenter(private val mNetworkRepository: NetworkRepository) :
     BaseMvpPresenter<CountryDetailsView>() {

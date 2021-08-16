@@ -1,7 +1,7 @@
 package com.example.task1.fragments.map
 
+import com.example.domain.repository.NetworkRepository
 import com.example.task1.base.mvp.BaseMvpPresenter
-import com.example.task1.repository.network.NetworkRepository
 
 class MapsFragmentPresenter(private val mNetworkRepository: NetworkRepository) :
     BaseMvpPresenter<MapsFragmentView>() {

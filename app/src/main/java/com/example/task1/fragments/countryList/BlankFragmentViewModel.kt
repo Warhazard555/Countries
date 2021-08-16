@@ -1,17 +1,18 @@
 package com.example.task1.fragments.countryList
 
 import androidx.lifecycle.SavedStateHandle
+import com.example.data.model.TableModel
+import com.example.data.model.convertToDTO
+import com.example.data.retrofit.RetrofitService
+import com.example.domain.dto.CountryItemDto
+import com.example.domain.repository.DataBaseRepository
+import com.example.domain.repository.NetworkRepository
 import com.example.task1.DEBOUNCE_TIME_MILLIS
 import com.example.task1.MIN_SEARCH_STRING_LENGTH
 import com.example.task1.base.mvvm.BaseViewModel
 import com.example.task1.base.mvvm.Outcome
 import com.example.task1.base.mvvm.executeJob
 import com.example.task1.convertToList
-import com.example.task1.data.CountryItemDto
-import com.example.task1.repository.database.DataBaseRepository
-import com.example.task1.repository.network.NetworkRepository
-import com.example.task1.retrofit.RetrofitService
-import com.example.task1.room.TableModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Observable
@@ -49,7 +50,7 @@ class BlankFragmentViewModel(
 
     //TODO: RX!!!
     fun addCountryDB(
-        response: MutableList<CountryItemDto>
+        response: MutableList<CountryItemDto> = mutableListOf()
     ) {
         val list: MutableList<TableModel> = mutableListOf()
         response.let {
@@ -65,7 +66,7 @@ class BlankFragmentViewModel(
                 )
             }
         }
-        mDataBaseRepository.insertDatabase(list)
+        mDataBaseRepository.insertDatabase(list.convertToDTO())
 
     }
 

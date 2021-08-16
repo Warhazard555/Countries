@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.domain.dto.CountryItemDto
 import com.example.task1.R
 import com.example.task1.base.mvp.BaseMvpFragment
-import com.example.task1.data.CountryItemDto
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment

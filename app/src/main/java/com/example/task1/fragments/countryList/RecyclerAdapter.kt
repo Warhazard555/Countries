@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.dto.CountryItemDto
 import com.example.task1.R
 import com.example.task1.base.BaseAdapter
-import com.example.task1.data.CountryItemDto
 import com.example.task1.ext.loadImageSvg
 
 

@@ -10,9 +10,9 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.domain.dto.CountryItemDto
 import com.example.task1.*
 import com.example.task1.base.mvvm.Outcome
-import com.example.task1.data.CountryItemDto
 import com.example.task1.ext.showAlertDialog
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.koin.androidx.scope.ScopeFragment
@@ -48,7 +48,6 @@ class BlankFragment : ScopeFragment() {
         srCountry = view.findViewById(R.id.sr_country)
         recyclerView = view.findViewById(R.id.recycler)
         recyclerView.adapter = recyclerAdapter
-
         progressBar = view.findViewById(R.id.progressBar)
         recyclerAdapter.setItemClick { item ->
             val bundle = Bundle()
