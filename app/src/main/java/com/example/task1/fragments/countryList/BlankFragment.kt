@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 class BlankFragment : ScopeFragment() {
 
     private lateinit var recyclerView: RecyclerView
-    lateinit var recyclerAdapter: RecyclerAdapter
+    private var recyclerAdapter =  RecyclerAdapter()
     lateinit var responseBody: MutableList<CountryItemDto>
     private var statusSort = true
     private lateinit var progressBar: FrameLayout
@@ -34,6 +34,12 @@ class BlankFragment : ScopeFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        setFragmentResultListener(COUNTRY_FILTER_LISTNER_KEY) { _, result ->
+            result.getParcelableArrayList<Parcelable>(FILTER_COUNTRY_KEY).let { note ->
+                responseBody = note as MutableList<CountryItemDto>
+                recyclerAdapter.repopulate(responseBody)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +47,8 @@ class BlankFragment : ScopeFragment() {
         sortStatusSharedPref()
         srCountry = view.findViewById(R.id.sr_country)
         recyclerView = view.findViewById(R.id.recycler)
-        recyclerAdapter = RecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
+
         progressBar = view.findViewById(R.id.progressBar)
         recyclerAdapter.setItemClick { item ->
             val bundle = Bundle()
@@ -56,7 +63,7 @@ class BlankFragment : ScopeFragment() {
         filterBar.setOnClickListener {
             findNavController().navigate(R.id.action_blankFragment_to_countryFilterFragment)
         }
-        mViewModel.getCountryByName()
+        mViewModel.getCountryList()
         mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Outcome.Progress -> {
@@ -66,17 +73,10 @@ class BlankFragment : ScopeFragment() {
                     responseBody = it.data
                     mViewModel.addCountryDB(responseBody)
                     recyclerAdapter.notifyDataSetChanged()
-                    recyclerView.adapter = recyclerAdapter
                     recyclerAdapter.repopulate(responseBody)
                     sorting(statusSort)
                     srCountry.isRefreshing = false
-                    setFragmentResultListener(COUNTRY_FILTER_LISTNER_KEY) { _, result ->
-                        result.getParcelableArrayList<Parcelable>(FILTER_COUNTRY_KEY).let { note ->
-                            responseBody = note as MutableList<CountryItemDto>
-                            recyclerAdapter.repopulate(responseBody)
 
-                        }
-                    }
                 }
                 is Outcome.Failure -> {
                     activity?.showAlertDialog()
@@ -109,7 +109,7 @@ class BlankFragment : ScopeFragment() {
             }
         })
         srCountry.setOnRefreshListener {
-            mViewModel.getCountryByName()
+            mViewModel.getCountryList()
         }
         saveSharedPref(statusSort)
     }

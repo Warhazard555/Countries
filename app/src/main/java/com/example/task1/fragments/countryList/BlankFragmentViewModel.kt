@@ -30,7 +30,7 @@ class BlankFragmentViewModel(
         savedStateHandle.getLiveData<Outcome<MutableList<CountryItemDto>>>("CountryItemDB")
     val mSearchSubject: BehaviorSubject<String> = BehaviorSubject.create<String>()
 
-    fun getCountryByName() {
+    fun getCountryList() {
         mCompositeDisposable.add(
             executeJob(
                 mNetworkRepository.getData(),
