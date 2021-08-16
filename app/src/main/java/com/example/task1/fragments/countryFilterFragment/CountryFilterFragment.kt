@@ -51,7 +51,6 @@ class CountryFilterFragment : ScopeFragment() {
         return inflater.inflate(R.layout.fragment_filter, container, false)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel.getCountryByName()

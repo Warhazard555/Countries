@@ -47,6 +47,7 @@ class BlankFragmentViewModel(
         )
     }
 
+    //TODO: RX!!!
     fun addCountryDB(
         response: MutableList<CountryItemDto>
     ) {
