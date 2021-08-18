@@ -16,6 +16,7 @@ import com.example.task1.base.mvvm.executeJob
 import com.example.task1.convertToList
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -35,6 +36,8 @@ class BlankFragmentViewModel(
         savedStateHandle.getLiveData<Outcome<MutableList<CountryItemDto>>>("CountryItemDB")
     val mSearchSubject: BehaviorSubject<String> = BehaviorSubject.create<String>()
 
+
+    //TODO: Добавить BD в цепочку RX
     fun getCountryList() {
         mCompositeDisposable.add(
             executeJob(
@@ -56,22 +59,26 @@ class BlankFragmentViewModel(
     fun addCountryDB(
         response: MutableList<CountryItemDto> = mutableListOf()
     ) {
-        val list: MutableList<TableModel> = mutableListOf()
-        response.let {
-            response.forEach { item ->
-                list.add(
-                    TableModel(
-                        item.name,
-                        item.capital,
-                        item.area,
-                        item.languages.convertToList(),
-                        item.population
-                    )
-                )
-            }
-        }
-        mDataBaseRepository.insertDatabase(list.convertToDTO())
-
+        Flowable.just(response)
+            .doOnNext {
+                val list: MutableList<TableModel> = mutableListOf()
+                response.let {
+                    response.forEach { item ->
+                        list.add(
+                            TableModel(
+                                item.name,
+                                item.capital,
+                                item.area,
+                                item.languages.convertToList(),
+                                item.population
+                            )
+                        )
+                    }
+                }
+                mDataBaseRepository.insertDatabase(list.convertToDTO())
+            }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
     fun getSearchSubject(): @NonNull Observable<MutableList<CountryItemDto>>? = mSearchSubject
