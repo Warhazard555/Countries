@@ -3,10 +3,11 @@ package com.example.task1.fragments.countryList
 import androidx.lifecycle.SavedStateHandle
 import com.example.data.model.TableModel
 import com.example.data.model.convertToDTO
-import com.example.data.retrofit.RetrofitService
 import com.example.domain.dto.CountryItemDto
 import com.example.domain.repository.DataBaseRepository
-import com.example.domain.repository.NetworkRepository
+import com.example.domain.useCase.impl.GetAllCountryDbUseCase
+import com.example.domain.useCase.impl.GetAllCountryUseCase
+import com.example.domain.useCase.impl.GetCountryByNameUseCase
 import com.example.task1.DEBOUNCE_TIME_MILLIS
 import com.example.task1.MIN_SEARCH_STRING_LENGTH
 import com.example.task1.base.mvvm.BaseViewModel
@@ -22,8 +23,11 @@ import java.util.concurrent.TimeUnit
 
 class BlankFragmentViewModel(
     savedStateHandle: SavedStateHandle,
-    private val mNetworkRepository: NetworkRepository,
-    private val mDataBaseRepository: DataBaseRepository
+    private val mDataBaseRepository: DataBaseRepository,
+    private val getAllCountryUseCase: GetAllCountryUseCase,
+    private val getCountryByNameUseCase: GetCountryByNameUseCase,
+    private val getAllCountryDbUseCase: GetAllCountryDbUseCase
+
 ) : BaseViewModel(savedStateHandle) {
     val mCountryLiveData =
         savedStateHandle.getLiveData<Outcome<MutableList<CountryItemDto>>>("CountryItemDto")
@@ -34,7 +38,7 @@ class BlankFragmentViewModel(
     fun getCountryList() {
         mCompositeDisposable.add(
             executeJob(
-                mNetworkRepository.getData(),
+                getAllCountryUseCase.execute(),
                 mCountryLiveData
             )
         )
@@ -43,7 +47,7 @@ class BlankFragmentViewModel(
     fun getCountryDB() {
         mCompositeDisposable.add(
             executeJob(
-                mDataBaseRepository.getAllCountryDB(), mCountryDBLiveData
+                getAllCountryDbUseCase.execute(), mCountryDBLiveData
             )
         )
     }
@@ -76,7 +80,7 @@ class BlankFragmentViewModel(
         .distinctUntilChanged()
         .map { it.lowercase() }
         .flatMap {
-            RetrofitService.getInstance().getCountryByName(it).toObservable()
+            getCountryByNameUseCase.setParams(it).execute().toObservable()
                 .onErrorResumeNext { Observable.just(mutableListOf()) }
         }
         .subscribeOn(Schedulers.io())
