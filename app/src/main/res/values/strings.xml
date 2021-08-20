@@ -17,5 +17,6 @@
     <string name="area_max">до %.0f</string>
     <string name="population_min">от %.0f</string>
     <string name="population_max">до %.0f</string>
+    <string name="capital">capital</string>
 
 </resources>

@@ -22,7 +22,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 
-class BlankFragmentViewModel(
+class CountryListViewModel(
     savedStateHandle: SavedStateHandle,
     private val mDataBaseRepository: DataBaseRepository,
     private val getAllCountryUseCase: GetAllCountryUseCase,

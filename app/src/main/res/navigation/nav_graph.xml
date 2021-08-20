@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/blankFragment"
-        android:name="com.example.task1.fragments.countryList.BlankFragment"
+        android:name="com.example.task1.fragments.countryList.CountryListFragment"
         android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank">
+        tools:layout="@layout/fragment_country_list">
         <action
             android:id="@+id/action_blankFragment_to_countryDetailsFragment"
             app:destination="@id/countryDetailsFragment" />
@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_blankFragment_to_countryFilterFragment"
             app:destination="@id/countryFilterFragment" />
+        <action
+            android:id="@+id/action_blankFragment_to_capitalFragment"
+            app:destination="@id/capitalFragment" />
     </fragment>
     <fragment
         android:id="@+id/countryDetailsFragment"
@@ -41,4 +44,9 @@
             android:id="@+id/action_countryFilterFragment_to_blankFragment"
             app:destination="@id/blankFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/capitalFragment"
+        android:name="com.example.task1.fragments.capitalFragment.CapitalFragment"
+        android:label="fragment_capital"
+        tools:layout="@layout/fragment_capital" />
 </navigation>

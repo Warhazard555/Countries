@@ -1,5 +1,6 @@
 package com.example.data.retrofit
 
+import com.example.data.API_ALL
 import com.example.data.GET_COUNTRY_BY_NAME
 import com.example.data.PATH_VARIABLE
 import com.example.domain.dto.CountryItemDto
@@ -9,7 +10,7 @@ import retrofit2.http.Path
 
 interface RetrofitInterface {
 
-    @GET(value = "all")
+    @GET(API_ALL)
     fun getData(): Flowable<MutableList<CountryItemDto>>
 
     @GET(GET_COUNTRY_BY_NAME)

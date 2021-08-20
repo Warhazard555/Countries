@@ -13,7 +13,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".fragments.countryList.BlankFragment">
+            tools:context=".fragments.countryList.CountryListFragment">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -27,20 +27,42 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/fragment_list" />
 
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/filter_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_colorNormal="@color/orange"
-                app:fab_expandDirection="down"
-                app:fab_icon="@drawable/ic_filter_icon"
-                app:fab_labelStyle="@style/Widget.Design.FloatingActionButton"
-                app:fab_labelsPosition="right"
-                app:fab_size="normal"
-                app:fab_title="filters"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+<com.getbase.floatingactionbutton.FloatingActionsMenu
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
 
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filter_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="@color/orange"
+        app:fab_expandDirection="down"
+        app:fab_icon="@drawable/ic_filter_icon"
+        app:fab_labelStyle="@style/Widget.Design.FloatingActionButton"
+        app:fab_labelsPosition="right"
+        app:fab_size="normal"
+        app:fab_title="filters"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/capital_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="@color/orange"
+        app:fab_expandDirection="down"
+        app:fab_icon="@drawable/ic_capital"
+        app:fab_labelStyle="@style/Widget.Design.FloatingActionButton"
+        app:fab_labelsPosition="right"
+        app:fab_size="normal"
+        app:fab_title="@string/capital"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</com.getbase.floatingactionbutton.FloatingActionsMenu>
 
             <FrameLayout
                 android:id="@+id/progressBar"

@@ -19,7 +19,7 @@ import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 
-class BlankFragment : ScopeFragment() {
+class CountryListFragment : ScopeFragment() {
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerAdapter = RecyclerAdapter()
@@ -28,7 +28,7 @@ class BlankFragment : ScopeFragment() {
     private lateinit var progressBar: FrameLayout
     private lateinit var srCountry: SwipeRefreshLayout
     private val mCompositeDisposable = CompositeDisposable()
-    private val mViewModel: BlankFragmentViewModel by stateViewModel()
+    private val mViewModel: CountryListViewModel by stateViewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +61,10 @@ class BlankFragment : ScopeFragment() {
         val filterBar: View = view.findViewById(R.id.filter_bar)
         filterBar.setOnClickListener {
             findNavController().navigate(R.id.action_blankFragment_to_countryFilterFragment)
+        }
+        val capitalBar: View = view.findViewById(R.id.capital_bar)
+        capitalBar.setOnClickListener {
+            findNavController().navigate(R.id.action_blankFragment_to_capitalFragment)
         }
         mViewModel.getCountryList()
         mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
@@ -170,7 +174,7 @@ class BlankFragment : ScopeFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_blank, container, false)
+        return inflater.inflate(R.layout.fragment_country_list, container, false)
     }
 
     private fun saveSharedPref(statusSort: Boolean) {
