@@ -1,8 +1,8 @@
 package com.example.task1
 
-import com.example.domain.dto.Language
+import com.example.domain.dto.LanguageDto
 
-fun List<Language>.convertToList(): String {
+fun List<LanguageDto>.convertToList(): String {
     var nameString: String = ""
     forEach { language ->
         nameString += " ${language.name}; "

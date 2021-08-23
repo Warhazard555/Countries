@@ -31,16 +31,7 @@ class CountryListFragment : ScopeFragment() {
     private val mViewModel: CountryListViewModel by stateViewModel()
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-        setFragmentResultListener(COUNTRY_FILTER_LISTNER_KEY) { _, result ->
-            result.getParcelableArrayList<Parcelable>(FILTER_COUNTRY_KEY).let { note ->
-                responseBody = note as MutableList<CountryItemDto>
-                recyclerAdapter.repopulate(responseBody)
-            }
-        }
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,6 +71,12 @@ class CountryListFragment : ScopeFragment() {
                     sorting(statusSort)
                     srCountry.isRefreshing = false
 
+                    setFragmentResultListener(COUNTRY_FILTER_LISTNER_KEY) { _, result ->
+                        result.getParcelableArrayList<Parcelable>(FILTER_COUNTRY_KEY).let { note ->
+                            responseBody = note as MutableList<CountryItemDto>
+                            recyclerAdapter.repopulate(responseBody)
+                        }
+                    }
                 }
                 is Outcome.Failure -> {
                     activity?.showAlertDialog()
@@ -89,6 +86,7 @@ class CountryListFragment : ScopeFragment() {
                 }
                 is Outcome.Success -> {
                     progressBar.visibility = View.GONE
+
                 }
             }
         })
@@ -116,6 +114,13 @@ class CountryListFragment : ScopeFragment() {
         }
         saveSharedPref(statusSort)
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)

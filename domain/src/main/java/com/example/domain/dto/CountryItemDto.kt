@@ -8,7 +8,7 @@ class CountryItemDto(
     var capital: String = "",
     var area: Float = 0F,
     var flag: String = "",
-    var languages: List<Language> = arrayListOf(),
+    var languages: List<LanguageDto> = arrayListOf(),
     var latlng: List<Double> = arrayListOf(1.0,1.0),
     var population: Int = 0
         ) : Serializable

@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.domain.dto.CountryItemDto
-import com.example.domain.dto.Language
+import com.example.domain.dto.LanguageDto
 import com.example.task1.convertToList
 
 @Entity(tableName = "Country")
@@ -33,7 +33,7 @@ data class TableModel(
         var capital: String = ""
         var area: Float = 0F
         var flag: String = ""
-        var languages: List<Language> = arrayListOf()
+        var languages: List<LanguageDto> = arrayListOf()
         var latlng: List<Double> = arrayListOf(1.0, 1.0)
         var population: Int = 0
 

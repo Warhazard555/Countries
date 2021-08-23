@@ -1,6 +1,6 @@
 package com.example.data.model
 
-import com.example.domain.dto.Language
+import com.example.domain.dto.LanguageDto
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -14,7 +14,7 @@ data class CountryItem(
     @SerializedName("flag")
     var flag: String?,
     @SerializedName("languages")
-    var languages: List<Language>?,
+    var languages: List<LanguageDto>?,
     @SerializedName("latlng")
     var latlng: List<Double>?,
     @SerializedName("population")

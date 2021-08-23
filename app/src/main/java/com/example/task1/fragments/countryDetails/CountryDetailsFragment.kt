@@ -11,7 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.domain.dto.CountryItemDto
-import com.example.domain.dto.Language
+import com.example.domain.dto.LanguageDto
 import com.example.task1.*
 import com.example.task1.base.mvp.BaseMvpFragment
 import com.example.task1.ext.loadImageSvg
@@ -77,7 +77,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
     override fun showCountryInfo(country: CountryItemDto) {
         Log.e("CountryDetailsFragment", country.toString())
         languageAdapter.repopulate(
-            country.languages as MutableList<Language>
+            country.languages as MutableList<LanguageDto>
         )
         flagView.loadImageSvg(country.flag)
         if (country.area != FLOAT_ZERO) {

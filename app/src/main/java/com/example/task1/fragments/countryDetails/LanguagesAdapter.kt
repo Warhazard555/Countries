@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.dto.Language
+import com.example.domain.dto.LanguageDto
 import com.example.task1.R
 import com.example.task1.base.BaseAdapter
 
-class LanguagesAdapter : BaseAdapter<Language>() {
+class LanguagesAdapter : BaseAdapter<LanguageDto>() {
 
     class LanguageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvLanguage: AppCompatTextView = itemView.findViewById(R.id.tv_languages)
