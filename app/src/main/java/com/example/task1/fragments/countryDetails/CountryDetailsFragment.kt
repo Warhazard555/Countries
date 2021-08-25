@@ -10,10 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.task1.COUNTRY_FLAG_KEY
-import com.example.task1.COUNTRY_NAME_KEY
-import com.example.task1.ERROR
-import com.example.task1.R
+import com.example.task1.*
 import com.example.task1.base.mvp.BaseMvpFragment
 import com.example.task1.data.CountryItem
 import com.example.task1.data.Language
@@ -68,9 +65,9 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         rvLanguages.adapter = languageAdapter
 
         srCountryDetails.setOnRefreshListener {
-            getPresenter().getCountryByName(true)
+            getPresenter().getCountryByName()
         }
-        getPresenter().getCountryByName(false)
+        getPresenter().getCountryByName()
     }
 
     override fun showCountryInfo(country: CountryItem) {
@@ -79,7 +76,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
             country.languages as MutableList<Language>
         )
         flagView.loadImageSvg(country.flag)
-        if (country.area != 0.0) {
+        if (country.area != FLOAT_ZERO) {
             mapLng = LatLng(country.latlng[0], country.latlng[1])
             getMapLocation(mapLng)
         }

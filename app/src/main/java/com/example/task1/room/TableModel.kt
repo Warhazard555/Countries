@@ -15,10 +15,13 @@ data class TableModel(
     val capital: String,
 
     @ColumnInfo
-    val area: Double,
+    val area: Float,
 
     @ColumnInfo
-    val language: String
+    val language: String,
+
+    @ColumnInfo
+    val population: Int
 
 
 )
