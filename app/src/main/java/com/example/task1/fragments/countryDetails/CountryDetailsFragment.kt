@@ -10,10 +10,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.domain.dto.CountryItemDto
+import com.example.domain.dto.Language
 import com.example.task1.*
 import com.example.task1.base.mvp.BaseMvpFragment
-import com.example.task1.data.CountryItemDto
-import com.example.task1.data.Language
 import com.example.task1.ext.loadImageSvg
 import com.google.android.gms.maps.CameraUpdateFactory.newLatLng
 import com.google.android.gms.maps.GoogleMap
@@ -22,7 +22,8 @@ import com.google.android.gms.maps.model.LatLng
 import org.koin.android.ext.android.inject
 
 
-class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetailsPresenter>(), CountryDetailsView {
+class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetailsPresenter>(),
+    CountryDetailsView {
 
     private lateinit var mCountryName: String
     private lateinit var itemName: AppCompatTextView
@@ -43,6 +44,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         flag = arguments?.getString(COUNTRY_FLAG_KEY) ?: ERROR
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

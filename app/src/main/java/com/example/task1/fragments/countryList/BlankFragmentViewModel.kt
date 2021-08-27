@@ -1,19 +1,22 @@
 package com.example.task1.fragments.countryList
 
 import androidx.lifecycle.SavedStateHandle
+import com.example.data.model.TableModel
+import com.example.data.model.convertToDTO
+import com.example.domain.dto.CountryItemDto
+import com.example.domain.repository.DataBaseRepository
+import com.example.domain.useCase.impl.GetAllCountryDbUseCase
+import com.example.domain.useCase.impl.GetAllCountryUseCase
+import com.example.domain.useCase.impl.GetCountryByNameUseCase
 import com.example.task1.DEBOUNCE_TIME_MILLIS
 import com.example.task1.MIN_SEARCH_STRING_LENGTH
 import com.example.task1.base.mvvm.BaseViewModel
 import com.example.task1.base.mvvm.Outcome
 import com.example.task1.base.mvvm.executeJob
 import com.example.task1.convertToList
-import com.example.task1.data.CountryItemDto
-import com.example.task1.repository.database.DataBaseRepository
-import com.example.task1.repository.network.NetworkRepository
-import com.example.task1.retrofit.RetrofitService
-import com.example.task1.room.TableModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -21,8 +24,11 @@ import java.util.concurrent.TimeUnit
 
 class BlankFragmentViewModel(
     savedStateHandle: SavedStateHandle,
-    private val mNetworkRepository: NetworkRepository,
-    private val mDataBaseRepository: DataBaseRepository
+    private val mDataBaseRepository: DataBaseRepository,
+    private val getAllCountryUseCase: GetAllCountryUseCase,
+    private val getCountryByNameUseCase: GetCountryByNameUseCase,
+    private val getAllCountryDbUseCase: GetAllCountryDbUseCase
+
 ) : BaseViewModel(savedStateHandle) {
     val mCountryLiveData =
         savedStateHandle.getLiveData<Outcome<MutableList<CountryItemDto>>>("CountryItemDto")
@@ -30,10 +36,12 @@ class BlankFragmentViewModel(
         savedStateHandle.getLiveData<Outcome<MutableList<CountryItemDto>>>("CountryItemDB")
     val mSearchSubject: BehaviorSubject<String> = BehaviorSubject.create<String>()
 
+
+    //TODO: Добавить BD в цепочку RX
     fun getCountryList() {
         mCompositeDisposable.add(
             executeJob(
-                mNetworkRepository.getData(),
+                getAllCountryUseCase.execute(),
                 mCountryLiveData
             )
         )
@@ -42,30 +50,35 @@ class BlankFragmentViewModel(
     fun getCountryDB() {
         mCompositeDisposable.add(
             executeJob(
-                mDataBaseRepository.getCountryDetals(), mCountryDBLiveData
+                getAllCountryDbUseCase.execute(), mCountryDBLiveData
             )
         )
     }
 
+    //TODO: RX!!!
     fun addCountryDB(
-        response: MutableList<CountryItemDto>
+        response: MutableList<CountryItemDto> = mutableListOf()
     ) {
-        val list: MutableList<TableModel> = mutableListOf()
-        response.let {
-            response.forEach { item ->
-                list.add(
-                    TableModel(
-                        item.name,
-                        item.capital,
-                        item.area,
-                        item.languages.convertToList(),
-                        item.population
-                    )
-                )
-            }
-        }
-        mDataBaseRepository.insertDatabase(list)
-
+        Flowable.just(response)
+            .doOnNext {
+                val list: MutableList<TableModel> = mutableListOf()
+                response.let {
+                    response.forEach { item ->
+                        list.add(
+                            TableModel(
+                                item.name,
+                                item.capital,
+                                item.area,
+                                item.languages.convertToList(),
+                                item.population
+                            )
+                        )
+                    }
+                }
+                mDataBaseRepository.insertDatabase(list.convertToDTO())
+            }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
     fun getSearchSubject(): @NonNull Observable<MutableList<CountryItemDto>>? = mSearchSubject
@@ -74,7 +87,7 @@ class BlankFragmentViewModel(
         .distinctUntilChanged()
         .map { it.lowercase() }
         .flatMap {
-            RetrofitService.getInstance().getCountryByName(it).toObservable()
+            getCountryByNameUseCase.setParams(it).execute().toObservable()
                 .onErrorResumeNext { Observable.just(mutableListOf()) }
         }
         .subscribeOn(Schedulers.io())

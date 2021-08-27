@@ -8,37 +8,37 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 abstract class BaseMvpPresenter<ViewType : BaseMvpView> {
 
-    private var mView : ViewType? = null
+    private var mView: ViewType? = null
     private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    fun attachView (view: ViewType){
+    fun attachView(view: ViewType) {
         mView = view
     }
 
     protected open fun getView(): ViewType? = mView
 
-    fun onDestroyView(){
+    fun onDestroyView() {
         mCompositeDisposable.clear()
     }
 
-    fun detachView(){
+    fun detachView() {
         mView = null
     }
 
-    fun addDisposable(disposable: Disposable){
+    fun addDisposable(disposable: Disposable) {
         mCompositeDisposable.add(disposable)
     }
 
-    fun<Data> inBackground(flowable: Flowable<Data>): Flowable<Data>{
+    fun <Data> inBackground(flowable: Flowable<Data>): Flowable<Data> {
         return flowable.observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
     }
 
-    fun <Data> handleProgress(flowable: Flowable<Data>, isRefresh: Boolean): Flowable<Data>{
+    fun <Data> handleProgress(flowable: Flowable<Data>, isRefresh: Boolean): Flowable<Data> {
         return flowable
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe{
-                if(!isRefresh){
+            .doOnSubscribe {
+                if (!isRefresh) {
                     getView()?.showProgress()
                 }
             }.doOnNext {

@@ -33,13 +33,13 @@
                 android:layout_height="wrap_content"
                 app:fab_colorNormal="@color/orange"
                 app:fab_expandDirection="down"
+                app:fab_icon="@drawable/ic_filter_icon"
                 app:fab_labelStyle="@style/Widget.Design.FloatingActionButton"
                 app:fab_labelsPosition="right"
                 app:fab_size="normal"
                 app:fab_title="filters"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:fab_icon="@drawable/ic_filter_icon"/>
+                app:layout_constraintEnd_toEndOf="parent" />
 
 
             <FrameLayout

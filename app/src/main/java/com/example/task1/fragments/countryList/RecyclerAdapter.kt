@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.dto.CountryItemDto
 import com.example.task1.R
 import com.example.task1.base.BaseAdapter
-import com.example.task1.data.CountryItemDto
 import com.example.task1.ext.loadImageSvg
 
 
@@ -45,13 +45,17 @@ class RecyclerAdapter :
         if (holder is ViewHolder) {
             val listItem = dataList[position]
             holder.name?.text = listItem.name
-            holder.capital?.text = holder.itemView.context.getString(R.string.capital_tittle) + listItem.capital
-            holder.population?.text  =holder.itemView.context.getString(R.string.population_tittle) + listItem.population.toString()
-            holder.area?.text = holder.itemView.context.getString(R.string.area_tittle) + listItem.area.toString()
+            holder.capital?.text =
+                holder.itemView.context.getString(R.string.capital_tittle) + listItem.capital
+            holder.population?.text =
+                holder.itemView.context.getString(R.string.population_tittle) + listItem.population.toString()
+            holder.area?.text =
+                holder.itemView.context.getString(R.string.area_tittle) + listItem.area.toString()
             holder.flag?.loadImageSvg(listItem.flag)
             holder.itemView.setOnClickListener { mOnItemClickListener?.invoke(listItem) }
         }
     }
+
     fun sortItem() {
         dataList.sortBy { it.area }
         notifyDataSetChanged()
