@@ -1,5 +1,6 @@
 package com.example.task1.fragments.countryList
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import com.example.data.model.TableModel
 import com.example.data.model.convertToDTO
@@ -38,7 +39,7 @@ class CountryListViewModel(
 
 
     //TODO: Добавить BD в цепочку RX
-    fun getCountryList() {
+    fun getCountryList(context: Context) {
         mCompositeDisposable.add(
             executeJob(
                 getAllCountryUseCase.execute(),

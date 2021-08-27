@@ -31,8 +31,6 @@ class CountryListFragment : ScopeFragment() {
     private val mViewModel: CountryListViewModel by stateViewModel()
 
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sortStatusSharedPref()

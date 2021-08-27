@@ -1,26 +1,20 @@
 package com.example.task1.fragments.capitalFragment
 
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.dto.CapitalDto
 import com.example.task1.R
 import com.example.task1.base.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.capital_list.view.*
-import kotlinx.android.synthetic.main.fragment_list.view.*
 
 
 class CapitalAdapter : BaseAdapter<CapitalDto>() {
 
-    class CapitalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-       var   capital: AppCompatTextView? = itemView.findViewById(R.id.capital_text)
+    class CapitalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var capital: AppCompatTextView? = itemView.findViewById(R.id.capital_text)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -30,9 +24,9 @@ class CapitalAdapter : BaseAdapter<CapitalDto>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is CapitalViewHolder){
+        if (holder is CapitalViewHolder) {
             val listItem = dataList[position]
-            holder.capital?.text   = listItem.capital
+            holder.capital?.text = listItem.capital
         }
     }
 }

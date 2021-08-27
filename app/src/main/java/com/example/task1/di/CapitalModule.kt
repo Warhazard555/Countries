@@ -7,7 +7,9 @@ import com.example.task1.fragments.capitalFragment.CapitalFragmentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val capitalModule = module { scope<CapitalFragment>{
-    scoped { GetAllCapitalUseCase(get()) }
-    viewModel { (handle: SavedStateHandle) -> CapitalFragmentViewModel(handle,get())}
-} }
+val capitalModule = module {
+    scope<CapitalFragment> {
+        scoped { GetAllCapitalUseCase(get()) }
+        viewModel { (handle: SavedStateHandle) -> CapitalFragmentViewModel(handle, get()) }
+    }
+}

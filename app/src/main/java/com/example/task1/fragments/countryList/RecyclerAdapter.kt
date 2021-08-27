@@ -24,6 +24,7 @@ class RecyclerAdapter :
         var population: AppCompatTextView? = null
         var area: AppCompatTextView? = null
         var flag: AppCompatImageView? = null
+        var currentDistance: AppCompatTextView? = null
 
         init {
             name = itemView.findViewById(R.id.name)
@@ -31,6 +32,7 @@ class RecyclerAdapter :
             population = itemView.findViewById(R.id.population)
             area = itemView.findViewById(R.id.area)
             flag = itemView.findViewById(R.id.iv_flag)
+            currentDistance = itemView.findViewById(R.id.distance)
         }
     }
 
@@ -52,6 +54,7 @@ class RecyclerAdapter :
             holder.area?.text =
                 holder.itemView.context.getString(R.string.area_tittle) + listItem.area.toString()
             holder.flag?.loadImageSvg(listItem.flag)
+            holder.currentDistance?.text  = listItem.currentDistance.toString()
             holder.itemView.setOnClickListener { mOnItemClickListener?.invoke(listItem) }
         }
     }

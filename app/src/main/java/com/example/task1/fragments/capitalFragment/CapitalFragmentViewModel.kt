@@ -20,18 +20,18 @@ class CapitalFragmentViewModel(
         savedStateHandle.getLiveData<Outcome<MutableList<CapitalDto>>>("CapitalDto")
 
     fun getAllCapital() {
-    CoroutineScope(viewModelScope.coroutineContext).launch {
-        try {
-            capitalLiveData.value = Outcome.loading(true)
-            val result = withContext(viewModelScope.coroutineContext + Dispatchers.IO){
-                getAllCapitalUseCase.execute()
+        CoroutineScope(viewModelScope.coroutineContext).launch {
+            try {
+                capitalLiveData.value = Outcome.loading(true)
+                val result = withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+                    getAllCapitalUseCase.execute()
+                }
+                capitalLiveData.value = Outcome.loading(false)
+                capitalLiveData.value = Outcome.success(result)
+            } catch (e: Exception) {
+                capitalLiveData.value = Outcome.loading(false)
+                capitalLiveData.value = Outcome.failure(e)
             }
-            capitalLiveData.value = Outcome.loading(false)
-            capitalLiveData.value = Outcome.success(result)
-        }catch (e : Exception) {
-            capitalLiveData.value = Outcome.loading(false)
-            capitalLiveData.value = Outcome.failure(e)
         }
-    }
     }
 }

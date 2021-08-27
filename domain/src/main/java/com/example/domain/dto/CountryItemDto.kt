@@ -9,6 +9,7 @@ class CountryItemDto(
     var area: Float = 0F,
     var flag: String = "",
     var languages: List<LanguageDto> = arrayListOf(),
-    var latlng: List<Double> = arrayListOf(1.0,1.0),
-    var population: Int = 0
-        ) : Serializable
+    var latlng: List<Double> = arrayListOf(1.0, 1.0),
+    var population: Int = 0,
+    var currentDistance: Int = 0
+) : Serializable

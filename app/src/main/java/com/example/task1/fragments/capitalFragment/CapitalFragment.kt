@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.task1.R
 import com.example.task1.base.mvvm.Outcome
 import com.example.task1.ext.showAlertDialog
-import com.example.task1.fragments.countryList.CountryListViewModel
-import kotlinx.android.synthetic.main.fragment_capital.*
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
@@ -18,12 +16,8 @@ class CapitalFragment : ScopeFragment() {
 
     private val mViewModel: CapitalFragmentViewModel by stateViewModel()
     private val capitalAdapter = CapitalAdapter()
-    private lateinit var  progress : FrameLayout
-    private lateinit var  recycler: RecyclerView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var progress: FrameLayout
+    private lateinit var recycler: RecyclerView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,12 +27,13 @@ class CapitalFragment : ScopeFragment() {
 
 
         mViewModel.getAllCapital()
-        mViewModel.capitalLiveData.observe(viewLifecycleOwner,{
-            when(it){
-                is Outcome.Progress ->{
+        mViewModel.capitalLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                is Outcome.Progress -> {
                     progress.visibility = if (it.loading) View.VISIBLE else View.GONE
                 }
-                is Outcome.Next -> {}
+                is Outcome.Next -> {
+                }
                 is Outcome.Success -> {
                     capitalAdapter.repopulate(it.data)
                 }
@@ -49,6 +44,7 @@ class CapitalFragment : ScopeFragment() {
         })
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

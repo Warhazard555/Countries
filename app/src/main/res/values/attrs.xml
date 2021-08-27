@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomLikeBar">
+        <attr name="customLikeDifference" format="integer" />
+        <attr name="customCommentNumber" format="integer" />
+        <attr name="customDistanceText" format="integer" />
+    </declare-styleable>
+</resources>
