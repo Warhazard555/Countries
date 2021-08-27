@@ -15,10 +15,10 @@ val appModule = module {
     //Model
     single { CountryDatabase.getDatabaseInst(get()) }
     single { RetrofitService.getInstance() }
-    single {CoroutinesRetrofitService.getInstance()}
+    single { CoroutinesRetrofitService.getInstance() }
 
     //Data
-    single { NetworkRepositoryImpl(get()) as NetworkRepository }
-    single { DataBaseRepositoryImpl(get()) as DataBaseRepository }
-    single { NetworkCapitalRepositoryImpl(get()) as NetworkCapitalRepository}
+    single<NetworkRepository> { NetworkRepositoryImpl(get()) }
+    single<DataBaseRepository> { DataBaseRepositoryImpl(get()) }
+    single<NetworkCapitalRepository> { NetworkCapitalRepositoryImpl(get()) }
 }
