@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task1.R
-import com.example.task1.base.mvvm.Outcome
+import com.example.outcome.Outcome
 import com.example.task1.ext.showAlertDialog
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -35,7 +35,7 @@ class CapitalFragment : ScopeFragment() {
                 is Outcome.Next -> {
                 }
                 is Outcome.Success -> {
-                    capitalAdapter.repopulate(it.data)
+                    capitalAdapter.submitList(it.data)
                 }
                 is Outcome.Failure -> {
                     activity?.showAlertDialog()

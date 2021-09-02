@@ -14,7 +14,7 @@ import com.example.domain.dto.CountryItemDto
 import com.example.task1.COUNTRY_FILTER_LISTNER_KEY
 import com.example.task1.FILTER_COUNTRY_KEY
 import com.example.task1.R
-import com.example.task1.base.mvvm.Outcome
+import com.example.outcome.Outcome
 import com.example.task1.ext.distanceFromMyLocation
 import com.example.task1.ext.lastLocation
 import com.google.android.material.slider.RangeSlider

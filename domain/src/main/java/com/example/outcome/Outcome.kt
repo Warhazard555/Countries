@@ -1,4 +1,4 @@
-package com.example.task1.base.mvvm
+package com.example.outcome
 
 import java.io.Serializable
 

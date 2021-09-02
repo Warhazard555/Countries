@@ -66,4 +66,7 @@ dependencies {
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$coroutines_retrofit_version"
+
+    //Flow
+    implementation 'com.github.chenxyu:retrofit-adapter-flow:1.1.4'
 }

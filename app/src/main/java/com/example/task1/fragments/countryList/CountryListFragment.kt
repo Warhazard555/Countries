@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.domain.dto.CountryItemDto
 import com.example.task1.*
-import com.example.task1.base.mvvm.Outcome
+import com.example.outcome.Outcome
 import com.example.task1.ext.showAlertDialog
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.koin.androidx.scope.ScopeFragment

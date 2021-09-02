@@ -12,7 +12,7 @@ import com.example.domain.useCase.impl.GetCountryByNameUseCase
 import com.example.task1.DEBOUNCE_TIME_MILLIS
 import com.example.task1.MIN_SEARCH_STRING_LENGTH
 import com.example.task1.base.mvvm.BaseViewModel
-import com.example.task1.base.mvvm.Outcome
+import com.example.outcome.Outcome
 import com.example.task1.base.mvvm.executeJob
 import com.example.task1.convertToList
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -39,7 +39,7 @@ class CountryListViewModel(
 
 
     //TODO: Добавить BD в цепочку RX
-    fun getCountryList(context: Context) {
+    fun getCountryList() {
         mCompositeDisposable.add(
             executeJob(
                 getAllCountryUseCase.execute(),

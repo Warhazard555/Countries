@@ -15,6 +15,10 @@ def rxjava_version = "3.0.13"
 
 dependencies {
 
+    //Flow
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt'
+
     //RxJava
     api "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
     api "io.reactivex.rxjava3:rxjava:$rxjava_version"
