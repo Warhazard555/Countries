@@ -59,8 +59,8 @@ class CountryListFragment : ScopeFragment() {
         mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Outcome.Progress -> {
-                    //     progressBar.visibility = if (srCountry.isRefreshing) View.GONE else View.VISIBLE
-                    if (it.loading) View.VISIBLE else View.GONE
+                       progressBar.visibility = if (srCountry.isRefreshing) View.GONE else View.VISIBLE
+                 //   if (it.loading) View.VISIBLE else View.GONE
                 }
                 is Outcome.Next -> {
                     responseBody = it.data
