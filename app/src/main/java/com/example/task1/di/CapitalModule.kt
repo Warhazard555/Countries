@@ -10,6 +10,6 @@ import org.koin.dsl.module
 val capitalModule = module {
     scope<CapitalFragment> {
         scoped { GetAllCapitalUseCase(get()) }
-        viewModel { (handle: SavedStateHandle) -> CapitalFragmentViewModel(handle, get()) }
+        viewModel { (handle: SavedStateHandle) -> CapitalFragmentViewModel(handle, get(), get()) }
     }
 }

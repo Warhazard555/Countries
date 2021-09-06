@@ -1,4 +1,4 @@
-package com.example.outcome
+package com.example.domain.outcome
 
 import java.io.Serializable
 

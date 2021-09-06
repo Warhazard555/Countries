@@ -8,8 +8,9 @@ import io.reactivex.rxjava3.core.Flowable
 class GetAllCountryUseCase(private val networkRepository: NetworkRepository) :
     BaseUseCase<Unit, MutableList<CountryItemDto>>() {
 
-    override fun buildFlowable(params: Unit?): Flowable<MutableList<CountryItemDto>> = networkRepository.getData()
+    override fun buildFlowable(params: Unit?): Flowable<MutableList<CountryItemDto>> =
+        networkRepository.getData()
 
     override val mIsParamsRequired: Boolean
-    get() = false
+        get() = false
 }

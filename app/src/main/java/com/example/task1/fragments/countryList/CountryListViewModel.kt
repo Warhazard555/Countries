@@ -5,16 +5,17 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.data.model.TableModel
 import com.example.data.model.convertToDTO
 import com.example.domain.dto.CountryItemDto
+import com.example.domain.outcome.Outcome
 import com.example.domain.repository.DataBaseRepository
 import com.example.domain.useCase.impl.GetAllCountryDbUseCase
 import com.example.domain.useCase.impl.GetAllCountryUseCase
 import com.example.domain.useCase.impl.GetCountryByNameUseCase
 import com.example.task1.DEBOUNCE_TIME_MILLIS
 import com.example.task1.MIN_SEARCH_STRING_LENGTH
-import com.example.task1.base.mvvm.BaseViewModel
-import com.example.outcome.Outcome
-import com.example.task1.base.mvvm.executeJob
+import com.example.task1.base.mvvm.*
 import com.example.task1.convertToList
+import com.example.task1.ext.distanceFromMyLocation
+import com.example.task1.ext.lastLocation
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Flowable
@@ -39,13 +40,36 @@ class CountryListViewModel(
 
 
     //TODO: Добавить BD в цепочку RX
-    fun getCountryList() {
-        mCompositeDisposable.add(
-            executeJob(
-                getAllCountryUseCase.execute(),
-                mCountryLiveData
-            )
-        )
+    fun getCountryList(context: Context) {
+//        mCompositeDisposable.add(
+//            executeJob(
+//                getAllCountryUseCase.execute(),
+//                mCountryLiveData
+//            )
+//        )
+        Flowable.just(context)
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap { lastLocation(context = it) }
+            .observeOn(Schedulers.io())
+            .flatMap {
+                getAllCountryUseCase.execute()
+            }
+            .doOnNext {
+                it.forEach { item ->
+                    item.currentDistance = distanceFromMyLocation(item.latlng)
+                }
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                mCountryLiveData.next(it)
+            }, {
+                mCountryLiveData.failed(it)
+            }, {
+                if (mCountryLiveData.value is Outcome.Next) {
+                    mCountryLiveData.success((mCountryLiveData.value as Outcome.Next).data)
+                }
+            }).also { mCompositeDisposable.add(it) }
     }
 
     fun getCountryDB() {
@@ -71,7 +95,8 @@ class CountryListViewModel(
                                 item.capital,
                                 item.area,
                                 item.languages.convertToList(),
-                                item.population
+                                item.population,
+                                item.currentDistance
                             )
                         )
                     }

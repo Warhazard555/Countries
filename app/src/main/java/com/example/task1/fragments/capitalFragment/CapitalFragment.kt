@@ -1,13 +1,14 @@
 package com.example.task1.fragments.capitalFragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.FrameLayout
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.outcome.Outcome
 import com.example.task1.R
-import com.example.outcome.Outcome
 import com.example.task1.ext.showAlertDialog
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -26,23 +27,55 @@ class CapitalFragment : ScopeFragment() {
         recycler.adapter = capitalAdapter
 
 
-        mViewModel.getAllCapital()
-        mViewModel.capitalLiveData.observe(viewLifecycleOwner, {
-            when (it) {
-                is Outcome.Progress -> {
-                    progress.visibility = if (it.loading) View.VISIBLE else View.GONE
+//        mViewModel.getAllCapital()
+//        mViewModel.capitalLiveData.observe(viewLifecycleOwner, {
+//            when (it) {
+//                is Outcome.Progress -> {
+//                    progress.visibility = if (it.loading) View.VISIBLE else View.GONE
+//                }
+//                is Outcome.Next -> {
+//                }
+//                is Outcome.Success -> {
+//                    capitalAdapter.submitList(it.data)
+//                }
+//                is Outcome.Failure -> {
+//                    activity?.showAlertDialog()
+//                }
+//            }
+//        })
+        mViewModel.getAllCapitalFlow().asLiveData(lifecycleScope.coroutineContext)
+            .observe(viewLifecycleOwner, {
+                when (it) {
+                    is Outcome.Failure -> {
+                        activity?.showAlertDialog()
+                    }
+                    is Outcome.Next -> {
+                    }
+                    is Outcome.Progress -> {
+                        progress.visibility = if (it.loading) View.VISIBLE else View.GONE
+                    }
+                    is Outcome.Success -> {
+                        capitalAdapter.submitList(it.data)
+                    }
                 }
-                is Outcome.Next -> {
-                }
-                is Outcome.Success -> {
-                    capitalAdapter.submitList(it.data)
-                }
-                is Outcome.Failure -> {
-                    activity?.showAlertDialog()
-                }
-            }
-        })
+            })
 
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.capital_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateView(

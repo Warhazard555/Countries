@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -20,7 +20,7 @@
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="@+id/area"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/name"
             tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -34,6 +34,7 @@
             app:layout_constraintEnd_toStartOf="@id/iv_flag"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/capital"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -46,6 +47,7 @@
             app:layout_constraintEnd_toStartOf="@+id/iv_flag"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/population"
             app:layout_constraintTop_toBottomOf="@id/name" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -58,6 +60,7 @@
             app:layout_constraintEnd_toStartOf="@+id/iv_flag"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/area"
             app:layout_constraintTop_toBottomOf="@id/capital" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -70,9 +73,10 @@
             app:layout_constraintEnd_toStartOf="@+id/iv_flag"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/custom_likebar"
             app:layout_constraintTop_toBottomOf="@id/population" />
 
-        <com.example.customView.CustomLikeBar
+        <com.example.task1.customView.CustomLikeBar
             android:id="@+id/custom_likebar"
             android:layout_width="@dimen/zero_size"
             android:layout_height="wrap_content"
@@ -81,7 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_flag" />
+            app:layout_constraintTop_toBottomOf="@id/area" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

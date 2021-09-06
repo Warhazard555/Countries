@@ -11,10 +11,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.example.domain.dto.CountryItemDto
+import com.example.domain.outcome.Outcome
 import com.example.task1.COUNTRY_FILTER_LISTNER_KEY
 import com.example.task1.FILTER_COUNTRY_KEY
 import com.example.task1.R
-import com.example.outcome.Outcome
 import com.example.task1.ext.distanceFromMyLocation
 import com.example.task1.ext.lastLocation
 import com.google.android.material.slider.RangeSlider

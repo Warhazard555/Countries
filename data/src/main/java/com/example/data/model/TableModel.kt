@@ -24,7 +24,11 @@ data class TableModel(
     val language: String,
 
     @ColumnInfo
-    val population: Int
+    val population: Int,
+
+    @ColumnInfo
+    val currentDistance: Int
+
 
 ) {
     fun convertTableModelToDto(): CountryItemDto {
@@ -34,8 +38,9 @@ data class TableModel(
         var area: Float = 0F
         var flag: String = ""
         var languages: List<LanguageDto> = arrayListOf()
-        var latlng: List<Double> = arrayListOf(1.0, 1.0)
+        var latlng: MutableList<Double> = arrayListOf(1.0, 1.0)
         var population: Int = 0
+        var currentDistance: Int = 0
 
         this.name.let { name = it }
         this.capital.let {
@@ -49,7 +54,18 @@ data class TableModel(
         }
         this.language.let { languages.convertToList() }
 
-        return CountryItemDto(name, capital, area, flag, languages, latlng, population)
+        this.currentDistance.let { currentDistance = it }
+
+        return CountryItemDto(
+            name,
+            capital,
+            area,
+            flag,
+            languages,
+            latlng,
+            population,
+            currentDistance
+        )
     }
 }
 
@@ -75,6 +91,7 @@ fun CountryItemDto.convertDtoToTableModel(): TableModel {
     var area: Float = 0F
     var language: String = ""
     var population: Int = 0
+    var currentDistance: Int = 0
 
     this.name.let { name = it }
     this.capital.let {
@@ -86,9 +103,11 @@ fun CountryItemDto.convertDtoToTableModel(): TableModel {
     this.population.let {
         population = it
     }
-    this.languages.let {language = it.convertToList()}
+    this.languages.let { language = it.convertToList() }
 
-    return TableModel(name, capital, area,language, population)
+    this.currentDistance.let { currentDistance = it }
+
+    return TableModel(name, capital, area, language, population, currentDistance)
 }
 
 

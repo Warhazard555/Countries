@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.domain.dto.CountryItemDto
+import com.example.domain.outcome.Outcome
 import com.example.task1.*
-import com.example.outcome.Outcome
 import com.example.task1.ext.showAlertDialog
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.koin.androidx.scope.ScopeFragment
@@ -23,7 +23,7 @@ class CountryListFragment : ScopeFragment() {
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerAdapter = RecyclerAdapter()
-    lateinit var responseBody: MutableList<CountryItemDto>
+    private lateinit var responseBody: MutableList<CountryItemDto>
     private var statusSort = true
     private lateinit var progressBar: FrameLayout
     private lateinit var srCountry: SwipeRefreshLayout
@@ -55,11 +55,12 @@ class CountryListFragment : ScopeFragment() {
         capitalBar.setOnClickListener {
             findNavController().navigate(R.id.action_blankFragment_to_capitalFragment)
         }
-        mViewModel.getCountryList()
+        context?.let { mViewModel.getCountryList(it) }
         mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Outcome.Progress -> {
-                    progressBar.visibility = if (srCountry.isRefreshing) View.GONE else View.VISIBLE
+                    //     progressBar.visibility = if (srCountry.isRefreshing) View.GONE else View.VISIBLE
+                    if (it.loading) View.VISIBLE else View.GONE
                 }
                 is Outcome.Next -> {
                     responseBody = it.data
@@ -86,8 +87,11 @@ class CountryListFragment : ScopeFragment() {
                     progressBar.visibility = View.GONE
 
                 }
+
             }
         })
+
+
 
         mViewModel.mCountryDBLiveData.observe(viewLifecycleOwner, {
             when (it) {
@@ -108,8 +112,11 @@ class CountryListFragment : ScopeFragment() {
             }
         })
         srCountry.setOnRefreshListener {
-            mViewModel.getCountryList()
+            recyclerAdapter.repopulate(responseBody)
+            sorting(statusSort)
+            srCountry.isRefreshing = false
         }
+
         saveSharedPref(statusSort)
     }
 

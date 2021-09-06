@@ -31,7 +31,7 @@ public final class CountryDao_Impl implements CountryDao {
     this.__insertionAdapterOfTableModel = new EntityInsertionAdapter<TableModel>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `Country` (`name`,`capital`,`area`,`language`,`population`) VALUES (?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `Country` (`name`,`capital`,`area`,`language`,`population`,`currentDistance`) VALUES (?,?,?,?,?,?)";
       }
 
       @Override
@@ -53,6 +53,7 @@ public final class CountryDao_Impl implements CountryDao {
           stmt.bindString(4, value.getLanguage());
         }
         stmt.bindLong(5, value.getPopulation());
+        stmt.bindLong(6, value.getCurrentDistance());
       }
     };
   }
@@ -83,6 +84,7 @@ public final class CountryDao_Impl implements CountryDao {
           final int _cursorIndexOfArea = CursorUtil.getColumnIndexOrThrow(_cursor, "area");
           final int _cursorIndexOfLanguage = CursorUtil.getColumnIndexOrThrow(_cursor, "language");
           final int _cursorIndexOfPopulation = CursorUtil.getColumnIndexOrThrow(_cursor, "population");
+          final int _cursorIndexOfCurrentDistance = CursorUtil.getColumnIndexOrThrow(_cursor, "currentDistance");
           final List<TableModel> _result = new ArrayList<TableModel>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final TableModel _item;
@@ -108,7 +110,9 @@ public final class CountryDao_Impl implements CountryDao {
             }
             final int _tmpPopulation;
             _tmpPopulation = _cursor.getInt(_cursorIndexOfPopulation);
-            _item = new TableModel(_tmpName,_tmpCapital,_tmpArea,_tmpLanguage,_tmpPopulation);
+            final int _tmpCurrentDistance;
+            _tmpCurrentDistance = _cursor.getInt(_cursorIndexOfCurrentDistance);
+            _item = new TableModel(_tmpName,_tmpCapital,_tmpArea,_tmpLanguage,_tmpPopulation,_tmpCurrentDistance);
             _result.add(_item);
           }
           return _result;

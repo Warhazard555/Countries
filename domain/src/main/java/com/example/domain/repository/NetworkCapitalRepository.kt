@@ -5,6 +5,6 @@ import com.example.domain.dto.CapitalDto
 
 interface NetworkCapitalRepository {
 
-    
+
     suspend fun getAllCapital(): MutableList<CapitalDto>
 }

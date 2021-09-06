@@ -1,11 +1,8 @@
-package com.example.task1.ext
+package com.example.data.ext
 
-import com.example.outcome.Outcome
-import com.example.outcome.Transformer
+import com.example.domain.outcome.Outcome
+import com.example.domain.outcome.Transformer
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.*
 
 fun <InputType, OutputType> modifyFlow(

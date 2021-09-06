@@ -33,9 +33,9 @@ public final class CountryDatabase_Impl extends CountryDatabase {
     final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `Country` (`name` TEXT NOT NULL, `capital` TEXT NOT NULL, `area` REAL NOT NULL, `language` TEXT NOT NULL, `population` INTEGER NOT NULL, PRIMARY KEY(`name`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `Country` (`name` TEXT NOT NULL, `capital` TEXT NOT NULL, `area` REAL NOT NULL, `language` TEXT NOT NULL, `population` INTEGER NOT NULL, `currentDistance` INTEGER NOT NULL, PRIMARY KEY(`name`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2321e5078613fce0219ed951ddcd3cfa')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5771cc6558eeb3e016b06be83b2858a4')");
       }
 
       @Override
@@ -79,12 +79,13 @@ public final class CountryDatabase_Impl extends CountryDatabase {
 
       @Override
       protected RoomOpenHelper.ValidationResult onValidateSchema(SupportSQLiteDatabase _db) {
-        final HashMap<String, TableInfo.Column> _columnsCountry = new HashMap<String, TableInfo.Column>(5);
+        final HashMap<String, TableInfo.Column> _columnsCountry = new HashMap<String, TableInfo.Column>(6);
         _columnsCountry.put("name", new TableInfo.Column("name", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsCountry.put("capital", new TableInfo.Column("capital", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsCountry.put("area", new TableInfo.Column("area", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsCountry.put("language", new TableInfo.Column("language", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsCountry.put("population", new TableInfo.Column("population", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsCountry.put("currentDistance", new TableInfo.Column("currentDistance", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysCountry = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesCountry = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoCountry = new TableInfo("Country", _columnsCountry, _foreignKeysCountry, _indicesCountry);
@@ -96,7 +97,7 @@ public final class CountryDatabase_Impl extends CountryDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "2321e5078613fce0219ed951ddcd3cfa", "722b3bb30250d4ac56b812333044046d");
+    }, "5771cc6558eeb3e016b06be83b2858a4", "c0b0b21d705e8cc3da99e6439ff261c4");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

@@ -1,7 +1,7 @@
 package com.example.task1.base.mvvm
 
 import androidx.lifecycle.MutableLiveData
-import com.example.outcome.Outcome
+import com.example.domain.outcome.Outcome
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single

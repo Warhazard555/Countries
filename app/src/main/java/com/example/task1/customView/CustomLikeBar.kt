@@ -1,4 +1,4 @@
-package com.example.customView
+package com.example.task1.customView
 
 import android.content.Context
 import android.util.AttributeSet

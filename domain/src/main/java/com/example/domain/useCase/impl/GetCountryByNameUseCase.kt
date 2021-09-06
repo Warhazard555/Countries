@@ -6,12 +6,13 @@ import com.example.domain.useCase.BaseUseCase
 import io.reactivex.rxjava3.core.Flowable
 
 class GetCountryByNameUseCase(private val networkRepository: NetworkRepository) :
-    BaseUseCase<String, MutableList<CountryItemDto>>()  {
+    BaseUseCase<String, MutableList<CountryItemDto>>() {
 
     override val mIsParamsRequired: Boolean
         get() = true
 
-    override fun buildFlowable(params: String?): Flowable<MutableList<CountryItemDto>> = networkRepository.getCountryByName(params ?: "")
+    override fun buildFlowable(params: String?): Flowable<MutableList<CountryItemDto>> =
+        networkRepository.getCountryByName(params ?: "")
 
 
 }

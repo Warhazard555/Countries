@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.core.Flowable
 interface CountryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertDatabase(list: List<TableModel>)
+    fun insertDatabase(list: MutableList<TableModel>)
 
     @Query("SELECT * FROM country")
     fun getAllCountryDB(): Flowable<MutableList<TableModel>>

@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Flowable
 
 interface DataBaseRepository {
 
-    fun insertDatabase(list: List<CountryItemDto>)
+    fun insertDatabase(list: MutableList<CountryItemDto>)
 
     fun getAllCountryDB(): Flowable<MutableList<CountryItemDto>>
 }
