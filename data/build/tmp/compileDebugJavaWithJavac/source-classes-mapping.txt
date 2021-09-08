@@ -7,3 +7,4 @@ com/example/data/room/CountryDao_Impl.java
  com.example.data.room.CountryDao_Impl
  com.example.data.room.CountryDao_Impl$1
  com.example.data.room.CountryDao_Impl$2
+ com.example.data.room.CountryDao_Impl$3
