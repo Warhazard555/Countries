@@ -16,4 +16,7 @@ interface CountryDao {
 
     @Query("SELECT * FROM country")
     fun getAllCountryDB(): Flowable<MutableList<TableModel>>
+
+    @Query("SELECT * FROM country WHERE name IN (:name)")
+    fun getCountryByNameDB(name: String): Flowable<TableModel>
 }

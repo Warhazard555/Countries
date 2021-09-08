@@ -33,7 +33,6 @@
             app:layout_constraintEnd_toStartOf="@id/iv_flag"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/capital"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -43,11 +42,11 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size"
+            app:layout_constraintBottom_toTopOf="@id/population"
             app:layout_constraintEnd_toStartOf="@+id/iv_flag"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/population"
-            app:layout_constraintTop_toBottomOf="@id/name" />
+            app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/population"
@@ -56,11 +55,10 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size"
+            app:layout_constraintBottom_toTopOf="@id/area"
             app:layout_constraintEnd_toStartOf="@+id/iv_flag"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/area"
-            app:layout_constraintTop_toBottomOf="@id/capital" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/area"
@@ -73,7 +71,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/custom_likebar"
-            app:layout_constraintTop_toBottomOf="@id/population" />
+          />
 
         <com.example.task1.customView.CustomLikeBar
             android:id="@+id/custom_likebar"

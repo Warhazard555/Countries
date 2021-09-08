@@ -3,6 +3,7 @@ package com.example.task1.fragments.capitalFragment
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -10,7 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.outcome.Outcome
 import com.example.task1.R
 import com.example.task1.ext.showAlertDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.scope.ScopeFragment
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class CapitalFragment : ScopeFragment() {
@@ -19,6 +24,7 @@ class CapitalFragment : ScopeFragment() {
     private val capitalAdapter = CapitalAdapter()
     private lateinit var progress: FrameLayout
     private lateinit var recycler: RecyclerView
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,7 +65,6 @@ class CapitalFragment : ScopeFragment() {
                     }
                 }
             })
-
     }
 
 

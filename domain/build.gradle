@@ -17,7 +17,7 @@ dependencies {
 
     //Flow
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'
 
     //RxJava
     api "io.reactivex.rxjava3:rxandroid:$rxandroid_version"

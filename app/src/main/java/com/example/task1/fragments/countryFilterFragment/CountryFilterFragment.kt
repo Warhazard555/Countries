@@ -51,7 +51,7 @@ class CountryFilterFragment : ScopeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel.getCountryList()
+        mViewModel.getCountryListDB()
         mViewModel.mCountryFilterLivedata.observe(viewLifecycleOwner, {
             when (it) {
                 is Outcome.Progress -> {

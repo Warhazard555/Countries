@@ -31,7 +31,7 @@ public final class CountryDao_Impl implements CountryDao {
     this.__insertionAdapterOfTableModel = new EntityInsertionAdapter<TableModel>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `Country` (`name`,`capital`,`area`,`language`,`population`,`currentDistance`) VALUES (?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `Country` (`name`,`capital`,`area`,`flag`,`population`,`currentDistance`) VALUES (?,?,?,?,?,?)";
       }
 
       @Override
@@ -47,10 +47,10 @@ public final class CountryDao_Impl implements CountryDao {
           stmt.bindString(2, value.getCapital());
         }
         stmt.bindDouble(3, value.getArea());
-        if (value.getLanguage() == null) {
+        if (value.getFlag() == null) {
           stmt.bindNull(4);
         } else {
-          stmt.bindString(4, value.getLanguage());
+          stmt.bindString(4, value.getFlag());
         }
         stmt.bindLong(5, value.getPopulation());
         stmt.bindLong(6, value.getCurrentDistance());
@@ -82,7 +82,7 @@ public final class CountryDao_Impl implements CountryDao {
           final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
           final int _cursorIndexOfCapital = CursorUtil.getColumnIndexOrThrow(_cursor, "capital");
           final int _cursorIndexOfArea = CursorUtil.getColumnIndexOrThrow(_cursor, "area");
-          final int _cursorIndexOfLanguage = CursorUtil.getColumnIndexOrThrow(_cursor, "language");
+          final int _cursorIndexOfFlag = CursorUtil.getColumnIndexOrThrow(_cursor, "flag");
           final int _cursorIndexOfPopulation = CursorUtil.getColumnIndexOrThrow(_cursor, "population");
           final int _cursorIndexOfCurrentDistance = CursorUtil.getColumnIndexOrThrow(_cursor, "currentDistance");
           final List<TableModel> _result = new ArrayList<TableModel>(_cursor.getCount());
@@ -102,18 +102,82 @@ public final class CountryDao_Impl implements CountryDao {
             }
             final float _tmpArea;
             _tmpArea = _cursor.getFloat(_cursorIndexOfArea);
-            final String _tmpLanguage;
-            if (_cursor.isNull(_cursorIndexOfLanguage)) {
-              _tmpLanguage = null;
+            final String _tmpFlag;
+            if (_cursor.isNull(_cursorIndexOfFlag)) {
+              _tmpFlag = null;
             } else {
-              _tmpLanguage = _cursor.getString(_cursorIndexOfLanguage);
+              _tmpFlag = _cursor.getString(_cursorIndexOfFlag);
             }
             final int _tmpPopulation;
             _tmpPopulation = _cursor.getInt(_cursorIndexOfPopulation);
             final int _tmpCurrentDistance;
             _tmpCurrentDistance = _cursor.getInt(_cursorIndexOfCurrentDistance);
-            _item = new TableModel(_tmpName,_tmpCapital,_tmpArea,_tmpLanguage,_tmpPopulation,_tmpCurrentDistance);
+            _item = new TableModel(_tmpName,_tmpCapital,_tmpArea,_tmpFlag,_tmpPopulation,_tmpCurrentDistance);
             _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
+  }
+
+  @Override
+  public Flowable<TableModel> getCountryByNameDB(final String name) {
+    final String _sql = "SELECT * FROM country WHERE name IN (?)";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    if (name == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, name);
+    }
+    return RxRoom.createFlowable(__db, false, new String[]{"country"}, new Callable<TableModel>() {
+      @Override
+      public TableModel call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
+          final int _cursorIndexOfCapital = CursorUtil.getColumnIndexOrThrow(_cursor, "capital");
+          final int _cursorIndexOfArea = CursorUtil.getColumnIndexOrThrow(_cursor, "area");
+          final int _cursorIndexOfFlag = CursorUtil.getColumnIndexOrThrow(_cursor, "flag");
+          final int _cursorIndexOfPopulation = CursorUtil.getColumnIndexOrThrow(_cursor, "population");
+          final int _cursorIndexOfCurrentDistance = CursorUtil.getColumnIndexOrThrow(_cursor, "currentDistance");
+          final TableModel _result;
+          if(_cursor.moveToFirst()) {
+            final String _tmpName;
+            if (_cursor.isNull(_cursorIndexOfName)) {
+              _tmpName = null;
+            } else {
+              _tmpName = _cursor.getString(_cursorIndexOfName);
+            }
+            final String _tmpCapital;
+            if (_cursor.isNull(_cursorIndexOfCapital)) {
+              _tmpCapital = null;
+            } else {
+              _tmpCapital = _cursor.getString(_cursorIndexOfCapital);
+            }
+            final float _tmpArea;
+            _tmpArea = _cursor.getFloat(_cursorIndexOfArea);
+            final String _tmpFlag;
+            if (_cursor.isNull(_cursorIndexOfFlag)) {
+              _tmpFlag = null;
+            } else {
+              _tmpFlag = _cursor.getString(_cursorIndexOfFlag);
+            }
+            final int _tmpPopulation;
+            _tmpPopulation = _cursor.getInt(_cursorIndexOfPopulation);
+            final int _tmpCurrentDistance;
+            _tmpCurrentDistance = _cursor.getInt(_cursorIndexOfCurrentDistance);
+            _result = new TableModel(_tmpName,_tmpCapital,_tmpArea,_tmpFlag,_tmpPopulation,_tmpCurrentDistance);
+          } else {
+            _result = null;
           }
           return _result;
         } finally {

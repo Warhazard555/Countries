@@ -6,7 +6,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.domain.dto.CountryItemDto
 import com.example.domain.dto.LanguageDto
-import com.example.task1.convertToList
 
 @Entity(tableName = "Country")
 data class TableModel(
@@ -21,7 +20,7 @@ data class TableModel(
     val area: Float,
 
     @ColumnInfo
-    val language: String,
+    val flag: String,
 
     @ColumnInfo
     val population: Int,
@@ -49,10 +48,12 @@ data class TableModel(
         this.area.let {
             area = it
         }
+        this.flag.let {
+            flag = it
+        }
         this.population.let {
             population = it
         }
-        this.language.let { languages.convertToList() }
 
         this.currentDistance.let { currentDistance = it }
 
@@ -89,7 +90,7 @@ fun CountryItemDto.convertDtoToTableModel(): TableModel {
     var name: String = ""
     var capital: String = ""
     var area: Float = 0F
-    var language: String = ""
+    var flag: String = ""
     var population: Int = 0
     var currentDistance: Int = 0
 
@@ -97,17 +98,20 @@ fun CountryItemDto.convertDtoToTableModel(): TableModel {
     this.capital.let {
         capital = it
     }
+
     this.area.let {
         area = it
     }
+
+    this.flag.let { flag = it }
+
     this.population.let {
         population = it
     }
-    this.languages.let { language = it.convertToList() }
 
     this.currentDistance.let { currentDistance = it }
 
-    return TableModel(name, capital, area, language, population, currentDistance)
+    return TableModel(name, capital, area, flag, population, currentDistance)
 }
 
 

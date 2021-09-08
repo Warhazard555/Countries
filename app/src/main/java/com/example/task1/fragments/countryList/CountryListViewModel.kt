@@ -13,7 +13,6 @@ import com.example.domain.useCase.impl.GetCountryByNameUseCase
 import com.example.task1.DEBOUNCE_TIME_MILLIS
 import com.example.task1.MIN_SEARCH_STRING_LENGTH
 import com.example.task1.base.mvvm.*
-import com.example.task1.convertToList
 import com.example.task1.ext.distanceFromMyLocation
 import com.example.task1.ext.lastLocation
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -29,7 +28,7 @@ class CountryListViewModel(
     private val mDataBaseRepository: DataBaseRepository,
     private val getAllCountryUseCase: GetAllCountryUseCase,
     private val getCountryByNameUseCase: GetCountryByNameUseCase,
-    private val getAllCountryDbUseCase: GetAllCountryDbUseCase
+    private val getAllCountryDbUseCase: GetAllCountryDbUseCase,
 
 ) : BaseViewModel(savedStateHandle) {
     val mCountryLiveData =
@@ -94,7 +93,7 @@ class CountryListViewModel(
                                 item.name,
                                 item.capital,
                                 item.area,
-                                item.languages.convertToList(),
+                                item.flag,
                                 item.population,
                                 item.currentDistance
                             )

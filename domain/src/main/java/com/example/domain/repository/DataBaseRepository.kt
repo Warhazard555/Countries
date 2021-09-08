@@ -9,4 +9,6 @@ interface DataBaseRepository {
     fun insertDatabase(list: MutableList<CountryItemDto>)
 
     fun getAllCountryDB(): Flowable<MutableList<CountryItemDto>>
+
+    fun getCountryByNameDB(name: String): Flowable<CountryItemDto>
 }
