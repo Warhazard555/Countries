@@ -117,7 +117,7 @@ class CountryFilterFragment : ScopeFragment() {
                 mCountry
                     .filter { it.area in areaMin..areaMax }
                     .filter { it.population in populationMin..populationMax }
-                    .filter { distanceFromMyLocation(it.latlng, distanceMax) }
+                    .filter { distanceFromMyLocation(it.currentDistance, distanceMax) }
             }
             setFragmentResult(
                 COUNTRY_FILTER_LISTNER_KEY, bundleOf(

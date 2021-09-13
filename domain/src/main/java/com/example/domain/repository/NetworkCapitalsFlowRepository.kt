@@ -7,5 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface NetworkCapitalsFlowRepository {
 
-    fun getAllCapital(): Flow<Outcome<List<CapitalDto>>>
+    fun getAllCapital(): Flow<Outcome<MutableList<CapitalDto>>>
+
+    fun getCapitalByName(name: String): Flow<Outcome<MutableList<CapitalDto>>>
 }

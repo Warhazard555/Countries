@@ -91,3 +91,7 @@ fun distanceFromMyLocation(latLng: List<Double>, distanceMax: Int): Boolean {
         false
     }
 }
+
+fun distanceFromMyLocation(current: Int, distanceMax: Int): Boolean {
+    return current <= distanceMax
+}

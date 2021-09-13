@@ -27,7 +27,7 @@ class FlowRetrofitService {
                     .client(log)
                     .build()
                     .create(FlowRetrofitInterface::class.java)
-            return FlowRetrofitService.instance as FlowRetrofitInterface
+            return instance as FlowRetrofitInterface
         }
     }
 }

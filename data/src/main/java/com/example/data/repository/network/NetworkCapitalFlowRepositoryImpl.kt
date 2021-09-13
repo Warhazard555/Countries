@@ -12,10 +12,14 @@ import kotlinx.coroutines.flow.Flow
 
 class NetworkCapitalFlowRepositoryImpl(
     private val networkCapitalsFlowRepository: FlowRetrofitInterface,
-    private val capitalListTransformer: Transformer<List<CapitalModel>, List<CapitalDto>>
+    private val capitalListTransformer: Transformer<List<CapitalModel>, MutableList<CapitalDto>>
 ) : NetworkCapitalsFlowRepository {
 
-    override fun getAllCapital(): Flow<Outcome<List<CapitalDto>>> =
+    override fun getAllCapital(): Flow<Outcome<MutableList<CapitalDto>>> =
         modifyFlow(networkCapitalsFlowRepository.getAllCapital(), capitalListTransformer)
+
+    override fun getCapitalByName(name: String): Flow<Outcome<MutableList<CapitalDto>>> =
+        modifyFlow(networkCapitalsFlowRepository.getCapitalByName(name), capitalListTransformer)
+
 
 }

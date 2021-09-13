@@ -76,6 +76,14 @@ class CountryListFragment : ScopeFragment() {
                             recyclerAdapter.repopulate(responseBody)
                         }
                     }
+
+                    srCountry.setOnRefreshListener {
+                        responseBody = it.data
+                        recyclerAdapter.repopulate(responseBody)
+                        sorting(statusSort)
+                        srCountry.isRefreshing = false
+                    }
+
                 }
                 is Outcome.Failure -> {
                     activity?.showAlertDialog()
@@ -111,11 +119,7 @@ class CountryListFragment : ScopeFragment() {
                 }
             }
         })
-        srCountry.setOnRefreshListener {
-            recyclerAdapter.repopulate(responseBody)
-            sorting(statusSort)
-            srCountry.isRefreshing = false
-        }
+
 
         saveSharedPref(statusSort)
     }
