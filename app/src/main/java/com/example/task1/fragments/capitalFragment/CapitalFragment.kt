@@ -116,7 +116,7 @@ class CapitalFragment : ScopeFragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 mViewModel.searchFlow.value = newText
-                return true
+                return false
             }
         })
     }
