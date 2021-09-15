@@ -30,7 +30,7 @@ abstract class CountryDatabase : RoomDatabase() {
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build()
-                return instance as CountryDatabase
+            return instance as CountryDatabase
 
         }
     }

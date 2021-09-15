@@ -9,10 +9,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class FlowRetrofitService {
 
-    companion object{
+    companion object {
         private var instance: FlowRetrofitInterface? = null
 
-        fun getInstance(): FlowRetrofitInterface{
+        fun getInstance(): FlowRetrofitInterface {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             val log: OkHttpClient = OkHttpClient.Builder()

@@ -5,11 +5,12 @@ import com.example.domain.dto.CountryItemDto
 import com.example.domain.repository.NetworkRepository
 import io.reactivex.rxjava3.core.Flowable
 
-class NetworkRepositoryImpl(private val retrofitService: RetrofitInterface): NetworkRepository {
+class NetworkRepositoryImpl(private val retrofitService: RetrofitInterface) : NetworkRepository {
 
     override fun getData(): Flowable<MutableList<CountryItemDto>> = retrofitService.getData()
 
-    override fun getCountryByName(name: String): Flowable<MutableList<CountryItemDto>> = retrofitService.getCountryByName(name)
+    override fun getCountryByName(name: String): Flowable<MutableList<CountryItemDto>> =
+        retrofitService.getCountryByName(name)
 
 
 }

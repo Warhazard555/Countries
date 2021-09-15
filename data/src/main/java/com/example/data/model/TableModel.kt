@@ -77,9 +77,10 @@ fun MutableList<TableModel>.convertToDTO(): MutableList<CountryItemDto> {
     }
     return list
 }
-fun List<CountryItemDto>.convertToTableModel(): MutableList<TableModel>{
+
+fun List<CountryItemDto>.convertToTableModel(): MutableList<TableModel> {
     val list = mutableListOf<TableModel>()
-    for (item in this){
+    for (item in this) {
         list.add(item.convertDtoToTableModel())
     }
     return list

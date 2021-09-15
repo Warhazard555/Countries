@@ -1,8 +1,14 @@
 package com.example.task1.fragments.countryList
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.SearchView
@@ -14,12 +20,28 @@ import com.example.domain.dto.CountryItemDto
 import com.example.domain.outcome.Outcome
 import com.example.task1.*
 import com.example.task1.ext.showAlertDialog
+import com.example.task1.services.LocationService
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.koin.androidx.scope.ScopeFragment
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 
 class CountryListFragment : ScopeFragment() {
+
+    private val locationBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent != null && intent.action != null) {
+                when (intent.action) {
+                    NEW_LOCATION_ACTION -> {
+                        Log.e(
+                            "LocationService",
+                            intent.getParcelableExtra<Location>("location").toString()
+                        )
+                    }
+                }
+            }
+        }
+    }
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerAdapter = RecyclerAdapter()
@@ -59,8 +81,8 @@ class CountryListFragment : ScopeFragment() {
         mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Outcome.Progress -> {
-                       progressBar.visibility = if (srCountry.isRefreshing) View.GONE else View.VISIBLE
-                 //   if (it.loading) View.VISIBLE else View.GONE
+                    progressBar.visibility = if (srCountry.isRefreshing) View.GONE else View.VISIBLE
+                    //   if (it.loading) View.VISIBLE else View.GONE
                 }
                 is Outcome.Next -> {
                     responseBody = it.data
@@ -99,8 +121,6 @@ class CountryListFragment : ScopeFragment() {
             }
         })
 
-
-
         mViewModel.mCountryDBLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Outcome.Progress -> {
@@ -119,15 +139,31 @@ class CountryListFragment : ScopeFragment() {
                 }
             }
         })
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.context?.startForegroundService(
+                Intent(
+                    this.context,
+                    LocationService::class.java
+                )
+            )
+        } else {
+            this.context?.startService(
+                Intent(
+                    this.context,
+                    LocationService::class.java
+                )
+            )
+        }
 
         saveSharedPref(statusSort)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(NEW_LOCATION_ACTION)
+        context?.registerReceiver(locationBroadcastReceiver, intentFilter)
         setHasOptionsMenu(true)
-
     }
 
 
@@ -213,6 +249,11 @@ class CountryListFragment : ScopeFragment() {
         } else {
             recyclerAdapter.sortItem()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        context?.unregisterReceiver(locationBroadcastReceiver)
     }
 
 }

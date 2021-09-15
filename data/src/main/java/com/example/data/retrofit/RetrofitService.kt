@@ -20,13 +20,13 @@ class RetrofitService {
                 .build()
 
             if (instance == null)
-            instance = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .baseUrl(BASE_URL)
-                .client(log)
-                .build()
-                .create(RetrofitInterface::class.java)
+                instance = Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                    .baseUrl(BASE_URL)
+                    .client(log)
+                    .build()
+                    .create(RetrofitInterface::class.java)
 
             return instance as RetrofitInterface
 

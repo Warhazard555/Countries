@@ -1,4 +1,4 @@
-rootProject.name = "Task1"
+rootProject.name = "Countries"
 include ':app'
 include ':domain'
 include ':data'
