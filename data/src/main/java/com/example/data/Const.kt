@@ -15,6 +15,7 @@ const val ZERO = 0
 const val THOUSAND = 1000
 const val FLOAT_ZERO = 0.0F
 
+
 const val PATH_VARIABLE = "path"
 const val PATH_URL = "/{$PATH_VARIABLE}"
 const val GET_COUNTRY_BY_NAME = "name$PATH_URL"
@@ -23,3 +24,7 @@ const val GET_CAPITAL_BY_NAME = "capital$PATH_URL"
 
 const val FILTER_COUNTRY_KEY = "FILTER_COUNTRY_KEY"
 const val COUNTRY_FILTER_LISTNER_KEY = "COUNTRY_FILTER_LISTNER_KEY"
+
+const val BASE_URL_NEWS = "https://newsapi.org/v2/"
+const val GET_NEWS = "top-headlines"
+const val NEWS_API_KEY = "77554ba233d14d16a2c31d96f1222f40"

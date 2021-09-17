@@ -2,6 +2,7 @@ package com.example.task1
 
 import android.app.Application
 import com.example.task1.di.*
+import com.example.task1.di.dagger.component.ApplicationComponent
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -9,9 +10,13 @@ import org.koin.core.context.startKoin
 
 class CountryApp : Application() {
 
+    companion object {
+        lateinit var appComponents: ApplicationComponent
+    }
+
     override fun onCreate() {
         super.onCreate()
-
+        appComponents = initDI()
         startKoin {
             // Koin Android logger
             androidLogger()
@@ -27,6 +32,7 @@ class CountryApp : Application() {
                 capitalModule
             )
         }
-
     }
+    private fun initDI() : ApplicationComponent =
+        DaggerApplicationComponent.builder().application(this).build()
 }
