@@ -48,7 +48,7 @@ class CapitalFragmentViewModel(
     fun capitalItemClickFlow() {
         viewModelScope.launch {
             getAllCapitalFlow().collect {
-                if (it is Outcome.Success) {
+                if (it is Outcome.Success<MutableList<CapitalDto>>) {
                     sharedFlow.emit(it.data.size.toLong())
                 }
             }
@@ -65,6 +65,7 @@ class CapitalFragmentViewModel(
                 .flatMapLatest {
                     mNetworkCapitalsFlowRepository.getCapitalByName(it)
                 }
+                .catch { emitAll(flowOf()) }
                 .flowOn(Dispatchers.IO)
                 .collect {
                     capitalLiveData.value = it

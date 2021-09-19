@@ -9,17 +9,21 @@ import com.example.task1.CountryApp
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
-import javax.xml.transform.Transformer
 
 @Module
 class ApplicationModule {
     @Provides
-    fun provideApplicationContext(application : CountryApp) : Context = application.applicationContext
+    fun provideApplicationContext(application: CountryApp): Context = application.applicationContext
+
+    @Provides
+    fun providesTransformer(): TransformNewsDataToNewsDto = TransformNewsDataToNewsDto()
 
     @Provides
     @Singleton
-    fun provideNewsRepository(apiService: NewsRetrofitInterface,
-    transformer: TransformNewsDataToNewsDto): NetworkNewsRepository{
-        return NetworkNewsRepositoryImpl(apiService,transformer)
+    fun provideNewsRepository(
+        apiService: NewsRetrofitInterface,
+        transformer: TransformNewsDataToNewsDto
+    ): NetworkNewsRepository {
+        return NetworkNewsRepositoryImpl(apiService, transformer)
     }
 }

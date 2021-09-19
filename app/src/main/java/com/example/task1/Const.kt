@@ -16,7 +16,7 @@ const val FLOAT_ZERO = 0.0F
 const val PATH_VARIABLE = "path"
 const val PATH_URL = "/{$PATH_VARIABLE}"
 const val GET_COUNTRY_BY_NAME = "name$PATH_URL"
-
+const val DEFAULT_STRING = ""
 
 const val FILTER_COUNTRY_KEY = "FILTER_COUNTRY_KEY"
 const val COUNTRY_FILTER_LISTNER_KEY = "COUNTRY_FILTER_LISTNER_KEY"

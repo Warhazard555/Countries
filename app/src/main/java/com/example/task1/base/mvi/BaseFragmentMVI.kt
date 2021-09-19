@@ -1,28 +1,23 @@
 package com.example.task1.base.mvi
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
-import org.koin.androidx.scope.ScopeFragment
+import android.view.View
 
 abstract class BaseFragmentMVI<INTENT : ViewIntent, ACTION : ViewAction, STATE : ViewState,
-        VM :BaseViewModelMVI<INTENT, ACTION, STATE>> :
-    IRender<STATE>, ScopeFragment() {
+        VM : BaseViewModelMVI<INTENT, ACTION, STATE>>(private val modelClass: Class<VM>) :
+    IRender<STATE>, RootBaseFragment() {
 
     private lateinit var viewState: STATE
     val mState get() = viewState
 
     private val viewModel: VM by lazy {
-        ViewModelProvider(
-            this.viewModelFactory,
-            modelClass.kotlin
-        )
+        viewModelProvider(this.viewModelFactory, modelClass.kotlin)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(getLayoutResId())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initUI()
-        viewModel.state.observe(this, {
+        viewModel.state.observe(viewLifecycleOwner, {
             viewState = it
             render(it)
         })

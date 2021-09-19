@@ -5,7 +5,6 @@ import com.example.task1.di.dagger.annotations.FragmentScope
 import javax.inject.Inject
 
 @FragmentScope
-class AppRouter @Inject constructor(private val activity : RootBaseFragment){
+class AppRouter @Inject constructor(private val activity: RootBaseFragment)
 
 
-}

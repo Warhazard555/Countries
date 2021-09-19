@@ -1,10 +1,11 @@
 package com.example.task1.base.mvi
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.data.model.TransformNewsDataToNewsDto
 import com.example.task1.CountryApp
 import com.example.task1.di.dagger.common.AppRouter
+import com.example.task1.di.dagger.component.DaggerFragmentComponent
 import com.example.task1.di.dagger.component.FragmentComponent
 import com.example.task1.di.dagger.module.FragmentModule
 import com.example.task1.di.dagger.viewModels.DaggerViewModelFactory
@@ -23,8 +24,11 @@ open class RootBaseFragment: Fragment() {
     @Inject
     lateinit var viewModelFactory: DaggerViewModelFactory
 
+    @Inject
+    lateinit var transformer: TransformNewsDataToNewsDto
+
     override fun onCreate(savedInstanceState: Bundle?) {
-       fragmentComponent.inject(this)
+        fragmentComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 }

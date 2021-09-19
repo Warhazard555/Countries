@@ -1,7 +1,7 @@
 package com.example.data.retrofit
 
+import com.chenxyu.retrofit.adapter.FlowCallAdapterFactory
 import com.example.data.BASE_URL_NEWS
-import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,7 +22,7 @@ class NewsRetrofitService {
             if (instance == null)
                 instance = Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                    .addCallAdapterFactory(FlowCallAdapterFactory())
                     .baseUrl(BASE_URL_NEWS)
                     .client(log)
                     .build()

@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface NetworkNewsRepository {
 
     fun getNews(name:String): Flow<Outcome<List<NewsDto>>>
+
 }

@@ -10,7 +10,8 @@ import retrofit2.http.Query
 
 interface NewsRetrofitInterface {
 
-    @Headers(NEWS_API_KEY)
+    @Headers("X-Api-Key: $NEWS_API_KEY")
     @GET(GET_NEWS)
     fun getNews(@Query("country") name:String): Flow<ArticlesList>
+
 }

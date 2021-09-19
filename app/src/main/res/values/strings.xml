@@ -22,5 +22,6 @@
     <string name="foreground_channel_id">channel_id</string>
     <string name="foreground_channel_name">channel_name</string>
     <string name="foreground_notification_name">notification_name</string>
+    <string name="news">News</string>
 
 </resources>

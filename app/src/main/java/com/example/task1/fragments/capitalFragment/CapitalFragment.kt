@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.domain.dto.CapitalDto
 import com.example.domain.outcome.Outcome
 import com.example.task1.R
 import com.example.task1.ext.showAlertDialog
@@ -27,6 +29,7 @@ class CapitalFragment : ScopeFragment() {
     private lateinit var progress: FrameLayout
     private lateinit var recycler: RecyclerView
     private lateinit var mSharedFlowJob: Job
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,17 +84,18 @@ class CapitalFragment : ScopeFragment() {
         mViewModel.capitalLiveData.observe(viewLifecycleOwner, { it ->
             when (it) {
                 is Outcome.Failure -> {
-                    activity?.showAlertDialog()
+
                 }
                 is Outcome.Next -> TODO()
                 is Outcome.Progress -> {
-                    progress.visibility = if (it.loading) View.VISIBLE else View.GONE
+
                 }
                 is Outcome.Success -> {
                     capitalAdapter.submitList(it.data)
                 }
             }
         })
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,6 +123,17 @@ class CapitalFragment : ScopeFragment() {
                 return false
             }
         })
+        searchViewCapital.setOnCloseListener {
+            mViewModel.getAllCapitalFlow()
+            CoroutineScope(lifecycleScope.coroutineContext).launch {
+                mViewModel.getAllCapitalFlow().collect{
+                    if(it is Outcome.Success<MutableList<CapitalDto>>){
+                        capitalAdapter.submitList(it.data)
+                    }
+                }
+            }
+            false
+        }
     }
 
     override fun onCreateView(

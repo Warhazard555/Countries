@@ -37,8 +37,6 @@ class CountryListViewModel(
         savedStateHandle.getLiveData<Outcome<MutableList<CountryItemDto>>>("CountryItemDB")
     val mSearchSubject: BehaviorSubject<String> = BehaviorSubject.create<String>()
 
-
-    //TODO: Добавить BD в цепочку RX
     fun getCountryList(context: Context) {
 //        mCompositeDisposable.add(
 //            executeJob(
@@ -79,7 +77,6 @@ class CountryListViewModel(
         )
     }
 
-    //TODO: RX!!!
     fun addCountryDB(
         response: MutableList<CountryItemDto> = mutableListOf()
     ) {

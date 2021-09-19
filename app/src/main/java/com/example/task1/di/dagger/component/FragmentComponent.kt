@@ -9,6 +9,6 @@ import dagger.Component
 @FragmentScope
 @Component(modules = [FragmentModule::class], dependencies = [ApplicationComponent::class])
 interface FragmentComponent {
-    fun inject(baseActivity: RootBaseFragment)
+    fun inject(baseFragment: RootBaseFragment)
     fun appRouter(): AppRouter
 }

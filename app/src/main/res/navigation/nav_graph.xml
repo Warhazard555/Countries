@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_blankFragment_to_capitalFragment"
             app:destination="@id/capitalFragment" />
+        <action
+            android:id="@+id/action_blankFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
     </fragment>
     <fragment
         android:id="@+id/countryDetailsFragment"
@@ -48,9 +51,13 @@
         android:id="@+id/capitalFragment"
         android:name="com.example.task1.fragments.capitalFragment.CapitalFragment"
         android:label="fragment_capital"
-        tools:layout="@layout/fragment_capital" >
+        tools:layout="@layout/fragment_capital">
         <action
             android:id="@+id/action_capitalFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.example.task1.fragments.news.NewsFragment"
+        android:label="NewsFragment" />
 </navigation>

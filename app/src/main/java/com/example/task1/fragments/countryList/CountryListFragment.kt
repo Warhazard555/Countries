@@ -75,7 +75,7 @@ class CountryListFragment : ScopeFragment() {
         }
         val capitalBar: View = view.findViewById(R.id.capital_bar)
         capitalBar.setOnClickListener {
-            findNavController().navigate(R.id.action_blankFragment_to_capitalFragment)
+            findNavController().navigate(R.id.capitalFragment)
         }
         context?.let { mViewModel.getCountryList(it) }
         mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
@@ -215,6 +215,9 @@ class CountryListFragment : ScopeFragment() {
         }
         if (item.itemId == R.id.all_map_fragment) {
             findNavController().navigate(R.id.action_blankFragment_to_mapsFragment)
+        }
+        if (item.itemId == R.id.news) {
+            findNavController().navigate(R.id.newsFragment)
         }
 
         return super.onOptionsItemSelected(item)

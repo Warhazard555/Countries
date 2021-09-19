@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.dto.CapitalDto
+import com.example.task1.DEFAULT_STRING
 import com.example.task1.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.capital_list.view.*
@@ -50,6 +51,16 @@ class CapitalAdapter : ListAdapter<CapitalDto, CapitalAdapter.ListViewHolder>(Di
                 itemView.setOnClickListener { mOnItemClickListener?.invoke(item) }
             }
         }
+    }
+
+    override fun submitList(list: MutableList<CapitalDto>?) {
+        val capitalList = mutableListOf<CapitalDto>()
+        list?.forEach {
+            if (it.capital != DEFAULT_STRING) {
+                capitalList.add(it)
+            }
+        }
+        super.submitList(capitalList)
     }
 
     var mOnItemClickListener: ((CapitalDto) -> Unit?)? = null
