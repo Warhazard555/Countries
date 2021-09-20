@@ -40,7 +40,7 @@ class CountryListViewModel(
     fun getCountryList(context: Context) {
         Flowable.just(context)
             .observeOn(AndroidSchedulers.mainThread())
-            .flatMap { lastLocation(context = it) }
+            .map { lastLocation(context = it) }
             .observeOn(Schedulers.io())
             .flatMap {
                 getAllCountryUseCase.execute()
