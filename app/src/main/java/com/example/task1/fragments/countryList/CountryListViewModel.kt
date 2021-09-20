@@ -38,12 +38,6 @@ class CountryListViewModel(
     val mSearchSubject: BehaviorSubject<String> = BehaviorSubject.create<String>()
 
     fun getCountryList(context: Context) {
-//        mCompositeDisposable.add(
-//            executeJob(
-//                getAllCountryUseCase.execute(),
-//                mCountryLiveData
-//            )
-//        )
         Flowable.just(context)
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap { lastLocation(context = it) }
@@ -90,7 +84,6 @@ class CountryListViewModel(
                                 item.name,
                                 item.capital,
                                 item.area,
-
                                 item.flag,
                                 item.population,
                                 item.currentDistance

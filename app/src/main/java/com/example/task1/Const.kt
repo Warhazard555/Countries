@@ -29,3 +29,4 @@ const val MIN_DISTANCE_FOR_UPDATES: Long = 10
 const val MIN_TIME_BW_UPDATE = (1000 * 10 * 1).toLong()
 const val SERVICE_ID = 12345
 const val NEW_LOCATION_ACTION = "NEW_LOCATION_ACTION"
+const val KILL_SELF = "kill self!"

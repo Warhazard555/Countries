@@ -60,6 +60,7 @@ class CountryListFragment : ScopeFragment() {
         recyclerView = view.findViewById(R.id.recycler)
         recyclerView.adapter = recyclerAdapter
         progressBar = view.findViewById(R.id.progressBar)
+        context?.let { mViewModel.getCountryList(it) }
         recyclerAdapter.setItemClick { item ->
             val bundle = Bundle()
             bundle.putString(COUNTRY_NAME_KEY, item.name)
@@ -71,13 +72,17 @@ class CountryListFragment : ScopeFragment() {
         }
         val filterBar: View = view.findViewById(R.id.filter_bar)
         filterBar.setOnClickListener {
-            findNavController().navigate(R.id.action_blankFragment_to_countryFilterFragment)
+            findNavController().navigate(R.id.countryFilterFragment)
         }
         val capitalBar: View = view.findViewById(R.id.capital_bar)
         capitalBar.setOnClickListener {
             findNavController().navigate(R.id.capitalFragment)
         }
-        context?.let { mViewModel.getCountryList(it) }
+        val mapBar: View = view.findViewById(R.id.all_map_fragment)
+        mapBar.setOnClickListener {
+            findNavController().navigate(R.id.mapsFragment)
+        }
+
         mViewModel.mCountryLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Outcome.Progress -> {
@@ -154,7 +159,6 @@ class CountryListFragment : ScopeFragment() {
                 )
             )
         }
-
         saveSharedPref(statusSort)
     }
 
@@ -165,7 +169,6 @@ class CountryListFragment : ScopeFragment() {
         context?.registerReceiver(locationBroadcastReceiver, intentFilter)
         setHasOptionsMenu(true)
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
@@ -213,11 +216,8 @@ class CountryListFragment : ScopeFragment() {
             recyclerAdapter.notifyDataSetChanged()
             saveSharedPref(statusSort)
         }
-        if (item.itemId == R.id.all_map_fragment) {
-            findNavController().navigate(R.id.action_blankFragment_to_mapsFragment)
-        }
         if (item.itemId == R.id.news) {
-            findNavController().navigate(R.id.newsFragment)
+            findNavController().navigate(R.id.action_blankFragment_to_newsFragment)
         }
 
         return super.onOptionsItemSelected(item)

@@ -29,7 +29,7 @@ class LocationService : Service(), LocationListener {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
-            if (!intent.hasExtra("kill self!")) {
+            if (!intent.hasExtra(KILL_SELF)) {
                 initLocation()
                 initNotification()
             } else {

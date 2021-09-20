@@ -65,7 +65,6 @@ class CapitalFragmentViewModel(
                 .flatMapLatest {
                     mNetworkCapitalsFlowRepository.getCapitalByName(it)
                 }
-                .catch { emitAll(flowOf()) }
                 .flowOn(Dispatchers.IO)
                 .collect {
                     capitalLiveData.value = it

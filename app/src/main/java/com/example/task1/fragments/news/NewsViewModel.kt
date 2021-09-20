@@ -13,16 +13,12 @@ class NewsViewModel @Inject constructor(
     private val dataManager: NetworkNewsRepository
 ) : BaseViewModelMVI<NewsIntent, NewsAction, NewsState>() {
 
-    private val geocoder = Geocoder(context)
-
-
-
     override fun handleAction(action: NewsAction) {
         launchOnUI {
             when (action) {
                 is NewsAction.News -> {
                     dataManager.getNews(RU).collect {
-                        mState.postValue(it.reduce())
+                        mState.value = (it.reduce())
                     }
                 }
             }

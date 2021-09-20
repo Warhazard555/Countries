@@ -8,21 +8,19 @@
         android:title="@string/search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom" />
+
     <item
-        android:id="@+id/all_map_fragment"
-        android:icon="@drawable/ic_map"
-        android:title="@string/map"
+        android:id="@+id/news"
+        android:icon="@drawable/ic_news"
+        android:title="@string/news"
         app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/sorted"
         android:icon="@drawable/ic_action_up"
         android:title="@string/sort"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/news"
-        android:icon="@drawable/ic_edit"
-        android:title="@string/news"
-        app:showAsAction="ifRoom" />
+
 
 </menu>

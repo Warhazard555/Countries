@@ -79,19 +79,3 @@ fun distanceFromMyLocation(latLng: List<Double>): Int {
 fun distanceFromMyLocation(current: Int, distanceMax: Int): Boolean {
     return current <= distanceMax
 }
-
-//fun distanceFromMyLocation(latLng: List<Double>, distanceMax: Int): Boolean {
-//    distance = ZERO
-//    return if (latLng.isNotEmpty()) {
-//        val lastCurrentLocation = Location(LocationManager.GPS_PROVIDER).apply {
-//            latitude = latLng[0]
-//            longitude = latLng[1]
-//        }
-//        myLocation.let {
-//            distance = myLocation.distanceTo(lastCurrentLocation).toInt().div(THOUSAND)
-//        }
-//        distance <= distanceMax
-//    } else {
-//        false
-//    }
-//}
