@@ -31,9 +31,9 @@ class NetworkModule {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
             .cache(cache)
-            .connectTimeout(2, TimeUnit.SECONDS)
-            .writeTimeout(2, TimeUnit.SECONDS)
-            .readTimeout(2, TimeUnit.SECONDS)
+            .connectTimeout(6, TimeUnit.SECONDS)
+            .writeTimeout(6, TimeUnit.SECONDS)
+            .readTimeout(6, TimeUnit.SECONDS)
             .cache(cache)
             .addInterceptor(interceptor)
         return client.build()
