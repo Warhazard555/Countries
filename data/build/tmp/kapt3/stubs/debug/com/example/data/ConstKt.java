@@ -9,7 +9,7 @@ public final class ConstKt {
     @org.jetbrains.annotations.NotNull
     public static final java.lang.String KEY_SORT = "SortStatus";
     @org.jetbrains.annotations.NotNull
-    public static final java.lang.String BASE_URL = "https://restcountries.eu/rest/v2/";
+    public static final java.lang.String BASE_URL = "https://restcountries.com/v2/";
     @org.jetbrains.annotations.NotNull
     public static final java.lang.String CAPITAL_URL = "all?fields=capital";
     @org.jetbrains.annotations.NotNull

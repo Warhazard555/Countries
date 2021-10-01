@@ -11,8 +11,8 @@ data class CountryItem(
     var capital: String?,
     @SerializedName("area")
     var area: Float?,
-    @SerializedName("flag")
-    var flag: String?,
+    @SerializedName("flags")
+    var flags: List<String>?,
     @SerializedName("languages")
     var languages: List<LanguageDto>?,
     @SerializedName("latlng")

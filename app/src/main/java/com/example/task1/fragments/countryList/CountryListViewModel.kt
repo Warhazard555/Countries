@@ -84,7 +84,7 @@ class CountryListViewModel(
                                 item.name,
                                 item.capital,
                                 item.area,
-                                item.flag,
+                                item.flags,
                                 item.population,
                                 item.currentDistance
                             )

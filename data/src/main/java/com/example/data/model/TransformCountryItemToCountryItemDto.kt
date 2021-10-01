@@ -14,7 +14,7 @@ class TransformCountryItemToCountryItemDto : Transformer<CountryItem, CountryIte
             countryDto.capital = it.capital ?: ""
             countryDto.area = it.area ?: 0F
             countryDto.population = it.population ?: -1
-            countryDto.flag = it.flag ?: ""
+            countryDto.flags = it.flags?.get(0) ?: ""
             countryDto.latlng = (it.latlng ?: mutableListOf(1.0, 1.0)) as MutableList<Double>
             countryDto.languages = (it.languages?.convertToList() ?: "") as List<LanguageDto>
             countryDto.currentDistance = 0

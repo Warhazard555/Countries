@@ -7,7 +7,7 @@ class CountryItemDto(
     var name: String = "",
     var capital: String = "",
     var area: Float = 0F,
-    var flag: String = "",
+    var flags: String = "https://restcountries.com/data/blr.svg",
     var languages: List<LanguageDto> = arrayListOf(),
     var latlng: MutableList<Double> = arrayListOf(1.0, 1.0),
     var population: Int = 0,

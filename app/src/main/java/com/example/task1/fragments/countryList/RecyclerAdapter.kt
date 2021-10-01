@@ -53,7 +53,7 @@ class RecyclerAdapter :
                 holder.itemView.context.getString(R.string.population_tittle) + listItem.population.toString()
             holder.area?.text =
                 holder.itemView.context.getString(R.string.area_tittle) + listItem.area.toString()
-            holder.flag?.loadImageSvg(listItem.flag)
+            holder.flag?.loadImageSvg(listItem.flags)
             holder.currentDistance?.text  = listItem.currentDistance.toString()
             holder.itemView.setOnClickListener { mOnItemClickListener?.invoke(listItem) }
         }

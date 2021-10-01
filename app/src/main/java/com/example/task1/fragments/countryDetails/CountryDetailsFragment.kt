@@ -79,7 +79,7 @@ class CountryDetailsFragment : BaseMvpFragment<CountryDetailsView, CountryDetail
         languageAdapter.repopulate(
             country.languages as MutableList<LanguageDto>
         )
-        flagView.loadImageSvg(country.flag)
+        flagView.loadImageSvg(country.flags)
         if (country.area != FLOAT_ZERO) {
             mapLng = LatLng(country.latlng[0], country.latlng[1])
             getMapLocation(mapLng)

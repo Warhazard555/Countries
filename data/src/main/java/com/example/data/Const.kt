@@ -2,7 +2,7 @@ package com.example.data
 
 const val FILE_NAME_SHARED_PREF = "data"
 const val KEY_SORT = "SortStatus"
-const val BASE_URL = "https://restcountries.eu/rest/v2/"
+const val BASE_URL = "https://restcountries.com/v2/"
 const val CAPITAL_URL = "all?fields=capital"
 const val API_ALL = "all"
 const val COUNTRY_NAME_KEY = "COUNTRY_NAME_KEY"

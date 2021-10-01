@@ -104,7 +104,7 @@ fun CountryItemDto.convertDtoToTableModel(): TableModel {
         area = it
     }
 
-    this.flag.let { flag = it }
+    this.flags.let { flag = it }
 
     this.population.let {
         population = it

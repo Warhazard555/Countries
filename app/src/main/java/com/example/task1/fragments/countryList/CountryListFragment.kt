@@ -64,7 +64,7 @@ class CountryListFragment : ScopeFragment() {
         recyclerAdapter.setItemClick { item ->
             val bundle = Bundle()
             bundle.putString(COUNTRY_NAME_KEY, item.name)
-            bundle.putString(COUNTRY_FLAG_KEY, item.flag)
+            bundle.putString(COUNTRY_FLAG_KEY, item.flags)
             findNavController().navigate(
                 R.id.action_blankFragment_to_countryDetailsFragment,
                 bundle
